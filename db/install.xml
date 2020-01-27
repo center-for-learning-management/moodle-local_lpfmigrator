@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/lpfmigrator/db" VERSION="20200127" COMMENT="XMLDB file for Moodle local/lpfmigrator"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_lpfmigrator_instances" COMMENT="List of databases and instances">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="true"/>
+        <FIELD NAME="host" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="The server-host"/>
+        <FIELD NAME="dbname" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="The database-name, e.g. em_firnberg"/>
+        <FIELD NAME="instancename" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="The instance-name, e.g. firnberg"/>
+        <FIELD NAME="stage" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="The current migration-stage"/>
+        <FIELD NAME="orgid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="The eduvidual-orgid, if found"/>
+        <FIELD NAME="path_data" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="Path to moodle-datadir"/>
+        <FIELD NAME="path_backup" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="Path to moodle-backupdir"/>
+        <FIELD NAME="path_backup_pwd" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="Password for backup-dir"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="instancename" UNIQUE="true" FIELDS="instancename"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
