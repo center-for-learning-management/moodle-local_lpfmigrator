@@ -269,9 +269,9 @@ class instance {
     /**
      * Gets or sets the host.
      */
-    public function host($host = "") {
+    public function host($host = "-") {
         global $DB;
-        if (!empty($host)) {
+        if ($host != "-") {
             $this->host = $host;
             $DB->set_field('local_lpfmigrator_instances', 'host', $this->host, array('instancename' => $this->instancename));
         }
@@ -282,6 +282,17 @@ class instance {
      */
     public function id() {
         return $this->id;
+    }
+    /**
+     * Gets or sets the lpfgroup.
+     */
+    public function lpfgroup($lpfgroup="-") {
+        global $DB;
+        if ($lpfgroup != "-" && !empty($this->orgid)) {
+            $this->lpfgroup = $lpfgroup;
+            $DB->set_field('block_eduvidual_org', 'lpfgroup', $this->lpfgroup, array('orgid' => $this->orgid));
+        }
+        return $this->lpfgroup;
     }
     /**
      * Sends a notification to the admins of the moodle-instance.
@@ -341,9 +352,9 @@ class instance {
     /**
      * Gets or sets the path_backup.
      */
-    public function path_backup($path_backup = "") {
+    public function path_backup($path_backup = "-") {
         global $DB;
-        if (!empty($path_backup)) {
+        if ($path_backup != "-") {
             $this->path_backup = $path_backup;
             $DB->set_field('local_lpfmigrator_instances', 'path_backup', $this->path_backup, array('instancename' => $this->instancename));
         }
@@ -352,9 +363,9 @@ class instance {
     /**
      * Gets or sets the path_data.
      */
-    public function path_data($path_data = "") {
+    public function path_data($path_data = "-") {
         global $DB;
-        if (!empty($path_data)) {
+        if ($path_data != "-") {
             $this->path_data = $path_data;
             $DB->set_field('local_lpfmigrator_instances', 'path_data', $this->path_data, array('instancename' => $this->instancename));
         }
@@ -363,9 +374,9 @@ class instance {
     /**
      * Gets or sets the path_web.
      */
-    public function path_web($path_web = "") {
+    public function path_web($path_web = "-") {
         global $DB;
-        if (!empty($path_web)) {
+        if ($path_web != "-") {
             $this->path_web = $path_web;
             $DB->set_field('local_lpfmigrator_instances', 'path_web', $this->path_web, array('instancename' => $this->instancename));
         }

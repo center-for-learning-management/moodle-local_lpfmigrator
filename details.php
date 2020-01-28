@@ -58,6 +58,7 @@ if (!$instance->can_manage_instance()) {
 if (is_siteadmin()) {
     // Check for modified data.
     $orgid = optional_param('orgid', -1, PARAM_INT);
+    $lpfgroup = optional_param('lpfgroup', '-', PARAM_ALPHANUM);
     $path_data = optional_param('path_data', '-', PARAM_TEXT);
     $path_web = optional_param('path_web', '-', PARAM_TEXT);
     $path_backup = optional_param('path_backup', '-', PARAM_TEXT);
@@ -66,6 +67,10 @@ if (is_siteadmin()) {
     if ($orgid > -1 && $orgid != $instance->orgid()) {
         $instance->orgid($orgid);
         $changed[] = get_string('orgid', 'local_lpfmigrator');
+    }
+    if ($lpfgroup != '-' && $lpfgroup != $instance->lpfgroup()) {
+        $instance->lpfgroup($lpfgroup);
+        $changed[] = get_string('lpfgroup', 'local_lpfmigrator');
     }
     if ($path_data != '-' && $path_data != $instance->path_data()) {
         $instance->path_data($path_data);

@@ -40,4 +40,12 @@ if ($hassiteconfig) {
             $CFG->wwwroot . '/local/lpfmigrator/readdb.php'
         )
     );
+    $ADMIN->add(
+        'local_lpfmigrator',
+        new admin_externalpage(
+            'local_lpfmigrator_list',
+            get_string('list_databases', 'local_lpfmigrator'),
+            $CFG->wwwroot . '/local/lpfmigrator/list.php'
+        )
+    );
 }
