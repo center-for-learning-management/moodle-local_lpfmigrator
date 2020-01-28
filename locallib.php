@@ -63,6 +63,7 @@ class instance {
             $this->stage = $rec->stage;
             $this->orgid = $rec->orgid;
             $this->path_data = $rec->path_data;
+            $this->path_web = $rec->path_web;
             $this->path_backup = $rec->path_backup;
             $this->path_backup_pwd = $rec->path_backup_pwd;
         } else {
@@ -349,7 +350,7 @@ class instance {
         global $DB;
         if (!empty($orgid)) {
             $this->orgid = $orgid;
-            $DB->set_field('local_lpfmigrator_instances', 'orgid', $this->orgid, array('instancename' => $this->instancename));
+            $DB->set_field('local_lpfmigrator_instances', 'orgid', $this->orgid, array('id' => $this->id));
         }
         return $this->orgid;
     }
@@ -360,7 +361,7 @@ class instance {
         global $DB;
         if ($path_backup != "-") {
             $this->path_backup = $path_backup;
-            $DB->set_field('local_lpfmigrator_instances', 'path_backup', $this->path_backup, array('instancename' => $this->instancename));
+            $DB->set_field('local_lpfmigrator_instances', 'path_backup', $this->path_backup, array('id' => $this->id));
         }
         return $this->path_backup;
     }
@@ -371,7 +372,7 @@ class instance {
         global $DB;
         if ($path_data != "-") {
             $this->path_data = $path_data;
-            $DB->set_field('local_lpfmigrator_instances', 'path_data', $this->path_data, array('instancename' => $this->instancename));
+            $DB->set_field('local_lpfmigrator_instances', 'path_data', $this->path_data, array('id' => $this->id));
         }
         return $this->path_data;
     }
@@ -382,7 +383,7 @@ class instance {
         global $DB;
         if ($path_web != "-") {
             $this->path_web = $path_web;
-            $DB->set_field('local_lpfmigrator_instances', 'path_web', $this->path_web, array('instancename' => $this->instancename));
+            $DB->set_field('local_lpfmigrator_instances', 'path_web', $this->path_web, array('id' => $this->id));
         }
         return $this->path_web;
     }
