@@ -15,6 +15,7 @@
         <FIELD NAME="path_data" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="Path to moodle-datadir"/>
         <FIELD NAME="path_backup" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="Path to moodle-backupdir"/>
         <FIELD NAME="path_backup_pwd" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="Password for backup-dir"/>
+        <FIELD NAME="path_web" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="Path to moodle-webdir"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

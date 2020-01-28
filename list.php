@@ -51,7 +51,7 @@ if (!is_siteadmin()) {
 $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,beo.lpfgroup,beo.categoryid
             FROM {local_lpfmigrator_instances} lli
             LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
-            ORDER BY instancename ASC";
+            ORDER BY lpfgroup ASC, instancename ASC";
 
 $instances = array_values($DB->get_records_sql($sql, array()));
 foreach($instances AS &$instance) {

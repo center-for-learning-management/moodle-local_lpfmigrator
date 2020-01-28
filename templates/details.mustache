@@ -27,38 +27,74 @@
                 <th>{{instancename}}</th>
             </tr>
             {{#editable}}
-            <form action="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="{{id}}" />
-                <tr>
-                    <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
-                    <td><input type="text" value="{{orgid}}" name="orgid" /></td>
-                </tr>
-                <tr>
-                    <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
-                    <td><input type="text" value="{{path_data}}" name="path_data" /></td>
-                </tr>
-                <tr>
-                    <th>{{#str}} path_backup, local_lpfmigrator {{/str}}</th>
-                    <td><input type="text" value="{{path_backup}}" name="path_backup" /></td>
-                </tr>
-                <tr>
-                    <th>{{#str}} stage, local_lpfmigrator {{/str}}</th>
-                    <td>
-                        <select name="stage">
-                            {{#stages}}
-                            <option value="{{value}}" {{#selected}} selected="selected" {{/selected}}>{{label}}</option>
-                            {{/stages}}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>{{#str}} auth, local_lpfmigrator {{/str}}</th>
-                    <td>{{instancename}}:{{path_backup_pwd}}</td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" value="{{#str}} save {{/str}}" class="btn btn-primary btn-block" /></td>
-                </tr>
-            </form>
+                {{^sealed}}
+                    <form action="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="{{id}}" />
+                        <tr>
+                            <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
+                            <td><input type="text" value="{{orgid}}" name="orgid" /></td>
+                        </tr>
+                        <tr>
+                            <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
+                            <td><input type="text" value="{{path_data}}" name="path_data" /></td>
+                        </tr>
+                        <tr>
+                            <th>{{#str}} path_web, local_lpfmigrator {{/str}}</th>
+                            <td><input type="text" value="{{path_web}}" name="path_web" /></td>
+                        </tr>
+                        <tr>
+                            <th>{{#str}} path_backup, local_lpfmigrator {{/str}}</th>
+                            <td><input type="text" value="{{path_backup}}" name="path_backup" /></td>
+                        </tr>
+                        <tr>
+                            <th>{{#str}} stage, local_lpfmigrator {{/str}}</th>
+                            <td>
+                                <select name="stage">
+                                    {{#stages}}
+                                    <option value="{{value}}" {{#selected}} selected="selected" {{/selected}}>{{label}}</option>
+                                    {{/stages}}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{#str}} auth, local_lpfmigrator {{/str}}</th>
+                            <td>{{instancename}}:{{path_backup_pwd}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="submit" value="{{#str}} save {{/str}}" class="btn btn-primary btn-block" /></td>
+                        </tr>
+                    </form>
+                {{/sealed}}
+                {{#sealed}}
+                    <tr>
+                        <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
+                        <td>{{orgid}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
+                        <td>{{path_data}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{#str}} path_web, local_lpfmigrator {{/str}}</th>
+                        <td>{{path_web}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{#str}} path_backup, local_lpfmigrator {{/str}}</th>
+                        <td>{{path_backup}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{#str}} stage, local_lpfmigrator {{/str}}</th>
+                        <td>
+                            {{#stages}}{{#selected}}
+                            {{value}} {{label}}
+                            {{/selected}}{{/stages}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{#str}} auth, local_lpfmigrator {{/str}}</th>
+                        <td>{{instancename}}:{{path_backup_pwd}}</td>
+                    </tr>
+                {{/sealed}}
             {{/editable}}
             {{^editable}}
             <tr>
@@ -72,14 +108,14 @@
             {{/editable}}
             <tr>
                 <td>
-                    <a href="https://www{{servernr}}.lernplattform.schule.at/{{instancename}}" target="_blank" class="btn btn-block btn-secondary">
+                    {{#path_web}}<a href="{{path_web}}" target="_blank" class="btn btn-block btn-secondary">
                         {{#str}} open_lpf, local_lpfmigrator {{/str}}
-                    </a>
+                    </a>{{/path_web}}
                 </td>
                 <td>
-                    <a href="/lpf{{backupnr}}/{{instancename}}" target="_blank" class="btn btn-block btn-secondary">
+                    {{#path_backup}}<a href="/lpf{{backupnr}}/{{instancename}}" target="_blank" class="btn btn-block btn-secondary">
                         {{#str}} open_backup, local_lpfmigrator {{/str}}
-                    </a>
+                    </a>{{/path_backup}}
                 </td>
             </tr>
         </tbody>
@@ -139,7 +175,38 @@
                             {{#str}} notify_admins_done, local_lpfmigrator {{/str}}
                         {{/completed}}
                     {{/is1}}
-                    {{#is2}} {{! set maintenance mode }}
+                    {{#is2}} {{! schedule backups }}
+                        {{#has_backups_enabled}}
+                            {{#str}} currently_on, local_lpfmigrator {{/str}}
+                        {{/has_backups_enabled}}
+                        {{^has_backups_enabled}}
+                            {{#str}} currently_off, local_lpfmigrator {{/str}}
+                        {{/has_backups_enabled}}
+                        {{#editable}}
+                            {{#selected}}
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td width="50%">
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&backups=on" class="btn btn-primary btn-block">
+                                            {{#str}} backups_on, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&backups=off" class="btn btn-secondary btn-block">
+                                            {{#str}} backups_off, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            {{/selected}}
+                            {{#completed}}
+                                <a href="{{path_web}}/index.php?secretpurge=1029384756" target="_blank" class="btn btn-secondary btn-block">
+                                    {{#str}} purge_caches, local_lpfmigrator {{/str}}
+                                </a>
+                            {{/completed}}
+                        {{/editable}}
+                    {{/is2}}
+                    {{#is3}} {{! set maintenance mode }}
                         {{#editable}}
                             {{#selected}}
                             <table border="0" width="100%">
@@ -164,32 +231,6 @@
                         {{^has_maintenance_enabled}}
                             {{#str}} currently_off, local_lpfmigrator {{/str}}
                         {{/has_maintenance_enabled}}
-                    {{/is2}}
-                    {{#is3}} {{! schedule backups }}
-                        {{#editable}}
-                            {{#selected}}
-                            <table border="0" width="100%">
-                                <tr>
-                                    <td width="50%">
-                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&backups=on" class="btn btn-primary btn-block">
-                                            {{#str}} backups_on, local_lpfmigrator {{/str}}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&backups=off" class="btn btn-secondary btn-block">
-                                            {{#str}} backups_off, local_lpfmigrator {{/str}}
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                            {{/selected}}
-                        {{/editable}}
-                        {{#has_backups_enabled}}
-                            {{#str}} currently_on, local_lpfmigrator {{/str}}
-                        {{/has_backups_enabled}}
-                        {{^has_backups_enabled}}
-                            {{#str}} currently_off, local_lpfmigrator {{/str}}
-                        {{/has_backups_enabled}}
                     {{/is3}}
                     {{#is4}} {{! make review }}
                         <p>{{#str}} has_courses, local_lpfmigrator, { "remote": {{#quote}}{{courses_remote}}{{/quote}}, "backup": {{#quote}}{{courses_backup}}{{/quote}} } {{/str}}</p>
@@ -204,11 +245,11 @@
                             {{/selected}}
                         {{/editable}}
                     {{/is4}}
-                    {{#is5}} {{! command removal }}
+                    {{#is5}} {{! removal web }}
                         {{#editable}}
                             {{#selected}}
-                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&remove=on">
-                                {{#str}} instance_remove_now, local_lpfmigrator {{/str}}
+                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removeweb=on" class="btn btn-primary btn-block alert alert-danger">
+                                {{#str}} instance_removeweb_now, local_lpfmigrator {{/str}}
                             </a>
                             {{/selected}}
                         {{/editable}}
@@ -217,12 +258,32 @@
                                 {{#str}} instance_remove_soon, local_lpfmigrator {{/str}}
                             {{/selected}}
                         {{/editable}}
+                        {{#completed}}
+                            {{#str}} instance_removed_web, local_lpfmigrator {{/str}}
+                        {{/completed}}
                     {{/is5}}
-                    {{#is6}} {{! removed }}
+                    {{#is6}} {{! removal data }}
+                        {{#editable}}
+                            {{#selected}}
+                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removedata=on" class="btn btn-primary btn-block alert alert-danger">
+                                {{#str}} instance_removedata_now, local_lpfmigrator {{/str}}
+                            </a>
+                            {{/selected}}
+                        {{/editable}}
+                        {{^editable}}
+                            {{#selected}}
+                                {{#str}} instance_remove_soon, local_lpfmigrator {{/str}}
+                            {{/selected}}
+                        {{/editable}}
+                        {{#completed}}
+                            {{#str}} instance_removed_data, local_lpfmigrator {{/str}}
+                        {{/completed}}
+                    {{/is6}}
+                    {{#is7}} {{! removed }}
                         {{#selected}}
                             {{#str}} instance_removed, local_lpfmigrator {{/str}}
                         {{/selected}}
-                    {{/is6}}
+                    {{/is7}}
                 </td>
             </tr>
         {{/stages}}

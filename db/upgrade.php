@@ -23,11 +23,18 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version  = 2020012800;
-$plugin->requires = 2014051200;
-$plugin->component = 'local_lpfmigrator';
-$plugin->release = '0.1 (Build: 2020012800)';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->dependencies = array(
-    'block_eduvidual' => 2020010000, // Requires the database from moodle-block_eduvidual
-);
+function xmldb_local_lpfmigrator_upgrade($oldversion) {
+    global $DB;
+    $dbman = $DB->get_manager();
+
+    if ($oldversion < 2020012800) {
+        $table = new xmldb_table('local_lpfmigrator_instances');
+        $field = new xmldb_field('path_web', XMLDB_TYPE_CHAR, '250', null, null, null, null, 'path_backup_pwd');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+    }
+
+    return true;
+}
