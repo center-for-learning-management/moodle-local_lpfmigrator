@@ -16,27 +16,35 @@
 
 }}
 
-<div class="local_lpfmigrator-list">
+<div class="local_lpfmigrator list">
     <table class="generaltable">
         <thead>
             <tr>
                 <th>#</th>
+                <th>{{#str}} group {{/str}}</th>
                 <th>{{#str}} action {{/str}}</th>
                 <th>{{#str}} name {{/str}}</th>
-                <th>{{#str}} stage {{/str}} </th>
+                <th>{{#str}} stage, local_lpfmigrator {{/str}} </th>
+                <th>eduvidual</th>
             </tr>
         </thead>
         <tbody>
             {{#instances}}
                 <tr>
                     <td>{{orgid}}</td>
+                    <td>{{lpfgroup}}</td>
                     <td>
-                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}">
-                            {{#str}} details {{/str}}
+                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" name="{{instancename}}">
+                            {{#str}} details, local_lpfmigrator {{/str}}
                         </a>
                     </td>
                     <td>{{instancename}}</td>
-                    <td>{{stage}}</td>
+                    <td>{{stage}} {{stagelabel}}</td>
+                    <td>
+                        {{#categoryid}}
+                            <a href="{{wwwroot}}/course/index.php?categoryid={{categoryid}}" target="_blank">{{#str}} category {{/str}}</a>
+                        {{/categoryid}}
+                    </td>
                 </tr>
             {{/instances}}
         </tbody>

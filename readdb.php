@@ -53,29 +53,40 @@ $hosts = explode(',', get_config('local_lpfmigrator', 'sqlservers_hosts'));
 $users = explode(',', get_config('local_lpfmigrator', 'sqlservers_users'));
 $passwords = explode(',', get_config('local_lpfmigrator', 'sqlservers_passwords'));
 
+$read = 0;
+
 foreach ($hosts AS $i => $host) {
+    echo "<p class=\"alert alert-warning\">Reading host $host</p>";
     $databases = array();
     $user = (count($users) > 1) ? $users[$i] : $users[0];
     $pass = (count($passwords) > 1) ? $passwords[$i] : $passwords[0];
-    $db = new mysqli($host, $user, $pass);
+    $db = new \mysqli($host, $user, $pass);
     $result = mysqli_query($db, 'SHOW DATABASES');
+    $exclude = array('information_schema', 'mysql', 'performance_schema');
     while ($row = mysqli_fetch_row($result)) {
-        if (($row[0] != 'information_schema') && ($row[0] != 'mysql')) {
+        if (!in_array($row[0], $exclude) && substr($row[0], 0, 3) == "em_") {
             $databases[] = $row[0];
         }
     }
     foreach ($databases AS $z => $database) {
         //mysqli_select_db($db, $database);
         $instancename = substr($database, 3);
-        $instance = lib::get_instance($instancename);
-        if (!empty($instance->id)) {
+        $instance = new instance($instancename);
+        $_id = $instance->id();
+        echo "<p class=\"alert alert-info\">=> Reading database $database as instancename $instancename and id $_id</p>";
+        if (!empty($instance->id())) {
             // Enrich data with host-information.
-            $instance->host = $host;
-            $instance->dbname = $database;
-            $DB->update_record('local_lpfmigrator_instances', $instances);
+            $instance->host($host);
+            $instance->dbname($database);
+            $read++;
         }
     }
     mysqli_close($db);
 }
+echo $OUTPUT->render_from_template('local_lpfmigrator/alert', array(
+    'content' => get_string('read_databases:success', 'local_lpfmigrator', array('read' => $read)),
+    'type' => 'success',
+    'url' => $CFG->wwwroot . '/local/lpfmigrator/list.php',
+));
 
 echo $OUTPUT->footer();

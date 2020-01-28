@@ -30,29 +30,31 @@ class instance {
      * Stages for indicating progress
      */
     const STAGE_NOT_STAGED = 0;
-    const STAGE_MAINTENANCE = 1;
-    const STAGE_BACKUPS = 2;
-    const STAGE_REVIEW = 3;
-    const STAGE_CONFORMED = 4;
-    const STAGE_COMPLETED = 5;
+    const STAGE_NOTIFY_ADMINS = 1;
+    const STAGE_MAINTENANCE = 2;
+    const STAGE_BACKUPS = 3;
+    const STAGE_REVIEWED = 4;
+    const STAGE_REMOVAL = 5;
+    const STAGE_COMPLETED = 6;
 
-    private $id = 0;
-    private $host = '';
     private $dbname = '';
+    private $host = '';
+    private $id = 0;
     private $instancename = '';
-    private $stage = 0;
+    private $lpfgroup = '';
     private $orgid = 0;
     private $path_data = '';
     private $path_backup = '';
     private $path_backup_pwd = '';
+    private $stage = 0;
 
     public static $hosts = array();
     public static $dbcap = 0;
 
     function __construct($instancename) {
         global $DB;
-        $rec = $DB->get_record('local_lpfmigrator_instances', array('instance' => $instancename));
-        if (!empty($instance->id)) {
+        $rec = $DB->get_record('local_lpfmigrator_instances', array('instancename' => $instancename));
+        if (!empty($rec->id)) {
             $this->id = $rec->id;
             $this->host = $rec->host;
             $this->dbname = $rec->dbname;
@@ -63,23 +65,47 @@ class instance {
             $this->path_backup = $rec->path_backup;
             $this->path_backup_pwd = $rec->path_backup_pwd;
         } else {
+            $this->instancename = $instancename;
             $this->path_backup_pwd = substr(str_shuffle(strtolower(sha1(rand() . time() . "www.eduvidual.at"))), 0, 10);
         }
-        if (empty($instance->orgid)) {
-            $org = $DB->get_record('block_eduvidual_org', array('lpf' => $instancename));
-            if (!empty($org->id)) {
-                $instance->orgid = $org->orgid;
+        $org = $DB->get_record('block_eduvidual_org', array('lpf' => $instancename));
+        if (!empty($org->id)) {
+            $this->lpfgroup = $org->lpfgroup;
+            if (empty($this->orgid)) {
+                $this->orgid = $org->orgid;
             }
         }
-        if (empty($instance->path_data)) {
+
+        if (empty($this->path_data)) {
             // Determine the moodle-datadir.
-            $instance->path_data = instance::get_datadir($instancename);
+            $this->path_data = self::get_datadir($instancename);
         }
         if (empty($this->id)) {
-            $this->id = $DB->insert_record('local_lpfmigrator_instances', $instance);
+            $this->id = $DB->insert_record('local_lpfmigrator_instances', $this->as_object());
         } else {
-            $DB->update_record('local_lpfmigrator_instances', $instance);
+            $DB->update_record('local_lpfmigrator_instances', $this->as_object());
         }
+    }
+    public function as_object() {
+        $backupnr = 1;
+        if (substr($this->path_backup, 0, 13) == '/data/moodle2') $backupnr = 2;
+        if (substr($this->path_backup, 0, 13) == '/data/moodle3') $backupnr = 3;
+        if (substr($this->path_backup, 0, 13) == '/data/moodle4') $backupnr = 4;
+        if (substr($this->path_backup, 0, 13) == '/data/moodle5') $backupnr = 5;
+        return (object) array(
+            'id' => $this->id,
+            'instancename' => $this->instancename,
+            'host' => $this->host,
+            'dbname' => $this->dbname,
+            'stage' => $this->stage,
+            'orgid' => $this->orgid,
+            'lpfgroup' => $this->lpfgroup,
+            'path_data' => $this->path_data,
+            'path_backup' => $this->path_backup,
+            'path_backup_pwd' => $this->path_backup_pwd,
+            'servernr' => ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4,
+            'backupnr' => $backupnr,
+        );
     }
 
     /**
@@ -95,7 +121,7 @@ class instance {
                 if (!empty($catcontext->id)) {
                     $managerrole = get_config('block_eduvidual', 'defaultorgrolemanager');
                     if (!empty($managerrole)) {
-                        $roles = \get_user_roles($catcontext, $USER->id);
+                        $roles = get_user_roles($catcontext, $USER->id);
                         foreach ($roles AS $role) {
                             if ($role->roleid == $managerrole) return true;
                         }
@@ -104,38 +130,23 @@ class instance {
             }
         }
     }
-
     /**
-     * Determine the amount of courses on the remote instance.
+     * Gets or sets the host.
      */
-    private function get_amount_courses() {
-        $con = instance::external_db_open($this->instancename);
-        $sql = "SELECT COUNT(id) FROM " . $this->instancename . "___course";
-        $btr = mysqli_query($con, $sql);
-        $row = mysqli_fetch_row($btr);
-        return $row[0];
-    }
-
-    /**
-     * Searches for the moodle-datadir.
-     */
-    private function get_datadir() {
-        $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
-        foreach ($potentialfolders AS $potentialfolder) {
-            $d = opendir($potentialfolder);
-            while (false !== ($f = readdir($d))) {
-                if (empty(str_replace('.', '', $f))) continue;
-                if ($f == $school) return $potentialfolder;
-            }
+    public function dbname($dbname = "") {
+        global $DB;
+        if (!empty($dbname)) {
+            $this->dbname = $dbname;
+            $DB->set_field('local_lpfmigrator_instances', 'dbname', $this->dbname, array('instancename' => $this->instancename));
         }
-        return '';
+        return $this->dbname;
     }
 
     /**
      * Closes all connections to external databases.
      * Should be run in all scripts at the end.
      */
-    private static function external_db_closeall() {
+    public static function external_db_closeall() {
         foreach (self::$hosts AS $i => $host) {
             mysqli_close($host);
         }
@@ -152,17 +163,201 @@ class instance {
             $users = explode(',', get_config('local_lpfmigrator', 'sqlservers_users'));
             $passwords = explode(',', get_config('local_lpfmigrator', 'sqlservers_passwords'));
             $hostsid = array_search($instance->host, $hosts);
+            $host = $hosts[$hostsid];
             $user = (count($users) > 1) ? $users[$hostsid] : $users[0];
             $pass = (count($passwords) > 1) ? $passwords[$hostsid] : $passwords[0];
-            self::$hosts[$instance->host] = new mysqli($host, $user, $pass);
+            self::$hosts[$instance->host] = new \mysqli($host, $user, $pass);
+            mysqli_select_db(self::$hosts[$instance->host], $instance->dbname);
         }
         return self::$hosts[$instance->host];
+    }
+
+    /**
+     * Determine the amount of courses in our backup dir.
+     */
+    public function get_amount_courses_backup() {
+        $cnt = 0;
+        $d = opendir($this->path_backup);
+        while(($f = readdir($d))) {
+            if (substr($f, 0, 1) == '.') continue;
+            $cnt++;
+        }
+        return $cnt;
+    }
+    /**
+     * Determine the amount of courses on the remote instance.
+     */
+    public function get_amount_courses_remote() {
+        $con = instance::external_db_open($this->instancename);
+        $sql = "SELECT COUNT(id) FROM " . $this->instancename . "___course";
+        $btr = mysqli_query($con, $sql);
+        $row = mysqli_fetch_row($btr);
+        return !empty($row[0]) ? $row[0] : 0;
+    }
+
+    /**
+     * Searches for the moodle-datadir.
+     */
+    private function get_datadir($instancename) {
+        $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
+        foreach ($potentialfolders AS $potentialfolder) {
+            $d = opendir($potentialfolder);
+            while (false !== ($f = readdir($d))) {
+                if (empty(str_replace('.', '', $f))) continue;
+                if ($f == $instancename) return $potentialfolder . DIRECTORY_SEPARATOR . $f;
+            }
+        }
+        return '';
+    }
+    /**
+     * Gets all potential stages and marks the current on with field "selected".
+     */
+    public function get_stages() {
+        return array(
+            array('is0' => true, 'value' => self::STAGE_NOT_STAGED, 'label' => get_string('stage_' . self::STAGE_NOT_STAGED, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_NOT_STAGED), 'completed' => ($this->stage > self::STAGE_NOT_STAGED)),
+            array('is1' => true, 'value' => self::STAGE_NOTIFY_ADMINS, 'label' => get_string('stage_' . self::STAGE_NOTIFY_ADMINS, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_NOTIFY_ADMINS), 'completed' => ($this->stage > self::STAGE_NOTIFY_ADMINS)),
+            array('is2' => true, 'value' => self::STAGE_MAINTENANCE, 'label' => get_string('stage_' . self::STAGE_MAINTENANCE, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_MAINTENANCE), 'completed' => ($this->stage > self::STAGE_MAINTENANCE)),
+            array('is3' => true, 'value' => self::STAGE_BACKUPS, 'label' => get_string('stage_' . self::STAGE_BACKUPS, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_BACKUPS), 'completed' => ($this->stage > self::STAGE_BACKUPS)),
+            array('is4' => true, 'value' => self::STAGE_REVIEWED, 'label' => get_string('stage_' . self::STAGE_REVIEWED, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_REVIEWED), 'completed' => ($this->stage > self::STAGE_REVIEWED)),
+            array('is5' => true, 'value' => self::STAGE_REMOVAL, 'label' => get_string('stage_' . self::STAGE_REMOVAL, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_REMOVAL), 'completed' => ($this->stage > self::STAGE_REMOVAL)),
+            array('is6' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_COMPLETED)),
+        );
+    }
+    /**
+     * Determines if backups are on.
+     */
+    public function has_backups_enabled() {
+        $con = instance::external_db_open($this->instancename);
+        $sql = "SELECT id,name,value FROM " . $this->instancename . "___config_plugins WHERE name='backup_auto_destination'";
+        $btr = mysqli_query($con, $sql);
+        $row = mysqli_fetch_row($btr);
+        $destination = $row[2];
+
+        $sql = "SELECT id,name,value FROM " . $this->instancename . "___config_plugins WHERE name='backup_auto_storage'";
+        $btr = mysqli_query($con, $sql);
+        $row = mysqli_fetch_row($btr);
+        $storage = $row[2];
+
+        $sql = "SELECT id,name,value FROM " . $this->instancename . "___config_plugins WHERE name='backup_auto_active'";
+        $btr = mysqli_query($con, $sql);
+        $row = mysqli_fetch_row($btr);
+        $active = $row[2];
+
+        return ($destination == $this->path_backup() && $storage == 1 && active == 1);
+    }
+    /**
+     * Determines if maintenance mode is on.
+     */
+    public function has_maintenance_enabled() {
+        if (file_exists($this->path_data . DIRECTORY_SEPARATOR . 'climaintenance.html')) return true;
+        /*
+        $con = instance::external_db_open($this->instancename);
+        $sql = "SELECT id,name,value FROM " . $this->instancename . "___config WHERE name='maintenance_enabled'";
+        $btr = mysqli_query($con, $sql);
+        $row = mysqli_fetch_row($btr);
+        return $row[2];
+        */
+    }
+    /**
+     * Gets or sets the host.
+     */
+    public function host($host = "") {
+        global $DB;
+        if (!empty($host)) {
+            $this->host = $host;
+            $DB->set_field('local_lpfmigrator_instances', 'host', $this->host, array('instancename' => $this->instancename));
+        }
+        return $this->host;
+    }
+    /**
+     * Returns the id.
+     */
+    public function id() {
+        return $this->id;
+    }
+    /**
+     * Sends a notification to the admins of the moodle-instance.
+     */
+    public function notify_admins() {
+        global $CFG, $OUTPUT;
+        $con = instance::external_db_open($this->instancename);
+        $sql = "SELECT id,name,value FROM " . $this->instancename . "___config WHERE name='siteadmins'";
+        $btr = mysqli_query($con, $sql);
+        $row = mysqli_fetch_row($btr);
+
+        $sql = "SELECT id,firstname,lastname,email FROM " . $this->instancename . "___user WHERE id IN (" . $row[2] . ") AND deleted=0 AND suspended=0";
+        $btr = mysqli_query($con, $sql);
+        $tousers = array(
+            array('firstname' => 'eduvidual', 'lastname' => 'Supportteam', 'email' => 'support@lernmangement.at')
+        );
+        while($row = mysqli_fetch_row($btr)) {
+            //$tousers[] = array('firstname' => $row[1], 'lastname' => $row[2], 'email' => $row[3]);
+        }
+        foreach($tousers AS $u) {
+            $touser = new \stdClass();
+            $touser->email = $u['email'];
+            $touser->firstname = $u['firstname'];
+            $touser->lastname = $u['lastname'];
+            $touser->maildisplay = true;
+            $touser->mailformat = 1; // 0 (zero) text-only emails, 1 (one) for HTML/Text emails.
+            $touser->id = -99; // invalid userid, as the user has no userid in our moodle.
+            $touser->firstnamephonetic = "";
+            $touser->lastnamephonetic = "";
+            $touser->middlename = "";
+            $touser->alternatename = "";
+
+            $fromuser = \core_user::get_support_user();
+
+            $instanceo = $this->as_object();
+
+            $messagecontent = get_string('notify_admins:text', 'local_lpfmigrator', array('firstname' => $touser->firstname, 'instancename' => $this->instancename, 'lastname' => $touser->lastname));
+            $messagehtml = $OUTPUT->render_from_template('local_lpfmigrator/notify_admins_mail', array('content' => $messagecontent));
+
+            $messagetext = html_to_text($messagehtml);
+            $subject = get_string('notify_admins:subject' , 'local_lpfmigrator', array('instancename' => $this->instancename));
+
+            email_to_user($touser, $fromuser, $subject, $messagetext, $messagehtml, "", true);
+        }
+    }
+
+    /**
+     * Gets or sets the orgid.
+     */
+    public function orgid($orgid = 0) {
+        global $DB;
+        if (!empty($orgid)) {
+            $this->orgid = $orgid;
+            $DB->set_field('local_lpfmigrator_instances', 'orgid', $this->orgid, array('instancename' => $this->instancename));
+        }
+        return $this->orgid;
+    }
+    /**
+     * Gets or sets the path_backup.
+     */
+    public function path_backup($path_backup = "") {
+        global $DB;
+        if (!empty($path_backup)) {
+            $this->path_backup = $path_backup;
+            $DB->set_field('local_lpfmigrator_instances', 'path_backup', $this->path_backup, array('instancename' => $this->instancename));
+        }
+        return $this->path_backup;
+    }
+    /**
+     * Gets or sets the path_data.
+     */
+    public function path_data($path_data = "") {
+        global $DB;
+        if (!empty($path_data)) {
+            $this->path_data = $path_data;
+            $DB->set_field('local_lpfmigrator_instances', 'path_data', $this->path_data, array('instancename' => $this->instancename));
+        }
+        return $this->path_data;
     }
     /**
      * Enables or disables backups to specific path.
      * @param to 1 to enable, 0 to disable.
      */
-    private function set_backup_config($to) {
+    public function set_backup_config($to) {
         global $DB;
         $path = explode('/', $this->path_data);
         $this->path_backup = $path[0] . '/' . $path[1] . '/backup/' . $this->instancename;
@@ -232,7 +427,9 @@ class instance {
      * Enable or disable maintenance mode of a certain instance.
      * @param to 1 means enable, 0 means disable.
      */
-    private function set_maintenance_mode($to) {
+    public function set_maintenance_mode($to) {
+        // Convert from boolean to int.
+        $to = ($to) ? 1 : 0;
         global $OUTPUT;
         if (!empty($to)) {
             file_put_contents(
@@ -252,9 +449,12 @@ class instance {
      * Set stage.
      * @param stage to set.
      */
-    private function set_stage($stage) {
+    public function stage($stage = -1) {
         global $DB;
-        $this->stage = $stage;
-        $DB->set_field('local_lpfmigrator_instances', 'stage', $stage, array('instancename' => $this->instancename));
+        if ($stage > -1) {
+            $this->stage = $stage;
+            $DB->set_field('local_lpfmigrator_instances', 'stage', $stage, array('instancename' => $this->instancename));
+        }
+        return $this->stage;
     }
 }

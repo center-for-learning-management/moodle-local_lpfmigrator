@@ -16,11 +16,9 @@
 
     @param type: success, warning, danger
 }}
-<div class="local_lpfmigrator alert">
-    <p class="alert alert-{{type}}">
-        {{{content}}}
-        {{#url}}<br /><br /><a href="{{url}}" class="ui-btn btn btn-primary">
-            {{#str}} ok {{/str}}
-        </a>{{/url}}
+<div class="local_lpfmigrator modified_successfully">
+    <p class="alert alert-success">
+        {{#str}} modified_successfully, local_lpfmigrator {{/str}}
+        <ul>{{#changed}} <li>{{.}}</li> {{/changed}}</ul>
     </p>
 </div>

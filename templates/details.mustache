@@ -1,0 +1,230 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+}}
+
+<div class="local_lpfmigrator details">
+    {{#editable}}
+        <a href="{{wwwroot}}/local/lpfmigrator/list.php#{{instancename}}">{{#str}} back_to_list, local_lpfmigrator {{/str}}</a>
+    {{/editable}}
+    <table class="generaltable">
+        <tbody>
+            <tr>
+                <th width="50%">{{#str}} instancename, local_lpfmigrator {{/str}}</th>
+                <th>{{instancename}}</th>
+            </tr>
+            {{#editable}}
+            <form action="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{id}}" />
+                <tr>
+                    <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
+                    <td><input type="text" value="{{orgid}}" name="orgid" /></td>
+                </tr>
+                <tr>
+                    <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
+                    <td><input type="text" value="{{path_data}}" name="path_data" /></td>
+                </tr>
+                <tr>
+                    <th>{{#str}} path_backup, local_lpfmigrator {{/str}}</th>
+                    <td><input type="text" value="{{path_backup}}" name="path_backup" /></td>
+                </tr>
+                <tr>
+                    <th>{{#str}} stage, local_lpfmigrator {{/str}}</th>
+                    <td>
+                        <select name="stage">
+                            {{#stages}}
+                            <option value="{{value}}" {{#selected}} selected="selected" {{/selected}}>{{label}}</option>
+                            {{/stages}}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{{#str}} auth, local_lpfmigrator {{/str}}</th>
+                    <td>{{instancename}}:{{path_backup_pwd}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="{{#str}} save {{/str}}" class="btn btn-primary btn-block" /></td>
+                </tr>
+            </form>
+            {{/editable}}
+            {{^editable}}
+            <tr>
+                <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
+                <td>{{orgid}}</td>
+            </tr>
+            <tr>
+                <th>{{#str}} auth, local_lpfmigrator {{/str}}</th>
+                <td>{{instancename}}:{{path_backup_pwd}}</td>
+            </tr>
+            {{/editable}}
+            <tr>
+                <td>
+                    <a href="https://www{{servernr}}.lernplattform.schule.at/{{instancename}}" target="_blank" class="btn btn-block btn-secondary">
+                        {{#str}} open_lpf, local_lpfmigrator {{/str}}
+                    </a>
+                </td>
+                <td>
+                    <a href="/lpf{{backupnr}}/{{instancename}}" target="_blank" class="btn btn-block btn-secondary">
+                        {{#str}} open_backup, local_lpfmigrator {{/str}}
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!--
+    <table class="progresstable">
+        <tr>
+            {{#stages}}
+            <td class="{{#completed}} completed {{/completed}}{{#selected}} selected {{/selected}}">
+                {{label}}
+            </td>
+            {{/stages}}
+        </tr>
+    </table>
+    -->
+
+    <table class="stages generaltable">
+        {{#stages}}
+            <tr class="{{#completed}} completed {{/completed}}{{#selected}} selected {{/selected}}">
+                <td>
+                    {{#completed}}
+                        {{#pix}} i/completion-auto-pass, core {{/pix}}
+                    {{/completed}}
+                    {{#selected}}
+                        {{#pix}} i/completion-auto-n, core {{/pix}}
+                    {{/selected}}
+                </td>
+                <th width="50%">{{label}}</th>
+                <td>
+                    {{#is0}} {{! not staged }}
+                        {{#editable}}
+                            {{#selected}}
+                                <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&startstaging=on" class="btn btn-primary btn-block">
+                                    {{#str}} staging_start, local_lpfmigrator {{/str}}
+                                </a>
+                            {{/selected}}
+                        {{/editable}}
+                        {{^editable}}
+                            {{#selected}}
+                                {{#str}} staging_not_started, local_lpfmigrator {{/str}}
+                            {{/selected}}
+                        {{/editable}}
+                        {{#completed}}
+                            {{#str}} staging_started, local_lpfmigrator {{/str}}
+                        {{/completed}}
+                    {{/is0}}
+                    {{#is1}} {{! notified admins }}
+                        {{#editable}}
+                            {{#selected}}
+                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&notifyadmins=on" class="btn btn-primary btn-block">
+                                {{#str}} notify_admins, local_lpfmigrator {{/str}}
+                            </a>
+                            {{/selected}}
+                        {{/editable}}
+                        {{#completed}}
+                            {{#str}} notify_admins_done, local_lpfmigrator {{/str}}
+                        {{/completed}}
+                    {{/is1}}
+                    {{#is2}} {{! set maintenance mode }}
+                        {{#editable}}
+                            {{#selected}}
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td width="50%">
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&maintenance=on" class="btn btn-primary btn-block">
+                                            {{#str}} maintenance_on, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&maintenance=off" class="btn btn-secondary btn-block">
+                                            {{#str}} maintenance_off, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            {{/selected}}
+                        {{/editable}}
+                        {{#has_maintenance_enabled}}
+                            {{#str}} currently_on, local_lpfmigrator {{/str}}
+                        {{/has_maintenance_enabled}}
+                        {{^has_maintenance_enabled}}
+                            {{#str}} currently_off, local_lpfmigrator {{/str}}
+                        {{/has_maintenance_enabled}}
+                    {{/is2}}
+                    {{#is3}} {{! schedule backups }}
+                        {{#editable}}
+                            {{#selected}}
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td width="50%">
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&backups=on" class="btn btn-primary btn-block">
+                                            {{#str}} backups_on, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&backups=off" class="btn btn-secondary btn-block">
+                                            {{#str}} backups_off, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            {{/selected}}
+                        {{/editable}}
+                        {{#has_backups_enabled}}
+                            {{#str}} currently_on, local_lpfmigrator {{/str}}
+                        {{/has_backups_enabled}}
+                        {{^has_backups_enabled}}
+                            {{#str}} currently_off, local_lpfmigrator {{/str}}
+                        {{/has_backups_enabled}}
+                    {{/is3}}
+                    {{#is4}} {{! make review }}
+                        <p>{{#str}} has_courses, local_lpfmigrator, { "remote": {{#quote}}{{courses_remote}}{{/quote}}, "backup": {{#quote}}{{courses_backup}}{{/quote}} } {{/str}}</p>
+                        {{#editable}}
+                            {{#selected}}
+                                {{^courses_equals}}
+                                    <p class="alert alert-danger"> {{#str}} proceed_anyway, local_lpfmigrator {{/str}}</p>
+                                {{/courses_equals}}
+                                <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&review=on" class="btn btn-primary btn-block">
+                                    {{#str}} confirm {{/str}}
+                                </a>
+                            {{/selected}}
+                        {{/editable}}
+                    {{/is4}}
+                    {{#is5}} {{! command removal }}
+                        {{#editable}}
+                            {{#selected}}
+                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&remove=on">
+                                {{#str}} instance_remove_now, local_lpfmigrator {{/str}}
+                            </a>
+                            {{/selected}}
+                        {{/editable}}
+                        {{^editable}}
+                            {{#selected}}
+                                {{#str}} instance_remove_soon, local_lpfmigrator {{/str}}
+                            {{/selected}}
+                        {{/editable}}
+                    {{/is5}}
+                    {{#is6}} {{! removed }}
+                        {{#selected}}
+                            {{#str}} instance_removed, local_lpfmigrator {{/str}}
+                        {{/selected}}
+                    {{/is6}}
+                </td>
+            </tr>
+        {{/stages}}
+    </table>
+</div>

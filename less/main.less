@@ -1,13 +1,16 @@
 // out: ../style/main.css, sourcemap: false, compress: true
-stage-1 {
-    background-color: rgba(255, 0, 0, 0.2);
-}
-stage-2 {
-    background-color: rgba(255, 0, 0, 0.4);
-}
-stage-3 {
-    background-color: rgba(255, 0, 0, 0.6);
-}
-stage-4 {
-    background-color: rgba(255, 0, 0, 0.8);
+
+.local-lpfmigrator {
+    .progresstable, .stages {
+        width: 100%;
+        td {
+            text-align: center;
+        }
+        .completed {
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+        .selected {
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+    }
 }

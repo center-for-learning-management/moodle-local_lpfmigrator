@@ -24,10 +24,20 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($hassiteconfig) {
-    $settings = new admin_settingpage( 'local_lpfmigrator', get_string('pluginname', 'local_lpfmigrator'));
-	$ADMIN->add('localplugins', $settings);
+    $settings = new admin_settingpage( 'local_lpfmigrator_settings', get_string('pluginname:settings', 'local_lpfmigrator'));
+    $ADMIN->add('localplugins', new admin_category('local_lpfmigrator', get_string('pluginname', 'local_lpfmigrator')));
+    $ADMIN->add('local_lpfmigrator', $settings);
+	//$ADMIN->add('localplugins', $settings);
     $settings->add(new admin_setting_configtext('local_lpfmigrator/sqlservers_hosts', get_string('sqlservers:hosts', 'local_lpfmigrator'), '', '', PARAM_TEXT));
     $settings->add(new admin_setting_configtext('local_lpfmigrator/sqlservers_users', get_string('sqlservers:users', 'local_lpfmigrator'), '', '', PARAM_TEXT));
     $settings->add(new admin_setting_configtext('local_lpfmigrator/sqlservers_passwords', get_string('sqlservers:passwords', 'local_lpfmigrator'), '', '', PARAM_TEXT));
     $settings->add(new admin_setting_configtext('local_lpfmigrator/datafolders', get_string('datafolders', 'local_lpfmigrator'), '', '', PARAM_TEXT));
+    $ADMIN->add(
+        'local_lpfmigrator',
+        new admin_externalpage(
+            'local_lpfmigrator_readdb',
+            get_string('read_databases', 'local_lpfmigrator'),
+            $CFG->wwwroot . '/local/lpfmigrator/readdb.php'
+        )
+    );
 }
