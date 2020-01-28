@@ -44,6 +44,7 @@ $string['instance_removed_web'] = 'Webverzeichnis wurde manuell gelöscht.';
 $string['instancename'] = 'Instanzname';
 $string['list_databases'] = 'Alle Datenbanken auflisten';
 $string['lpfgroup'] = 'LPF-Gruppe';
+$string['mail_recipients'] = 'Empfänger/innen dieser Nachricht:';
 $string['maintenance_off'] = 'Wartungsmodus abschalten';
 $string['maintenance_on'] = 'Wartungsmodus einschalten';
 $string['modified_successfully'] = 'Erfolgreich folgende Datenfelder geändert:';

@@ -44,6 +44,7 @@ $string['instance_removed_web'] = 'Webdir was removed manually';
 $string['instancename'] = 'Instancename';
 $string['list_databases'] = 'List all databases';
 $string['lpfgroup'] = 'LPF-group';
+$string['mail_recipients'] = 'Recipients of this message:';
 $string['maintenance_off'] = 'Turn off maintenance mode';
 $string['maintenance_on'] = 'Turn on maintenance mode';
 $string['modified_successfully'] = 'Successfully modified the following fields:';

@@ -16,4 +16,6 @@
 }}
 {{> block_eduvidual/mail_header }}
 <p>{{{content}}}</p>
+<p>{{#str}} mail_recipients, local_lpfmigrator {{/str}}</p>
+<ul>{{#users}}<li>{{firstname}} {{lastname}} ({{email}})</li>{{/users}}</ul>
 {{> block_eduvidual/mail_footer }}

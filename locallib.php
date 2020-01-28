@@ -304,14 +304,18 @@ class instance {
         $btr = mysqli_query($con, $sql);
         $row = mysqli_fetch_row($btr);
 
-        $sql = "SELECT id,firstname,lastname,email FROM " . $this->instancename . "___user WHERE id IN (" . $row[2] . ") AND deleted=0 AND suspended=0";
+        $sql = "SELECT id,firstname,lastname,email
+                    FROM $this->instancename___user
+                    WHERE id IN (" . $row[2] . ")
+                        AND deleted=0 AND suspended=0
+                        AND email NOT LIKE '%noreply%'";
         $btr = mysqli_query($con, $sql);
-        $tousers = array(
-            array('firstname' => 'eduvidual', 'lastname' => 'Supportteam', 'email' => 'support@lernmangement.at'),
-        );
+        $tousers = array();
         while($row = mysqli_fetch_row($btr)) {
             $tousers[] = array('firstname' => $row[1], 'lastname' => $row[2], 'email' => $row[3]);
         }
+        $tousers[] = array('firstname' => 'Julia', 'lastname' => 'Laßnig', 'email' => 'julia.lassnig@lernmangement.at');
+        $tousers[] = array('firstname' => 'Robert', 'lastname' => 'Schrenk', 'email' => 'robert.schrenk@lernmanagement.at');
         foreach($tousers AS $u) {
             $touser = new \stdClass();
             $touser->email = $u['email'];
@@ -330,7 +334,7 @@ class instance {
             $instanceo = $this->as_object();
 
             $messagecontent = get_string('notify_admins:text', 'local_lpfmigrator', array('firstname' => $touser->firstname, 'instancename' => $this->instancename, 'lastname' => $touser->lastname));
-            $messagehtml = $OUTPUT->render_from_template('local_lpfmigrator/notify_admins_mail', array('content' => $messagecontent));
+            $messagehtml = $OUTPUT->render_from_template('local_lpfmigrator/notify_admins_mail', array('content' => $messagecontent, 'users' => $tousers));
             $messagetext = html_to_text($messagehtml);
             $subject = get_string('notify_admins:subject' , 'local_lpfmigrator', array('instancename' => $this->instancename));
 
