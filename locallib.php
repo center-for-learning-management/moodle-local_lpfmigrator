@@ -500,11 +500,12 @@ class instance {
             );
         } else {
             unlink($this->path_data . DIRECTORY_SEPARATOR . 'climaintenance.html');
+            // From now on we will only disable maintenace mode in database.
+            // According to documentation, cli scripts will work if we only activate maintenance mode file based.
+            $con = instance::external_db_open($this->instancename);
+            $sql = "UPDATE " . $this->instancename . "___config SET value='$to' WHERE name='maintenance_enabled'";
+            mysqli_query($con, $sql);
         }
-
-        $con = instance::external_db_open($this->instancename);
-        $sql = "UPDATE " . $this->instancename . "___config SET value='$to' WHERE name='maintenance_enabled'";
-        mysqli_query($con, $sql);
         return true;
     }
     /**
