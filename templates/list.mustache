@@ -17,12 +17,19 @@
 }}
 
 <div class="local_lpfmigrator list">
+    <center>
+    {{#presets}}
+        <a href="{{wwwroot}}/local/lpfmigrator/list.php?preset={{id}}" class="btn {{#active}} btn-primary {{/active}}{{^active}} btn-secondary {{/active}}">
+            {{label}}
+        </a>
+    {{/presets}}
+    </center>
     <table class="generaltable">
         <thead>
             <tr>
                 <th>{{#str}} stage, local_lpfmigrator {{/str}} </th>
-                <th>{{#str}} group {{/str}}</th>
                 <th>{{#str}} name {{/str}}</th>
+                <th>{{#str}} group {{/str}}</th>
                 <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
                 <th>{{#str}} action {{/str}}</th>
                 <th>eduvidual</th>
@@ -32,8 +39,8 @@
             {{#instances}}
                 <tr>
                     <td>{{stage}} {{stagelabel}}</td>
-                    <td>{{lpfgroup}}</td>
                     <td>{{instancename}}</td>
+                    <td>{{lpfgroup}}</td>
                     <td>{{orgid}}</td>
                     <td>
                         <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" name="{{instancename}}">
