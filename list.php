@@ -51,15 +51,11 @@ if (!is_siteadmin()) {
 $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,beo.lpfgroup,beo.categoryid
             FROM {local_lpfmigrator_instances} lli
             LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
-            ORDER BY lpfgroup ASC, instancename ASC";
+            ORDER BY stage DESC, lpfgroup ASC, instancename ASC";
 
 $instances = array_values($DB->get_records_sql($sql, array()));
 foreach($instances AS &$instance) {
     $instance->stagelabel = get_string('stage_' . $instance->stage, 'local_lpfmigrator');
-    /*
-    $org = $DB->get_record('block_eduvidual_org', array('lpf' => $instancename));
-    $instance->lpfgroup = $org->lpfgroup;
-    */
 }
 echo $OUTPUT->render_from_template('local_lpfmigrator/list', array('instances' => $instances));
 

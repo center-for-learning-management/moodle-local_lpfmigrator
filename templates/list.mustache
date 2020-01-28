@@ -20,26 +20,26 @@
     <table class="generaltable">
         <thead>
             <tr>
-                <th>#</th>
-                <th>{{#str}} group {{/str}}</th>
-                <th>{{#str}} action {{/str}}</th>
-                <th>{{#str}} name {{/str}}</th>
                 <th>{{#str}} stage, local_lpfmigrator {{/str}} </th>
+                <th>{{#str}} group {{/str}}</th>
+                <th>{{#str}} name {{/str}}</th>
+                <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
+                <th>{{#str}} action {{/str}}</th>
                 <th>eduvidual</th>
             </tr>
         </thead>
         <tbody>
             {{#instances}}
                 <tr>
-                    <td>{{orgid}}</td>
+                    <td>{{stage}} {{stagelabel}}</td>
                     <td>{{lpfgroup}}</td>
+                    <td>{{instancename}}</td>
+                    <td>{{orgid}}</td>
                     <td>
                         <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" name="{{instancename}}">
                             {{#str}} details, local_lpfmigrator {{/str}}
                         </a>
                     </td>
-                    <td>{{instancename}}</td>
-                    <td>{{stage}} {{stagelabel}}</td>
                     <td>
                         {{#categoryid}}
                             <a href="{{wwwroot}}/course/index.php?categoryid={{categoryid}}" target="_blank">{{#str}} category {{/str}}</a>
