@@ -18,7 +18,12 @@
 
 <div class="local_lpfmigrator details">
     {{#editable}}
-        <a href="{{wwwroot}}/local/lpfmigrator/list.php#{{instancename}}">{{#str}} back_to_list, local_lpfmigrator {{/str}}</a>
+        <a href="{{wwwroot}}/local/lpfmigrator/list.php#{{instancename}}" class="btn btn-secondary">
+            {{#str}} back_to_list, local_lpfmigrator {{/str}}
+        </a>
+        <a href="{{wwwroot}}/local/lpfmigrator/dashboard.php#{{instancename}}" class="btn btn-secondary">
+            {{#str}} back_to_dashboard, local_lpfmigrator {{/str}}
+        </a>
     {{/editable}}
     <table class="generaltable">
         <tbody>
@@ -208,6 +213,11 @@
                         {{^has_notifyusers_enabled}}
                             {{#str}} currently_off, local_lpfmigrator {{/str}}
                         {{/has_notifyusers_enabled}}
+                        {{#completed}}
+                            <a href="{{path_web}}/index.php?secretpurge=1029384756" target="_blank" class="btn btn-secondary btn-block">
+                                {{#str}} purge_caches, local_lpfmigrator {{/str}}
+                            </a>
+                        {{/completed}}
                     {{/is2}}
                     {{#is3}} {{! set maintenance mode }}
                         {{#editable}}

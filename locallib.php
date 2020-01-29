@@ -321,7 +321,7 @@ class instance {
         $row = mysqli_fetch_row($btr);
 
         $sql = "SELECT id,firstname,lastname,email
-                    FROM $this->instancename___user
+                    FROM " . $this->instancename . "___user
                     WHERE id IN (" . $row[2] . ")
                         AND deleted=0 AND suspended=0
                         AND email NOT LIKE '%noreply%'";
@@ -455,7 +455,7 @@ class instance {
                 'backup_shortname' => 1,
                 'backup_auto_skip_hidden' => 0,
                 'backup_auto_skip_modif_days' => 0,
-                'backup_auto_skip_modif_prev' => 1,
+                'backup_auto_skip_modif_prev' => 0,
                 // Data included
                 'backup_auto_users' => 1,
                 'backup_auto_role_assignments' => 1,
@@ -489,6 +489,7 @@ class instance {
                 mysqli_query($con, $sql);
                 $sqls[] = $sql;
             }
+            // Fix settings of scheduled task.
             $sql = "UPDATE " . $this->instancename . "___task_scheduled SET lastruntime=0,nextruntime=" . time() . ",minute='" . date("i") . "',hour='" . date("H") . "',day='*',month='*',dayofweek='*',faildelay=0,customised=1,disabled=0 WHERE classname LIKE '%automated_backup_task'";
             mysqli_query($con, $sql);
             $sqls[] = $sql;

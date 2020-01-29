@@ -26,6 +26,7 @@ $string['privacy:metadata'] = 'This plugin does not store any personal data';
 
 $string['access_denied'] = 'Access denied';
 $string['auth'] = 'Authentication';
+$string['back_to_dashboard'] = 'Back to dashboard';
 $string['back_to_list'] = 'Back to list';
 $string['backups_off'] = 'Turn off backups';
 $string['backups_on'] = 'Turn on backups';
