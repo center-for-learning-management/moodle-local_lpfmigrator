@@ -15,9 +15,12 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 }}
-<div style="background-color: darkred; color: white; font-weight: bold;">
+<div id="{{uniqid}}-usernotifybanner" style="background-color: darkred; color: white; position: fixed; top: 0px; z-index: 99999; width: 100%; text-align: center;">
     Achtung! Am 11. Juli wird diese Moodle-Seite deaktiviert.
-    Als Nachfolgeprojekt wird die schulübergreifende Moodle-Lernplattform unter <a href="https://www.eduvidual.at" target="_blank">www.eduvidual.at</a> aufgebaut.
-    Bitten Sie Ihren Moodle-Administrator Ihre Schule dort zu registrieren.
-    Mehr Informationen unter <a href="https://www.lernmanagement.at" target="_blank">www.lernmanagement.at</a>!
+    Als Nachfolgeprojekt wird die schulübergreifende Moodle-Lernplattform unter <a href="https://www.eduvidual.at" target="_blank" style="color: lightgray;font-weight: bold; ">www.eduvidual.at</a> aufgebaut.
+    Jede Lehrperson einer Schule kann die Schule dort <a href="https://www.eduvidual.at/blocks/eduvidual/pages/register.php" target="_blank" style="color: lightgray;font-weight: bold; ">registrieren</a>.
+    Mehr Informationen unter <a href="https://www.lernmanagement.at" target="_blank" style="color: lightgray;font-weight: bold; ">www.lernmanagement.at</a>!
 </div>
+<script>
+setTimeout(function() { $('#{{uniqid}}-usernotifybanner').remove() }, 30000);
+</script>

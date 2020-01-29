@@ -489,7 +489,7 @@ class instance {
                 mysqli_query($con, $sql);
                 $sqls[] = $sql;
             }
-            $sql = "UPDATE " . $this->instancename . "___task_scheduled SET lastruntime=0,nextruntime=" . time() . ",minute='" . date("i") . "',hour='" . date("H") . "',day='" . date("d") . "',month='" . date("m") . "',dayofweek='*',faildelay=0,customised=1,disabled=0 WHERE classname LIKE '%automated_backup_task'";
+            $sql = "UPDATE " . $this->instancename . "___task_scheduled SET lastruntime=0,nextruntime=" . time() . ",minute='" . date("i") . "',hour='" . date("H") . "',day='*',month='*',dayofweek='*',faildelay=0,customised=1,disabled=0 WHERE classname LIKE '%automated_backup_task'";
             mysqli_query($con, $sql);
             $sqls[] = $sql;
         } else {
