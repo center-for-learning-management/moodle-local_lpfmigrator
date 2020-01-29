@@ -63,7 +63,7 @@ if (is_siteadmin()) {
     $path_web = optional_param('path_web', '-', PARAM_TEXT);
     $path_backup = optional_param('path_backup', '-', PARAM_TEXT);
     $stage = optional_param('stage', -1, PARAM_INT);
-    $comments = optional_param('stage', '-', PARAM_TEXT);
+    $comments = optional_param('comments', '-', PARAM_TEXT);
     $changed = array();
     if ($orgid > -1 && $orgid != $instance->orgid()) {
         $instance->orgid($orgid);
