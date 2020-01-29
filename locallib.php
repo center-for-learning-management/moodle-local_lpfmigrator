@@ -66,6 +66,7 @@ class instance {
             $this->path_web = $rec->path_web;
             $this->path_backup = $rec->path_backup;
             $this->path_backup_pwd = $rec->path_backup_pwd;
+            $this->comments = $rec->comments;
         } else {
             $this->instancename = $instancename;
             $this->path_backup_pwd = substr(str_shuffle(strtolower(sha1(rand() . time() . "www.eduvidual.at"))), 0, 10);
@@ -113,6 +114,7 @@ class instance {
             'path_backup_pwd' => $this->path_backup_pwd,
             'servernr' => ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4,
             'backupnr' => $backupnr,
+            'comments' => $this->comments,
         );
     }
 
@@ -139,13 +141,24 @@ class instance {
         }
     }
     /**
+     * Gets or sets comments.
+     */
+    public function comments($comments = "") {
+        global $DB;
+        if (!empty($comments)) {
+            $this->comments = $comments;
+            $DB->set_field('local_lpfmigrator_instances', 'comments', $this->comments, array('id' => $this->id));
+        }
+        return $this->comments;
+    }
+    /**
      * Gets or sets the host.
      */
     public function dbname($dbname = "") {
         global $DB;
         if (!empty($dbname)) {
             $this->dbname = $dbname;
-            $DB->set_field('local_lpfmigrator_instances', 'dbname', $this->dbname, array('instancename' => $this->instancename));
+            $DB->set_field('local_lpfmigrator_instances', 'dbname', $this->dbname, array('id' => $this->id));
         }
         return $this->dbname;
     }
@@ -220,16 +233,17 @@ class instance {
     /**
      * Gets all potential stages and marks the current on with field "selected".
      */
-    public function get_stages() {
+    public static function get_stages($instance) {
+        if (empty($instance)) $instance = (object) array('stage' => -1);
         return array(
-            array('is0' => true, 'value' => self::STAGE_NOT_STAGED, 'label' => get_string('stage_' . self::STAGE_NOT_STAGED, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_NOT_STAGED), 'completed' => ($this->stage > self::STAGE_NOT_STAGED)),
-            array('is1' => true, 'value' => self::STAGE_NOTIFY_ADMINS, 'label' => get_string('stage_' . self::STAGE_NOTIFY_ADMINS, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_NOTIFY_ADMINS), 'completed' => ($this->stage > self::STAGE_NOTIFY_ADMINS)),
-            array('is2' => true, 'value' => self::STAGE_BACKUPS, 'label' => get_string('stage_' . self::STAGE_BACKUPS, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_BACKUPS), 'completed' => ($this->stage > self::STAGE_BACKUPS)),
-            array('is3' => true, 'value' => self::STAGE_MAINTENANCE, 'label' => get_string('stage_' . self::STAGE_MAINTENANCE, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_MAINTENANCE), 'completed' => ($this->stage > self::STAGE_MAINTENANCE)),
-            array('is4' => true, 'value' => self::STAGE_REVIEWED, 'label' => get_string('stage_' . self::STAGE_REVIEWED, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_REVIEWED), 'completed' => ($this->stage > self::STAGE_REVIEWED)),
-            array('is5' => true, 'value' => self::STAGE_REMOVALWEB, 'label' => get_string('stage_' . self::STAGE_REMOVALWEB, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_REMOVALWEB), 'completed' => ($this->stage > self::STAGE_REMOVALWEB)),
-            array('is6' => true, 'value' => self::STAGE_REMOVALDATA, 'label' => get_string('stage_' . self::STAGE_REMOVALDATA, 'local_lpfmigrator'), 'selected' => ($this->stage == self::STAGE_REMOVALDATA), 'completed' => ($this->stage > self::STAGE_REMOVALDATA)),
-            array('is7' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'completed' => ($this->stage == self::STAGE_COMPLETED)),
+            array('is0' => true, 'value' => self::STAGE_NOT_STAGED, 'label' => get_string('stage_' . self::STAGE_NOT_STAGED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOT_STAGED), 'completed' => ($instance->stage > self::STAGE_NOT_STAGED)),
+            array('is1' => true, 'value' => self::STAGE_NOTIFY_ADMINS, 'label' => get_string('stage_' . self::STAGE_NOTIFY_ADMINS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOTIFY_ADMINS), 'completed' => ($instance->stage > self::STAGE_NOTIFY_ADMINS)),
+            array('is2' => true, 'value' => self::STAGE_BACKUPS, 'label' => get_string('stage_' . self::STAGE_BACKUPS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_BACKUPS), 'completed' => ($instance->stage > self::STAGE_BACKUPS)),
+            array('is3' => true, 'value' => self::STAGE_MAINTENANCE, 'label' => get_string('stage_' . self::STAGE_MAINTENANCE, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_MAINTENANCE), 'completed' => ($instance->stage > self::STAGE_MAINTENANCE)),
+            array('is4' => true, 'value' => self::STAGE_REVIEWED, 'label' => get_string('stage_' . self::STAGE_REVIEWED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REVIEWED), 'completed' => ($instance->stage > self::STAGE_REVIEWED)),
+            array('is5' => true, 'value' => self::STAGE_REMOVALWEB, 'label' => get_string('stage_' . self::STAGE_REMOVALWEB, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALWEB), 'completed' => ($instance->stage > self::STAGE_REMOVALWEB)),
+            array('is6' => true, 'value' => self::STAGE_REMOVALDATA, 'label' => get_string('stage_' . self::STAGE_REMOVALDATA, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALDATA), 'completed' => ($instance->stage > self::STAGE_REMOVALDATA)),
+            array('is7' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'completed' => ($instance->stage == self::STAGE_COMPLETED)),
         );
     }
     /**

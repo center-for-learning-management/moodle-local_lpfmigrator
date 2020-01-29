@@ -31,7 +31,7 @@ require('../../config.php');
 require_once(__DIR__ . '/locallib.php');
 
 require_login();
-$PAGE->set_url(new \moodle_url('/local/lpfmigrator/list.php', array()));
+$PAGE->set_url(new \moodle_url('/local/lpfmigrator/dashboard.php', array()));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'local_lpfmigrator'));
 $PAGE->set_title(get_string('pluginname', 'local_lpfmigrator'));
@@ -48,23 +48,21 @@ if (!is_siteadmin()) {
     die();
 }
 
-$presets = array(
-    array('id' => 0, 'label' => 'stage|instancename|lpfgroup', 'sql' => 'ORDER BY stage ASC, instancename ASC, lpfgroup ASC'),
-    array('id' => 1, 'label' => 'instancename|lpfgroup|stage', 'sql' => 'ORDER BY instancename ASC, lpfgroup ASC, stage ASC'),
-    array('id' => 2, 'label' => 'lpfgroup|stage|instancename', 'sql' => 'ORDER BY lpfgroup ASC, stage ASC, instancename ASC'),
-);
-$preset = optional_param('preset', 0, PARAM_INT);
-$presets[$preset]['active'] = true;
-$sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,beo.lpfgroup,beo.categoryid
-            FROM {local_lpfmigrator_instances} lli
-            LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
-            " . $presets[$preset]['sql'];
+$stages = instance::get_stages();
+// We ignore the stage 0 and the last stage.
+for ($a = 1; $a < count($stages) -1; $a++) {
+    $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,beo.lpfgroup,beo.categoryid
+                FROM {local_lpfmigrator_instances} lli
+                LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
+                WHERE stage=?
+                ORDER BY instancename ASC";
 
-$instances = array_values($DB->get_records_sql($sql, array()));
-foreach($instances AS &$instance) {
-    $instance->stagelabel = get_string('stage_' . $instance->stage, 'local_lpfmigrator');
+    $stages[$a]['instances'] = array_values($DB->get_records_sql($sql, array($a)));
 }
-echo $OUTPUT->render_from_template('local_lpfmigrator/list', array('instances' => $instances, 'presets' => $presets, 'wwwroot' => $CFG->wwwroot));
+array_shift($stages);
+array_pop($stages);
+
+echo $OUTPUT->render_from_template('local_lpfmigrator/dashboard', array('stages' => $stages, 'wwwroot' => $CFG->wwwroot));
 
 echo $OUTPUT->footer();
 

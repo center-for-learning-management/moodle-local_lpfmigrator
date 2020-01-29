@@ -34,7 +34,7 @@ require_once(__DIR__ . '/locallib.php');
 $id = required_param('id', PARAM_INT);
 
 require_login();
-$PAGE->set_url(new \moodle_url('/local/lpfmigrator/list.php', array()));
+$PAGE->set_url(new \moodle_url('/local/lpfmigrator/dashboard.php', array('id' => $id)));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'local_lpfmigrator'));
 $PAGE->set_title(get_string('pluginname', 'local_lpfmigrator'));
@@ -63,6 +63,7 @@ if (is_siteadmin()) {
     $path_web = optional_param('path_web', '-', PARAM_TEXT);
     $path_backup = optional_param('path_backup', '-', PARAM_TEXT);
     $stage = optional_param('stage', -1, PARAM_INT);
+    $comments = optional_param('stage', -1, PARAM_TEXT);
     $changed = array();
     if ($orgid > -1 && $orgid != $instance->orgid()) {
         $instance->orgid($orgid);
@@ -87,6 +88,10 @@ if (is_siteadmin()) {
     if ($stage > -1 && $stage != $instance->stage()) {
         $instance->stage($stage);
         $changed[] = get_string('stage', 'local_lpfmigrator');
+    }
+    if ($comments != '-' && $comments != $instance->comments()) {
+        $instance->comments($comments);
+        $changed[] = get_string('comments', 'local_lpfmigrator');
     }
 
     // Check for actions.
@@ -157,7 +162,7 @@ if (is_siteadmin()) {
 
 $instanceo = $instance->as_object();
 $instanceo->editable = is_siteadmin();
-$instanceo->stages = $instance->get_stages();
+$instanceo->stages = instance::get_stages($instance);
 $instanceo->courses_remote = $instance->get_amount_courses_remote();
 $instanceo->courses_backup = $instance->get_amount_courses_backup();
 $instanceo->courses_equals = ($instanceo->courses_remote == $instanceo->courses_backup);

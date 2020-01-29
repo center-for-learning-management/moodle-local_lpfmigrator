@@ -48,4 +48,12 @@ if ($hassiteconfig) {
             $CFG->wwwroot . '/local/lpfmigrator/list.php'
         )
     );
+    $ADMIN->add(
+        'local_lpfmigrator',
+        new admin_externalpage(
+            'local_lpfmigrator_dashboard',
+            get_string('dashboard', 'local_lpfmigrator'),
+            $CFG->wwwroot . '/local/lpfmigrator/dashboard.php'
+        )
+    );
 }

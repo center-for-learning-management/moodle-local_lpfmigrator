@@ -35,6 +35,14 @@ function xmldb_local_lpfmigrator_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
     }
+    if ($oldversion < 2020012900) {
+        $table = new xmldb_table('local_lpfmigrator_instances');
+        $field = new xmldb_field('comments', XMLDB_TYPE_TEXT, null, null, null, null, null, 'path_web');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+    }
 
     return true;
 }
