@@ -445,8 +445,8 @@ class instance {
             $fields = array(
                 'backup_auto_active' => 1,
                 'backup_auto_weekdays' => 1111111,
-                'backup_auto_hour' => date("H"),
-                'backup_auto_minute' => date("i")+1,
+                'backup_auto_hour' => date("H")+1,
+                'backup_auto_minute' => ceil(date("i")/10+1)*10,
                 'backup_auto_storage' => 1,
                 'backup_auto_destination' => $this->path_backup,
                 'backup_auto_delete_days' => 0,
@@ -454,7 +454,7 @@ class instance {
                 'backup_shortname' => 1,
                 'backup_auto_skip_hidden' => 0,
                 'backup_auto_skip_modif_days' => 0,
-                'backup_auto_skip_modif_prev' => 0,
+                'backup_auto_skip_modif_prev' => 1,
                 // Data included
                 'backup_auto_users' => 1,
                 'backup_auto_role_assignments' => 1,
