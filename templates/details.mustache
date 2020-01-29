@@ -171,7 +171,7 @@
                             {{#str}} staging_started, local_lpfmigrator {{/str}}
                         {{/completed}}
                     {{/is0}}
-                    {{#is1}} {{! notified admins }}
+                    {{#is1}} {{! notify admins }}
                         {{#editable}}
                             {{#selected}}
                             <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&notifyadmins=on" class="btn btn-primary btn-block">
@@ -183,7 +183,59 @@
                             {{#str}} notify_admins_done, local_lpfmigrator {{/str}}
                         {{/completed}}
                     {{/is1}}
-                    {{#is2}} {{! schedule backups }}
+                    {{#is2}} {{! notify users }}
+                        {{#editable}}
+                            {{#selected}}
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td width="50%">
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&notifyusers=on" class="btn btn-primary btn-block">
+                                            {{#str}} notify_users_on, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&notifyusers=off" class="btn btn-primary btn-block">
+                                            {{#str}} notify_users_off, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            {{/selected}}
+                        {{/editable}}
+                        {{#has_notifyusers_enabled}}
+                            {{#str}} currently_on, local_lpfmigrator {{/str}}
+                        {{/has_notifyusers_enabled}}
+                        {{^has_notifyusers_enabled}}
+                            {{#str}} currently_off, local_lpfmigrator {{/str}}
+                        {{/has_notifyusers_enabled}}
+                    {{/is2}}
+                    {{#is3}} {{! set maintenance mode }}
+                        {{#editable}}
+                            {{#selected}}
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td width="50%">
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&maintenance=on" class="btn btn-primary btn-block">
+                                            {{#str}} maintenance_on, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&maintenance=off" class="btn btn-secondary btn-block">
+                                            {{#str}} maintenance_off, local_lpfmigrator {{/str}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            {{/selected}}
+                        {{/editable}}
+                        {{#has_maintenance_enabled}}
+                            {{#str}} currently_on, local_lpfmigrator {{/str}}
+                        {{/has_maintenance_enabled}}
+                        {{^has_maintenance_enabled}}
+                            {{#str}} currently_off, local_lpfmigrator {{/str}}
+                        {{/has_maintenance_enabled}}
+                    {{/is3}}
+                    {{#is4}} {{! schedule backups }}
                         {{#has_backups_enabled}}
                             {{#str}} currently_on, local_lpfmigrator {{/str}}
                         {{/has_backups_enabled}}
@@ -213,34 +265,8 @@
                                 </a>
                             {{/completed}}
                         {{/editable}}
-                    {{/is2}}
-                    {{#is3}} {{! set maintenance mode }}
-                        {{#editable}}
-                            {{#selected}}
-                            <table border="0" width="100%">
-                                <tr>
-                                    <td width="50%">
-                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&maintenance=on" class="btn btn-primary btn-block">
-                                            {{#str}} maintenance_on, local_lpfmigrator {{/str}}
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&maintenance=off" class="btn btn-secondary btn-block">
-                                            {{#str}} maintenance_off, local_lpfmigrator {{/str}}
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                            {{/selected}}
-                        {{/editable}}
-                        {{#has_maintenance_enabled}}
-                            {{#str}} currently_on, local_lpfmigrator {{/str}}
-                        {{/has_maintenance_enabled}}
-                        {{^has_maintenance_enabled}}
-                            {{#str}} currently_off, local_lpfmigrator {{/str}}
-                        {{/has_maintenance_enabled}}
-                    {{/is3}}
-                    {{#is4}} {{! make review }}
+                    {{/is4}}
+                    {{#is5}} {{! make review }}
                         <p>{{#str}} has_courses, local_lpfmigrator, { "remote": {{#quote}}{{courses_remote}}{{/quote}}, "backup": {{#quote}}{{courses_backup}}{{/quote}} } {{/str}}</p>
                         {{#editable}}
                             {{#selected}}
@@ -252,8 +278,8 @@
                                 </a>
                             {{/selected}}
                         {{/editable}}
-                    {{/is4}}
-                    {{#is5}} {{! removal web }}
+                    {{/is5}}
+                    {{#is6}} {{! removal web }}
                         {{#editable}}
                             {{#selected}}
                             <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removeweb=on" class="btn btn-primary btn-block alert alert-danger">
@@ -269,8 +295,8 @@
                         {{#completed}}
                             {{#str}} instance_removed_web, local_lpfmigrator {{/str}}
                         {{/completed}}
-                    {{/is5}}
-                    {{#is6}} {{! removal data }}
+                    {{/is6}}
+                    {{#is7}} {{! removal data }}
                         {{#editable}}
                             {{#selected}}
                             <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removedata=on" class="btn btn-primary btn-block alert alert-danger">
@@ -286,12 +312,12 @@
                         {{#completed}}
                             {{#str}} instance_removed_data, local_lpfmigrator {{/str}}
                         {{/completed}}
-                    {{/is6}}
-                    {{#is7}} {{! removed }}
+                    {{/is7}}
+                    {{#is8}} {{! removed }}
                         {{#selected}}
                             {{#str}} instance_removed, local_lpfmigrator {{/str}}
                         {{/selected}}
-                    {{/is7}}
+                    {{/is8}}
                 </td>
             </tr>
         {{/stages}}

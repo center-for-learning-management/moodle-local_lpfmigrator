@@ -31,12 +31,13 @@ class instance {
      */
     const STAGE_NOT_STAGED = 0;
     const STAGE_NOTIFY_ADMINS = 1;
-    const STAGE_BACKUPS = 2;
+    const STAGE_NOTIFY_USERS = 2;
     const STAGE_MAINTENANCE = 3;
-    const STAGE_REVIEWED = 4;
-    const STAGE_REMOVALWEB = 5;
-    const STAGE_REMOVALDATA = 6;
-    const STAGE_COMPLETED = 7;
+    const STAGE_BACKUPS = 4;
+    const STAGE_REVIEWED = 5;
+    const STAGE_REMOVALWEB = 6;
+    const STAGE_REMOVALDATA = 7;
+    const STAGE_COMPLETED = 8;
 
     private $dbname = '';
     private $host = '';
@@ -238,12 +239,13 @@ class instance {
         return array(
             array('is0' => true, 'value' => self::STAGE_NOT_STAGED, 'label' => get_string('stage_' . self::STAGE_NOT_STAGED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOT_STAGED), 'completed' => ($instance->stage > self::STAGE_NOT_STAGED)),
             array('is1' => true, 'value' => self::STAGE_NOTIFY_ADMINS, 'label' => get_string('stage_' . self::STAGE_NOTIFY_ADMINS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOTIFY_ADMINS), 'completed' => ($instance->stage > self::STAGE_NOTIFY_ADMINS)),
-            array('is2' => true, 'value' => self::STAGE_BACKUPS, 'label' => get_string('stage_' . self::STAGE_BACKUPS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_BACKUPS), 'completed' => ($instance->stage > self::STAGE_BACKUPS)),
+            array('is2' => true, 'value' => self::STAGE_NOTIFY_USERS, 'label' => get_string('stage_' . self::STAGE_NOTIFY_USERS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOTIFY_USERS), 'completed' => ($instance->stage > self::STAGE_NOTIFY_USERS)),
             array('is3' => true, 'value' => self::STAGE_MAINTENANCE, 'label' => get_string('stage_' . self::STAGE_MAINTENANCE, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_MAINTENANCE), 'completed' => ($instance->stage > self::STAGE_MAINTENANCE)),
-            array('is4' => true, 'value' => self::STAGE_REVIEWED, 'label' => get_string('stage_' . self::STAGE_REVIEWED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REVIEWED), 'completed' => ($instance->stage > self::STAGE_REVIEWED)),
-            array('is5' => true, 'value' => self::STAGE_REMOVALWEB, 'label' => get_string('stage_' . self::STAGE_REMOVALWEB, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALWEB), 'completed' => ($instance->stage > self::STAGE_REMOVALWEB)),
-            array('is6' => true, 'value' => self::STAGE_REMOVALDATA, 'label' => get_string('stage_' . self::STAGE_REMOVALDATA, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALDATA), 'completed' => ($instance->stage > self::STAGE_REMOVALDATA)),
-            array('is7' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'completed' => ($instance->stage == self::STAGE_COMPLETED)),
+            array('is4' => true, 'value' => self::STAGE_BACKUPS, 'label' => get_string('stage_' . self::STAGE_BACKUPS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_BACKUPS), 'completed' => ($instance->stage > self::STAGE_BACKUPS)),
+            array('is5' => true, 'value' => self::STAGE_REVIEWED, 'label' => get_string('stage_' . self::STAGE_REVIEWED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REVIEWED), 'completed' => ($instance->stage > self::STAGE_REVIEWED)),
+            array('is6' => true, 'value' => self::STAGE_REMOVALWEB, 'label' => get_string('stage_' . self::STAGE_REMOVALWEB, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALWEB), 'completed' => ($instance->stage > self::STAGE_REMOVALWEB)),
+            array('is7' => true, 'value' => self::STAGE_REMOVALDATA, 'label' => get_string('stage_' . self::STAGE_REMOVALDATA, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALDATA), 'completed' => ($instance->stage > self::STAGE_REMOVALDATA)),
+            array('is8' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'completed' => ($instance->stage == self::STAGE_COMPLETED)),
         );
     }
     /**
@@ -272,14 +274,13 @@ class instance {
      * Determines if maintenance mode is on.
      */
     public function has_maintenance_enabled() {
-        if (file_exists($this->path_data . DIRECTORY_SEPARATOR . 'climaintenance.html')) return true;
-        /*
-        $con = instance::external_db_open($this->instancename);
-        $sql = "SELECT id,name,value FROM " . $this->instancename . "___config WHERE name='maintenance_enabled'";
-        $btr = mysqli_query($con, $sql);
-        $row = mysqli_fetch_row($btr);
-        return $row[2];
-        */
+        if (file_exists($this->path_data . DIRECTORY_SEPARATOR . 'eduvidualmaintenance.html')) return true;
+    }
+    /**
+     * Determines if user notification banner is on.
+     */
+    public function has_notifyusers_enabled() {
+        if (file_exists($this->path_data . DIRECTORY_SEPARATOR . 'eduvidualnotifybanner.html')) return true;
     }
     /**
      * Gets or sets the host.
@@ -519,6 +520,24 @@ class instance {
             $con = instance::external_db_open($this->instancename);
             $sql = "UPDATE " . $this->instancename . "___config SET value='$to' WHERE name='maintenance_enabled'";
             mysqli_query($con, $sql);
+        }
+        return true;
+    }
+    /**
+     * Enable or disable usernotifybanner of a certain instance.
+     * @param to 1 means enable, 0 means disable.
+     */
+    public function set_usernotifybanner($to) {
+        // Convert from boolean to int.
+        $to = ($to) ? 1 : 0;
+        global $OUTPUT;
+        if (!empty($to)) {
+            file_put_contents(
+                $this->path_data . DIRECTORY_SEPARATOR . 'eduvidualnotifybanner.html',
+                $OUTPUT->render_from_template('local_lpfmigrator/usernotifybanner', array())
+            );
+        } else {
+            unlink($this->path_data . DIRECTORY_SEPARATOR . 'eduvidualnotifybanner.html');
         }
         return true;
     }

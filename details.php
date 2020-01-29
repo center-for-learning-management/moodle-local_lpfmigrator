@@ -34,7 +34,7 @@ require_once(__DIR__ . '/locallib.php');
 $id = required_param('id', PARAM_INT);
 
 require_login();
-$PAGE->set_url(new \moodle_url('/local/lpfmigrator/dashboard.php', array('id' => $id)));
+$PAGE->set_url(new \moodle_url('/local/lpfmigrator/details.php', array('id' => $id)));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'local_lpfmigrator'));
 $PAGE->set_title(get_string('pluginname', 'local_lpfmigrator'));
@@ -98,43 +98,34 @@ if (is_siteadmin()) {
     $startstaging = optional_param('startstaging', '', PARAM_ALPHANUM);
     if (!empty($startstaging) && $startstaging == "on" && $instance->stage() == instance::STAGE_NOT_STAGED) {
         $instance->stage(instance::STAGE_NOTIFY_ADMINS);
-        $changed[] = get_string('stage_' . instance::STAGE_NOTIFY_ADMINS, 'local_lpfmigrator');
+        $changed[] = get_string('stage_' . instance::STAGE_NOT_STAGED, 'local_lpfmigrator');
     }
     $notifyadmins = optional_param('notifyadmins', '', PARAM_ALPHANUM);
     if (!empty($notifyadmins) && $notifyadmins == "on" && $instance->stage() == instance::STAGE_NOTIFY_ADMINS) {
         $instance->notify_admins();
+        $instance->stage(instance::STAGE_NOTIFY_USERS);
+        $changed[] = get_string('stage_' . instance::STAGE_NOTIFY_ADMINS, 'local_lpfmigrator');
+    }
+    $notifyusers = optional_param('notifyusers', '', PARAM_ALPHANUM);
+    if (!empty($notifyusers) && $instance->stage() == instance::STAGE_NOTIFY_USERS) {
+        $to = ($notifyusers == 'on');
+        $instance->set_usernotifybanner($to);
         $instance->stage(instance::STAGE_MAINTENANCE);
+        $changed[] = get_string('stage_' . instance::STAGE_NOTIFY_USERS, 'local_lpfmigrator');
+    }
+    $maintenance = optional_param('maintenance', '', PARAM_ALPHANUM);
+    if (!empty($maintenance) && $instance->stage() == instance::STAGE_MAINTENANCE) {
+        $to = ($maintenance == 'on');
+        $instance->set_maintenance_mode($to);
+        if ($to) $instance->stage(instance::STAGE_BACKUPS);
         $changed[] = get_string('stage_' . instance::STAGE_MAINTENANCE, 'local_lpfmigrator');
     }
     $backups = optional_param('backups', '', PARAM_ALPHANUM);
-    if (!empty($backups)) {
-        if ($instance->stage() > instance::STAGE_BACKUPS) {
-            echo $OUTPUT->render_from_template('local_lpfmigrator/alert', array(
-                'content' => get_string('decrease_stage_first', 'local_lpfmigrator'),
-                'type' => 'danger',
-            ));
-        } else {
-            $to = ($backups == 'on');
-            $instance->set_backup_config($to);
-            if ($to) $instance->stage(instance::STAGE_MAINTENANCE);
-            else $instance->stage(instance::STAGE_BACKUPS);
-            $changed[] = get_string('stage_' . instance::STAGE_BACKUPS, 'local_lpfmigrator');
-        }
-    }
-    $maintenance = optional_param('maintenance', '', PARAM_ALPHANUM);
-    if (!empty($maintenance)) {
-        if ($instance->stage() > instance::STAGE_MAINTENANCE) {
-            echo $OUTPUT->render_from_template('local_lpfmigrator/alert', array(
-                'content' => get_string('decrease_stage_first', 'local_lpfmigrator'),
-                'type' => 'danger',
-            ));
-        } else {
-            $to = ($maintenance == 'on');
-            $instance->set_maintenance_mode($to);
-            if ($to) $instance->stage(instance::STAGE_REVIEWED);
-            else $instance->stage(instance::STAGE_MAINTENANCE);
-            $changed[] = get_string('stage_' . instance::STAGE_MAINTENANCE, 'local_lpfmigrator');
-        }
+    if (!empty($backups) && $instance->stage() == instance::STAGE_BACKUPS) {
+        $to = ($backups == 'on');
+        $instance->set_backup_config($to);
+        if ($to) $instance->stage(instance::STAGE_REVIEWED);
+        $changed[] = get_string('stage_' . instance::STAGE_BACKUPS, 'local_lpfmigrator');
     }
     $review = optional_param('review', '', PARAM_ALPHANUM);
     if (!empty($review) && $review == "on" && $instance->stage() == instance::STAGE_REVIEWED) {
@@ -168,6 +159,7 @@ $instanceo->courses_backup = $instance->get_amount_courses_backup();
 $instanceo->courses_equals = ($instanceo->courses_remote == $instanceo->courses_backup);
 $instanceo->has_backups_enabled = $instance->has_backups_enabled();
 $instanceo->has_maintenance_enabled = $instance->has_maintenance_enabled();
+$instanceo->has_notifyusers_enabled = $instance->has_notifyusers_enabled();
 $instanceo->sealed = $instance->stage() == instance::STAGE_COMPLETED;
 $instanceo->wwwroot = $CFG->wwwroot;
 
