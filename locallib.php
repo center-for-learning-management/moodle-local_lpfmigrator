@@ -233,7 +233,7 @@ class instance {
     /**
      * Gets all potential stages and marks the current on with field "selected".
      */
-    public static function get_stages($instance) {
+    public static function get_stages($instance = '') {
         if (empty($instance)) $instance = (object) array('stage' => -1);
         return array(
             array('is0' => true, 'value' => self::STAGE_NOT_STAGED, 'label' => get_string('stage_' . self::STAGE_NOT_STAGED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOT_STAGED), 'completed' => ($instance->stage > self::STAGE_NOT_STAGED)),
