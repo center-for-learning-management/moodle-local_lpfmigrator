@@ -28,7 +28,7 @@ This is moodle-plugin is intended to assist the migration of lernplattform.schul
     An entry with the name of the webroot is inserted in a textfile called "scheduledwebrootremovals01.txt" and "scheduledwebrootremovals02.txt". A cronjob on both machines, mdweb01.bmb.gv.at and mdweb02.bmb.gv.at, looks at entries in these files. Once found it unlinks the current webroot and links to another webroot that only shows an informative page to users.
 
 8. Remove Data
-    Now we are getting serious. This will deleted the database and the whole moodle datadir. We will only keep what is in the backup dir.
+    Now we are getting serious. The database is deleted directly by PHP. The removal of the Moodle datadir is commanded to the mdcli01.bmb.gv.at-Server by injecting the path of the datadir into the textfile "scheduledremovals.txt" in the first datadir that was configured. We will only keep what is in the backup dir.
 
 9. Send info to admins
     Send a notification to admins that the backup has been done and the moodle site was removed. An information is included where they can find and how they can access the backup files.
