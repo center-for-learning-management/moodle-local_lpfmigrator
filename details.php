@@ -134,6 +134,7 @@ if (is_siteadmin()) {
     }
     $removeweb = optional_param('removeweb', '', PARAM_ALPHANUM);
     if (!empty($removeweb) && $removeweb == "on" && $instance->stage() == instance::STAGE_REMOVALWEB) {
+        $instance->set_replacewebroot();
         $instance->stage(instance::STAGE_REMOVALDATA);
         $changed[] = get_string('stage_' . instance::STAGE_REMOVALWEB, 'local_lpfmigrator');
     }
@@ -141,6 +142,12 @@ if (is_siteadmin()) {
     if (!empty($removedata) && $removedata == "on" && $instance->stage() == instance::STAGE_REMOVALDATA) {
         $instance->remove_datadir();
         $instance->remove_database();
+        $instance->stage(instance::STAGE_SEND_AUTHINFO);
+        $changed[] = get_string('stage_' . instance::STAGE_REMOVALDATA, 'local_lpfmigrator');
+    }
+    $sendauthinfo = optional_param('sendauthinfo', '', PARAM_ALPHANUM);
+    if (!empty($sendauthinfo) && $sendauthinfo == "on" && $instance->stage() == instance::STAGE_SEND_AUTHINFO) {
+        $instance->send_authinfo();
         $instance->stage(instance::STAGE_COMPLETED);
         $changed[] = get_string('stage_' . instance::STAGE_REMOVALDATA, 'local_lpfmigrator');
     }
@@ -152,14 +159,19 @@ if (is_siteadmin()) {
 
 
 $instanceo = $instance->as_object();
+// Next line would not be necessary, but we force an update of this data by calling it.
+$instanceo->adminusers = $instance->adminusers();
 $instanceo->editable = is_siteadmin();
 $instanceo->stages = instance::get_stages($instance);
 $instanceo->courses_remote = $instance->get_amount_courses_remote();
 $instanceo->courses_backup = $instance->get_amount_courses_backup();
 $instanceo->courses_equals = ($instanceo->courses_remote == $instanceo->courses_backup);
+$instanceo->has_backup_log = !empty($instance->get_backup_log());
 $instanceo->has_backups_enabled = $instance->has_backups_enabled();
 $instanceo->has_maintenance_enabled = $instance->has_maintenance_enabled();
 $instanceo->has_notifyusers_enabled = $instance->has_notifyusers_enabled();
+$instanceo->has_replaced_webroot = $instance->has_replaced_webroot();
+$instanceo->has_removed_datadir = $instance->has_removed_datadir();
 $instanceo->sealed = $instance->stage() == instance::STAGE_COMPLETED;
 $instanceo->wwwroot = $CFG->wwwroot;
 

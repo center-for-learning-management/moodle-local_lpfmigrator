@@ -24,6 +24,18 @@
                 <th width="50%">{{#str}} instancename, local_lpfmigrator {{/str}}</th>
                 <th>{{instancename}}</th>
             </tr>
+            <tr>
+                <th width="50%">{{#str}} admins, local_lpfmigrator {{/str}}</th>
+                <td><ul>
+                    {{#adminusers}}
+                    <li>
+                        <a href="mailto:{{email}}">
+                            {{firstname}} {{lastname}}
+                        </a>
+                    </li>
+                    {{/adminusers}}
+                </ul></td>
+            </tr>
             {{#editable}}
                 {{^sealed}}
                     <form action="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" method="post" enctype="multipart/form-data">
@@ -266,6 +278,9 @@
                                 <a href="{{path_web}}/index.php?secretpurge=1029384756" target="_blank" class="btn btn-secondary btn-block">
                                     {{#str}} purge_caches, local_lpfmigrator {{/str}}
                                 </a>
+                                <a href="{{wwwroot}}/local/lpfmigrator/schedule.php?log={{instancename}}" class="btn btn-secondary btn-block">
+                                    {{#str}} log, local_lpfmigrator {{/str}}
+                                </a>
                             {{/completed}}
                         {{/editable}}
                     {{/is4}}
@@ -295,9 +310,12 @@
                                 {{#str}} instance_remove_soon, local_lpfmigrator {{/str}}
                             {{/selected}}
                         {{/editable}}
-                        {{#completed}}
-                            {{#str}} instance_removed_web, local_lpfmigrator {{/str}}
-                        {{/completed}}
+                        {{#has_replaced_webroot}}
+                            {{#str}} webroot_replaced, local_lpfmigrator {{/str}}
+                        {{/has_replaced_webroot}}
+                        {{#completed}}{{^has_replaced_webroot}}
+                            <strong>{{#str}} webroot_not_yet_replaced, local_lpfmigrator {{/str}}</strong>
+                        {{/has_replaced_webroot}}{{/completed}}
                     {{/is6}}
                     {{#is7}} {{! removal data }}
                         {{#editable}}
@@ -313,14 +331,32 @@
                             {{/selected}}
                         {{/editable}}
                         {{#completed}}
-                            {{#str}} instance_removed_data, local_lpfmigrator {{/str}}
+                            {{#has_removed_datadir}}
+                                <p>{{#str}} instance_removed_datadir, local_lpfmigrator {{/str}}</p>
+                            {{/has_removed_datadir}}
+                            {{^has_removed_datadir}}
+                                <p>{{#str}} instance_removed_datadir_missing, local_lpfmigrator {{/str}}</p>
+                            {{/has_removed_datadir}}
+                            <p>{{#str}} instance_removed_database, local_lpfmigrator {{/str}}</p>
                         {{/completed}}
                     {{/is7}}
-                    {{#is8}} {{! removed }}
+                    {{#is8}} {{! send auth_info }}
+                        {{#editable}}
+                            {{#selected}}
+                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&sendauthinfo=on" class="btn btn-primary btn-block">
+                                {{#str}} send_authinfo, local_lpfmigrator {{/str}}
+                            </a>
+                            {{/selected}}
+                        {{/editable}}
+                        {{#completed}}
+                            {{#str}} send_authinfo_done, local_lpfmigrator {{/str}}
+                        {{/completed}}
+                    {{/is8}}
+                    {{#is9}} {{! removed }}
                         {{#selected}}
                             {{#str}} instance_removed, local_lpfmigrator {{/str}}
                         {{/selected}}
-                    {{/is8}}
+                    {{/is9}}
                 </td>
             </tr>
         {{/stages}}

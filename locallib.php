@@ -37,7 +37,8 @@ class instance {
     const STAGE_REVIEWED = 5;
     const STAGE_REMOVALWEB = 6;
     const STAGE_REMOVALDATA = 7;
-    const STAGE_COMPLETED = 8;
+    const STAGE_SEND_AUTHINFO = 8;
+    const STAGE_COMPLETED = 9;
 
     private $dbname = '';
     private $host = '';
@@ -68,9 +69,11 @@ class instance {
             $this->path_backup = $rec->path_backup;
             $this->path_backup_pwd = $rec->path_backup_pwd;
             $this->comments = $rec->comments;
+            $this->adminusers = json_decode($rec->adminusers);
         } else {
             $this->instancename = $instancename;
             $this->path_backup_pwd = substr(str_shuffle(strtolower(sha1(rand() . time() . "www.eduvidual.at"))), 0, 10);
+            $this->adminusers();
         }
         $org = $DB->get_record('block_eduvidual_org', array('lpf' => $instancename));
         if (!empty($org->id)) {
@@ -92,8 +95,33 @@ class instance {
         if (empty($this->id)) {
             $this->id = $DB->insert_record('local_lpfmigrator_instances', $this->as_object());
         } else {
-            $DB->update_record('local_lpfmigrator_instances', $this->as_object());
+            $o = $this->as_object();
+            $o->adminusers = json_encode($o->adminusers, JSON_NUMERIC_CHECK);
+            $DB->update_record('local_lpfmigrator_instances', $o);
         }
+    }
+    /**
+     * Load admin users from remote site.
+     */
+    public function adminusers() {
+        global $DB;
+        $con = instance::external_db_open($this->instancename);
+        $sql = "SELECT id,name,value FROM " . $this->instancename . "___config WHERE name='siteadmins'";
+        $btr = mysqli_query($con, $sql);
+        $row = mysqli_fetch_row($btr);
+
+        $sql = "SELECT id,firstname,lastname,email
+                    FROM " . $this->instancename . "___user
+                    WHERE id IN (" . $row[2] . ")
+                        AND deleted=0 AND suspended=0
+                        AND email NOT LIKE '%noreply%'";
+        $btr = mysqli_query($con, $sql);
+        $this->adminusers = array();
+        while($row = mysqli_fetch_row($btr)) {
+            $this->adminusers[] = array('firstname' => $row[1], 'lastname' => $row[2], 'email' => $row[3]);
+        }
+        $DB->set_field('local_lpfmigrator_instances', 'adminusers', json_encode($this->adminusers, JSON_NUMERIC_CHECK), array('orgid' => $this->orgid));
+        return $this->adminusers;
     }
     public function as_object() {
         $backupnr = 1;
@@ -116,6 +144,7 @@ class instance {
             'servernr' => ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4,
             'backupnr' => $backupnr,
             'comments' => $this->comments,
+            'adminusers' => $this->adminusers,
         );
     }
 
@@ -193,7 +222,6 @@ class instance {
         }
         return self::$hosts[$instance->host];
     }
-
     /**
      * Determine the amount of courses in our backup dir.
      */
@@ -216,7 +244,21 @@ class instance {
         $row = mysqli_fetch_row($btr);
         return !empty($row[0]) ? $row[0] : 0;
     }
-
+    /**
+     * Gets the log of performed backups.
+     */
+    public function get_backup_log() {
+        $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
+        $usefolder = $potentialfolders[0];
+        if (!empty($usefolder)) {
+            $x = explode('/', substr($this->path_web, 10));
+            $webrootname = $x[1];
+            if (!empty($webrootname)) {
+                return file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'log_' . $webrootname . '.log');
+            }
+        }
+        return false;
+    }
     /**
      * Searches for the moodle-datadir.
      */
@@ -230,6 +272,16 @@ class instance {
             }
         }
         return '';
+    }
+    /**
+     * Get the first datadir. Used for exchanging messages with cronjobs.
+     */
+    public static function get_first_datadir() {
+        $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
+        $usefolder = $potentialfolders[0];
+        if (!empty($usefolder)) {
+            return $usefolder;
+        }
     }
     /**
      * Get scheduled backups.
@@ -256,7 +308,8 @@ class instance {
             array('is5' => true, 'value' => self::STAGE_REVIEWED, 'label' => get_string('stage_' . self::STAGE_REVIEWED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REVIEWED), 'completed' => ($instance->stage > self::STAGE_REVIEWED)),
             array('is6' => true, 'value' => self::STAGE_REMOVALWEB, 'label' => get_string('stage_' . self::STAGE_REMOVALWEB, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALWEB), 'completed' => ($instance->stage > self::STAGE_REMOVALWEB)),
             array('is7' => true, 'value' => self::STAGE_REMOVALDATA, 'label' => get_string('stage_' . self::STAGE_REMOVALDATA, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALDATA), 'completed' => ($instance->stage > self::STAGE_REMOVALDATA)),
-            array('is8' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'completed' => ($instance->stage == self::STAGE_COMPLETED)),
+            array('is8' => true, 'value' => self::STAGE_SEND_AUTHINFO, 'label' => get_string('stage_' . self::STAGE_SEND_AUTHINFO, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_SEND_AUTHINFO), 'completed' => ($instance->stage > self::STAGE_SEND_AUTHINFO)),
+            array('is9' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'completed' => ($instance->stage == self::STAGE_COMPLETED)),
         );
     }
     /**
@@ -294,6 +347,30 @@ class instance {
         if (file_exists($this->path_data . DIRECTORY_SEPARATOR . 'eduvidualnotifybanner.html')) return true;
     }
     /**
+     * @return true if the datadir has been removed.
+     */
+    public function has_removed_datadir() {
+        return (!empty($this->path_data) && !file_exists($this->path_data));
+    }
+    /**
+     * @return true if the webroot has been removed.
+     */
+    public function has_replaced_webroot() {
+        // SCHEDULE USING A TEXTFILE AT FIRST DATADIR.
+        $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
+        $usefolder = $potentialfolders[0];
+        if (!empty($usefolder)) {
+            $x = explode('/', substr($this->path_web, 10));
+            $webrootname = $x[1];
+            if (!empty($webrootname)) {
+                $lines1 = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremoved01.txt'));
+                $lines2 = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremoved02.txt'));
+                return in_array($webrootname, $lines1) && in_array($webrootname, $lines2);
+            }
+        }
+        return false;
+    }
+    /**
      * Gets or sets the host.
      */
     public function host($host = "-") {
@@ -326,21 +403,7 @@ class instance {
      */
     public function notify_admins() {
         global $CFG, $OUTPUT;
-        $con = instance::external_db_open($this->instancename);
-        $sql = "SELECT id,name,value FROM " . $this->instancename . "___config WHERE name='siteadmins'";
-        $btr = mysqli_query($con, $sql);
-        $row = mysqli_fetch_row($btr);
-
-        $sql = "SELECT id,firstname,lastname,email
-                    FROM " . $this->instancename . "___user
-                    WHERE id IN (" . $row[2] . ")
-                        AND deleted=0 AND suspended=0
-                        AND email NOT LIKE '%noreply%'";
-        $btr = mysqli_query($con, $sql);
-        $tousers = array();
-        while($row = mysqli_fetch_row($btr)) {
-            $tousers[] = array('firstname' => $row[1], 'lastname' => $row[2], 'email' => $row[3]);
-        }
+        $tousers = $this->adminusers;
         $tousers[] = array('firstname' => 'Julia', 'lastname' => 'Laßnig', 'email' => 'julia.lassnig@lernmangement.at');
         $tousers[] = array('firstname' => 'Robert', 'lastname' => 'Schrenk', 'email' => 'robert.schrenk@lernmanagement.at');
         foreach($tousers AS $u) {
@@ -424,22 +487,44 @@ class instance {
      * Remove the database.
      */
     public function remove_datadir() {
-        if (!empty($this->path_data)) {
-            $this->recursiveRemove($this->path_data);
+        $usefolder = self::get_first_datadir();
+        if (!empty($usefolder)) {
+            file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledremovals.txt', $this->path_data, FILE_APPEND);
         }
     }
     /**
-     * Recursively remove everything.
+     * Sends a information to the admins containing auth data to access backups.
      */
-    private function recursiveRemove($dir) {
-        $structure = glob(rtrim($dir, "/").'/*');
-        if (is_array($structure)) {
-            foreach($structure as $file) {
-                if (is_dir($file)) $this->recursiveRemove($file);
-                elseif (is_file($file)) unlink($file);
-            }
+    public function send_authinfo() {
+        global $CFG, $OUTPUT;
+        $instanceo = $this->as_object();
+        $tousers = $this->adminusers;
+        $tousers[] = array('firstname' => 'Julia', 'lastname' => 'Laßnig', 'email' => 'julia.lassnig@lernmangement.at');
+        $tousers[] = array('firstname' => 'Robert', 'lastname' => 'Schrenk', 'email' => 'robert.schrenk@lernmanagement.at');
+        foreach($tousers AS $u) {
+            $touser = new \stdClass();
+            $touser->email = $u['email'];
+            $touser->firstname = $u['firstname'];
+            $touser->lastname = $u['lastname'];
+            $touser->maildisplay = true;
+            $touser->mailformat = 1; // 0 (zero) text-only emails, 1 (one) for HTML/Text emails.
+            $touser->id = -99; // invalid userid, as the user has no userid in our moodle.
+            $touser->firstnamephonetic = "";
+            $touser->lastnamephonetic = "";
+            $touser->middlename = "";
+            $touser->alternatename = "";
+
+            $fromuser = \core_user::get_support_user();
+
+            $instanceo = $this->as_object();
+
+            $messagecontent = get_string('authinfo:text', 'local_lpfmigrator', array('backupnr' => $instanceo->backupnr, 'firstname' => $touser->firstname, 'instancename' => $this->instancename, 'lastname' => $touser->lastname, 'path_backup_pwd' => $this->path_backup_pwd, 'wwwroot' => $CFG->wwwroot));
+            $messagehtml = $OUTPUT->render_from_template('local_lpfmigrator/authinfo_mail', array('content' => $messagecontent, 'users' => $tousers));
+            $messagetext = html_to_text($messagehtml);
+            $subject = get_string('authinfo:subject' , 'local_lpfmigrator', array('instancename' => $this->instancename));
+
+            email_to_user($touser, $fromuser, $subject, $messagetext, $messagehtml, "", true);
         }
-        rmdir($dir);
     }
     /**
      * Enables or disables backups to specific path.
@@ -505,8 +590,7 @@ class instance {
             mysqli_query($con, $sql);
             $sqls[] = $sql;
             // ACHIEVE BY ANOTHER POSSBILITY. WE SCHEDULE USING A TEXTFILE AT FIRST DATADIR.
-            $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
-            $usefolder = $potentialfolders[0];
+            $usefolder = self::get_first_datadir();
             if (!empty($usefolder)) {
                 $x = explode('/', substr($this->path_web, 10));
                 $webrootname = $x[1];
@@ -544,6 +628,26 @@ class instance {
             $con = instance::external_db_open($this->instancename);
             $sql = "UPDATE " . $this->instancename . "___config SET value='$to' WHERE name='maintenance_enabled'";
             mysqli_query($con, $sql);
+        }
+        return true;
+    }
+    /**
+     * Commands the webroot to be replaced.
+     * @param to 1 means enable, 0 means disable.
+     */
+    public function set_replacewebroot() {
+        $usefolder = self::get_first_datadir();
+        if (!empty($usefolder)) {
+            $x = explode('/', substr($this->path_web, 10));
+            $webrootname = $x[1];
+            if (!empty($webrootname)) {
+                $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals01.txt'));
+                if (!in_array($webrootname, $lines)) $lines[] = $webrootname;
+                file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals01.txt', implode("\n", array_filter($lines)));
+                $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals02.txt'));
+                if (!in_array($webrootname, $lines)) $lines[] = $webrootname;
+                file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals02.txt', implode("\n", array_filter($lines)));
+            }
         }
         return true;
     }
