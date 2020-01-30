@@ -68,6 +68,8 @@ $string['proceed_anyway'] = 'Achtung, Sie können fortsetzen, aber Sie sollten w
 $string['purge_caches'] = 'Alle Zwischenspeicher der Moodle-Instanz zurücksetzen (empfohlen)';
 $string['read_databases'] = 'Alle Datenbanken einlesen';
 $string['read_databases:success'] = 'Erfolgreich {$a->read} Datenbanken eingelesen';
+$string['schedule'] = 'Backup-Liste';
+$string['scheduled_instances'] = 'Eingereihte Instanzen';
 $string['site_deactivated'] = 'Seite deaktiviert';
 $string['site_deactivated:longtext'] = 'Diese Seite wurde deaktiviert. Für weitere Informationen kontaktieren Sie bitte <a href="mailto:support@lernmanagement.at">support@lernmanagement.at</a>';
 $string['sqlservers:hosts'] = 'SQL-Hosts (getrennt mit Beistrichen)';

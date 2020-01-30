@@ -17,14 +17,7 @@
 }}
 
 <div class="local_lpfmigrator details">
-    {{#editable}}
-        <a href="{{wwwroot}}/local/lpfmigrator/list.php#{{instancename}}" class="btn btn-secondary">
-            {{#str}} back_to_list, local_lpfmigrator {{/str}}
-        </a>
-        <a href="{{wwwroot}}/local/lpfmigrator/dashboard.php#{{instancename}}" class="btn btn-secondary">
-            {{#str}} back_to_dashboard, local_lpfmigrator {{/str}}
-        </a>
-    {{/editable}}
+    {{> local_lpfmigrator/mainmenu}}
     <table class="generaltable">
         <tbody>
             <tr>

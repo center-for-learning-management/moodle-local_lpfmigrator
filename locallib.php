@@ -232,6 +232,17 @@ class instance {
         return '';
     }
     /**
+     * Get scheduled backups.
+     */
+    public static function get_schedule() {
+        $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
+        $usefolder = $potentialfolders[0];
+        if (!empty($usefolder)) {
+            $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledbackups.txt'));
+            return array_filter($lines);
+        }
+    }
+    /**
      * Gets all potential stages and marks the current on with field "selected".
      */
     public static function get_stages($instance = '') {
@@ -493,6 +504,18 @@ class instance {
             $sql = "UPDATE " . $this->instancename . "___task_scheduled SET lastruntime=0,nextruntime=" . time() . ",minute='" . date("i") . "',hour='" . date("H") . "',day='*',month='*',dayofweek='*',faildelay=0,customised=1,disabled=0 WHERE classname LIKE '%automated_backup_task'";
             mysqli_query($con, $sql);
             $sqls[] = $sql;
+            // ACHIEVE BY ANOTHER POSSBILITY. WE SCHEDULE USING A TEXTFILE AT FIRST DATADIR.
+            $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
+            $usefolder = $potentialfolders[0];
+            if (!empty($usefolder)) {
+                $x = explode('/', substr($this->path_web, 10));
+                $webrootname = $x[1];
+                if (!empty($webrootname)) {
+                    $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledbackups.txt'));
+                    if (!in_array($webrootname, $lines)) $lines[] = $webrootname;
+                    file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledbackups.txt', implode("\n", array_filter($lines)));
+                }
+            }
         } else {
             $sql = "UPDATE " . $this->instancename . "___config_plugins SET VALUE='0' WHERE plugin='backup' AND name='backup_auto_active'";
             mysqli_query($con, $sql);

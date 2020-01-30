@@ -68,6 +68,8 @@ $string['proceed_anyway'] = 'Attention, you can proceed anyway, but know what yo
 $string['purge_caches'] = 'Purge caches of remote moodle (recommended)';
 $string['read_databases'] = 'Read all databases';
 $string['read_databases:success'] = 'Successfully read {$a->read} databases';
+$string['schedule'] = 'Backup-List';
+$string['scheduled_instances'] = 'Scheduled instances';
 $string['site_deactivated'] = 'Site deactivated';
 $string['site_deactivated:longtext'] = 'This site was deactivated. If you need any further information please contact <a href="mailto:support@lernmanagement.at">support@lernmanagement.at</a>';
 $string['sqlservers:hosts'] = 'SQL-Hosts (delimited by comma)';

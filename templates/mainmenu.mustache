@@ -19,14 +19,19 @@
 <div class="local_lpfmigrator mainmenu">
     <table width="100%" style="margin-bottom: 10px;">
         <tr>
-            <td width="50%">
-                <a href="{{wwwroot}}/local/lpfmigrator/list.php" class="btn btn-block btn-secondary">
+            <td width="33%">
+                <a href="{{wwwroot}}/local/lpfmigrator/list.php#{{instancename}}" class="btn btn-block btn-secondary">
                     {{#str}} list_databases, local_lpfmigrator {{/str}}
                 </a>
             </td>
-            <td>
-                <a href="{{wwwroot}}/local/lpfmigrator/dashboard.php" class="btn btn-block btn-secondary">
+            <td width="33%">
+                <a href="{{wwwroot}}/local/lpfmigrator/dashboard.php#{{instancename}}" class="btn btn-block btn-secondary">
                     {{#str}} dashboard, local_lpfmigrator {{/str}}
+                </a>
+            </td>
+            <td width="33%">
+                <a href="{{wwwroot}}/local/lpfmigrator/schedule.php#{{instancename}}" class="btn btn-block btn-secondary">
+                    {{#str}} schedule, local_lpfmigrator {{/str}}
                 </a>
             </td>
         </tr>
