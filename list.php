@@ -52,10 +52,11 @@ $presets = array(
     array('id' => 0, 'label' => 'stage|instancename|lpfgroup', 'sql' => 'ORDER BY stage ASC, instancename ASC, lpfgroup ASC'),
     array('id' => 1, 'label' => 'instancename|lpfgroup|stage', 'sql' => 'ORDER BY instancename ASC, lpfgroup ASC, stage ASC'),
     array('id' => 2, 'label' => 'lpfgroup|stage|instancename', 'sql' => 'ORDER BY lpfgroup ASC, stage ASC, instancename ASC'),
+    array('id' => 3, 'label' => 'path_data|stage|instancename', 'sql' => 'ORDER BY path_data ASC, stage ASC, instancename ASC'),
 );
 $preset = optional_param('preset', 0, PARAM_INT);
 $presets[$preset]['active'] = true;
-$sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,beo.lpfgroup,beo.categoryid
+$sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,lli.path_data,beo.lpfgroup,beo.categoryid
             FROM {local_lpfmigrator_instances} lli
             LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
             " . $presets[$preset]['sql'];

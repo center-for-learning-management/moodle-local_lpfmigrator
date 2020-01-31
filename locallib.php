@@ -145,6 +145,7 @@ class instance {
             'backupnr' => $backupnr,
             'comments' => $this->comments,
             'adminusers' => $this->adminusers,
+            'datasize' => $this->get_size(),
         );
     }
 
@@ -287,12 +288,24 @@ class instance {
      * Get scheduled backups.
      */
     public static function get_schedule() {
-        $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
-        $usefolder = $potentialfolders[0];
+        $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
             $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledbackups.txt'));
             return array_filter($lines);
         }
+    }
+    public function get_size() {
+        $usefolder = self::get_first_datadir();
+        if (!empty($usefolder)) {
+            $lines = array_filter(explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.txt')));
+            foreach ($lines AS $line) {
+                if (strpos($line, $this->path_data) > 0) {
+                    $x = explode("\t", $line);
+                    return $x[0];
+                }
+            }
+        }
+        return "-";
     }
     /**
      * Gets all potential stages and marks the current on with field "selected".
@@ -407,6 +420,8 @@ class instance {
         $tousers[] = array('firstname' => 'Julia', 'lastname' => 'Laßnig', 'email' => 'julia.lassnig@lernmangement.at');
         $tousers[] = array('firstname' => 'Robert', 'lastname' => 'Schrenk', 'email' => 'robert.schrenk@lernmanagement.at');
         foreach($tousers AS $u) {
+            // Make sure it is an array.
+            $u = (array) $u;
             $touser = new \stdClass();
             $touser->email = $u['email'];
             $touser->firstname = $u['firstname'];

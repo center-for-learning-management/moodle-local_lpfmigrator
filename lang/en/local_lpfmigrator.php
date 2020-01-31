@@ -37,6 +37,7 @@ $string['comments'] = 'Comments';
 $string['currently_off'] = 'Currently <strong>not</strong> activated';
 $string['currently_on'] = 'Currently activated';
 $string['datafolders'] = 'Paths of moodle-datadirs (delimited by comma)';
+$string['datasize'] = 'Datadir size';
 $string['dashboard'] = 'Dashboard';
 $string['decrease_stage_first'] = 'Decrease stage first';
 $string['details'] = 'Details';
