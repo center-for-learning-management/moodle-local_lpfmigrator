@@ -69,7 +69,7 @@ class instance {
             $this->path_backup = $rec->path_backup;
             $this->path_backup_pwd = $rec->path_backup_pwd;
             $this->comments = $rec->comments;
-            $this->adminusers = json_decode($rec->adminusers);
+            $this->adminusers = (array)json_decode($rec->adminusers);
         } else {
             $this->instancename = $instancename;
             $this->path_backup_pwd = substr(str_shuffle(strtolower(sha1(rand() . time() . "www.eduvidual.at"))), 0, 10);
