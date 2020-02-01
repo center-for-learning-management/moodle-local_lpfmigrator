@@ -97,6 +97,7 @@ class instance {
         } else {
             $o = $this->as_object();
             $o->adminusers = json_encode($o->adminusers, JSON_NUMERIC_CHECK);
+            $o->datasize = self::get_size($o->path_data, false);
             $DB->update_record('local_lpfmigrator_instances', $o);
         }
     }
