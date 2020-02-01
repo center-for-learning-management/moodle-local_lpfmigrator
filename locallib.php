@@ -145,7 +145,7 @@ class instance {
             'backupnr' => $backupnr,
             'comments' => $this->comments,
             'adminusers' => $this->adminusers,
-            'datasize' => $this->get_size(),
+            'datasize' => self::get_size($this->path_data),
         );
     }
 
@@ -294,14 +294,21 @@ class instance {
             return array_filter($lines);
         }
     }
-    public function get_size() {
+    /**
+     * Get the filesize on disc of a path_data.
+     */
+    public static function get_size($path_data) {
         $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
-            $lines = array_filter(explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.txt')));
+            $f = $usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.csv';
+            $c =  file_get_contents($f);
+            $lines = array_filter(explode("\n",$c));
             foreach ($lines AS $line) {
-                if (strpos($line, $this->path_data) > 0) {
-                    $x = explode("\t", $line);
-                    return $x[0];
+                if (strpos($line, $path_data) > 0) {
+                    $datasize = trim(str_replace($path_data, "", $line));
+                    global $DB;
+                    $DB->set_field('local_lpfmigrator_instances', 'datasize', $datasize, array('path_data' => $path_data));
+                    return $datasize;
                 }
             }
         }

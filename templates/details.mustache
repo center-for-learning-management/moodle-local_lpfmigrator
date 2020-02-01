@@ -50,7 +50,10 @@
                         </tr>
                         <tr>
                             <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
-                            <td><input type="text" value="{{path_data}}" name="path_data" /></td>
+                            <td>
+                                <input type="text" value="{{path_data}}" name="path_data" /><br />
+                                {{#str}} datasize, local_lpfmigrator {{/str}} {{datasize}}
+                            </td>
                         </tr>
                         <tr>
                             <th>{{#str}} path_web, local_lpfmigrator {{/str}}</th>
@@ -90,7 +93,7 @@
                     </tr>
                     <tr>
                         <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
-                        <td>{{path_data}}</td>
+                        <td>{{path_data}} ({{datasize}})</td>
                     </tr>
                     <tr>
                         <th>{{#str}} path_web, local_lpfmigrator {{/str}}</th>

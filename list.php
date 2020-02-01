@@ -53,6 +53,7 @@ $presets = array(
     array('id' => 1, 'label' => 'instancename|lpfgroup|stage', 'sql' => 'ORDER BY instancename ASC, lpfgroup ASC, stage ASC'),
     array('id' => 2, 'label' => 'lpfgroup|stage|instancename', 'sql' => 'ORDER BY lpfgroup ASC, stage ASC, instancename ASC'),
     array('id' => 3, 'label' => 'path_data|stage|instancename', 'sql' => 'ORDER BY path_data ASC, stage ASC, instancename ASC'),
+    //array('id' => 4, 'label' => 'path_data|datasize|instancename', 'sql' => 'ORDER BY path_data ASC, datasize ASC, instancename ASC'),
 );
 $preset = optional_param('preset', 0, PARAM_INT);
 $presets[$preset]['active'] = true;
@@ -64,6 +65,7 @@ $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,lli.path_data,beo.lpf
 $instances = array_values($DB->get_records_sql($sql, array()));
 foreach($instances AS &$instance) {
     $instance->stagelabel = get_string('stage_' . $instance->stage, 'local_lpfmigrator');
+    $instance->datasize = instance::get_size($instance->path_data);
 }
 echo $OUTPUT->render_from_template('local_lpfmigrator/list', array('instances' => $instances, 'presets' => $presets, 'wwwroot' => $CFG->wwwroot));
 
