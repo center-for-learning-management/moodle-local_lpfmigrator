@@ -18,7 +18,7 @@
         <FIELD NAME="path_web" TYPE="char" LENGTH="250" NOTNULL="false" SEQUENCE="false" COMMENT="Path to moodle-webdir"/>
         <FIELD NAME="comments" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="adminusers" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="datasize" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Size of moodle-datadir on disc"/>
+        <FIELD NAME="datasize" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Size of moodle-datadir on disc"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
