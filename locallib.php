@@ -145,7 +145,7 @@ class instance {
             'backupnr' => $backupnr,
             'comments' => $this->comments,
             'adminusers' => $this->adminusers,
-            'datasize' => self::get_size($this->path_data),
+            'datasize' => self::get_size($this->path_data, true),
         );
     }
 
@@ -297,7 +297,7 @@ class instance {
     /**
      * Get the filesize on disc of a path_data.
      */
-    public static function get_size($path_data) {
+    public static function get_size($path_data, $humanreadable=1) {
         $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
             $f = $usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.csv';
@@ -308,11 +308,16 @@ class instance {
                     $datasize = trim(str_replace($path_data, "", $line));
                     global $DB;
                     $DB->set_field('local_lpfmigrator_instances', 'datasize', $datasize, array('path_data' => $path_data));
-                    return $datasize;
+                    if ($humanreadable) return self::get_size_humanreadable($datasize, 0);
+                    else return $datasize;
                 }
             }
         }
         return "-";
+    }
+    public static function get_size_humanreadable($size, $precision = 2) {
+        for($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {}
+        return round($size, $precision).['B','kB','MB','GB','TB','PB','EB','ZB','YB'][$i];
     }
     /**
      * Gets all potential stages and marks the current on with field "selected".
