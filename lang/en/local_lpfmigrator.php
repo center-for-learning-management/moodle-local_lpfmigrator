@@ -33,6 +33,7 @@ $string['back_to_dashboard'] = 'Back to dashboard';
 $string['back_to_list'] = 'Back to list';
 $string['backups_off'] = 'Turn off backups';
 $string['backups_on'] = 'Turn on backups';
+$string['backupsize'] = 'Backupdir size';
 $string['comments'] = 'Comments';
 $string['currently_off'] = 'Currently <strong>not</strong> activated';
 $string['currently_on'] = 'Currently activated';

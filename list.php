@@ -65,10 +65,11 @@ $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,lli.path_data,beo.lpf
 $instances = array_values($DB->get_records_sql($sql, array()));
 foreach($instances AS &$instance) {
     $instance->stagelabel = get_string('stage_' . $instance->stage, 'local_lpfmigrator');
-    $instance->datasize = instance::get_size($instance->path_data, true);
+    $sizes = instance::get_sizes($instance);
+    $instance->datasize_hr = instance::get_size_humanreadable($sizes->datasize, 0);
+    $instance->backupsize_hr = instance::get_size_humanreadable($sizes->backupsize, 0);
 }
 echo $OUTPUT->render_from_template('local_lpfmigrator/list', array('instances' => $instances, 'presets' => $presets, 'wwwroot' => $CFG->wwwroot));
-
 echo $OUTPUT->footer();
 
 instance::external_db_closeall();

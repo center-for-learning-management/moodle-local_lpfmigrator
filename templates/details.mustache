@@ -52,7 +52,7 @@
                             <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
                             <td>
                                 <input type="text" value="{{path_data}}" name="path_data" /><br />
-                                {{#str}} datasize, local_lpfmigrator {{/str}} {{datasize}}
+                                {{#str}} datasize, local_lpfmigrator {{/str}} {{datasize_hr}}
                             </td>
                         </tr>
                         <tr>
@@ -61,7 +61,10 @@
                         </tr>
                         <tr>
                             <th>{{#str}} path_backup, local_lpfmigrator {{/str}}</th>
-                            <td><input type="text" value="{{path_backup}}" name="path_backup" /></td>
+                            <td>
+                                <input type="text" value="{{path_backup}}" name="path_backup" /><br />
+                                {{#str}} backupsize, local_lpfmigrator {{/str}} {{backupsize_hr}}
+                            </td>
                         </tr>
                         <tr>
                             <th>{{#str}} stage, local_lpfmigrator {{/str}}</th>

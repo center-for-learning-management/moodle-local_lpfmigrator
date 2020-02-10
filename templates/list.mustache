@@ -34,6 +34,7 @@
                 <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
                 <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
                 <th>{{#str}} datasize, local_lpfmigrator {{/str}}</th>
+                <th>{{#str}} backupsize, local_lpfmigrator {{/str}}</th>
                 <th>{{#str}} action {{/str}}</th>
                 <th>eduvidual</th>
             </tr>
@@ -46,7 +47,8 @@
                     <td>{{lpfgroup}}</td>
                     <td>{{orgid}}</td>
                     <td>{{path_data}}</td>
-                    <td>{{datasize}}</td>
+                    <td>{{datasize_hr}}</td>
+                    <td>{{backupsize_hr}}</td>
                     <td>
                         <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" name="{{instancename}}">
                             {{#str}} details, local_lpfmigrator {{/str}}

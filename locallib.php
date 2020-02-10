@@ -40,6 +40,9 @@ class instance {
     const STAGE_SEND_AUTHINFO = 8;
     const STAGE_COMPLETED = 9;
 
+    private $backupsize = '';
+    private $comments = '';
+    private $datasize = '';
     private $dbname = '';
     private $host = '';
     private $id = 0;
@@ -58,17 +61,19 @@ class instance {
         global $DB;
         $rec = $DB->get_record('local_lpfmigrator_instances', array('instancename' => $instancename));
         if (!empty($rec->id)) {
-            $this->id = $rec->id;
-            $this->host = $rec->host;
+            $this->backupsize = $rec->backupsize;
+            $this->comments = $rec->comments;
+            $this->datasize = $rec->datasize;
             $this->dbname = $rec->dbname;
+            $this->id = $rec->id;
             $this->instancename = $instancename;
-            $this->stage = $rec->stage;
+            $this->host = $rec->host;
             $this->orgid = $rec->orgid;
             $this->path_data = $rec->path_data;
             $this->path_web = $rec->path_web;
             $this->path_backup = $rec->path_backup;
             $this->path_backup_pwd = $rec->path_backup_pwd;
-            $this->comments = $rec->comments;
+            $this->stage = $rec->stage;
             $this->adminusers = (array)json_decode($rec->adminusers);
         } else {
             $this->instancename = $instancename;
@@ -92,12 +97,14 @@ class instance {
             $serverno = ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4;
             $this->path_web = 'https://www' . $serverno . '.lernplattform.schule.at/' . $this->instancename;
         }
+        self::get_sizes($this, false);
         if (empty($this->id)) {
             $this->id = $DB->insert_record('local_lpfmigrator_instances', $this->as_object());
         } else {
             $o = $this->as_object();
             $o->adminusers = json_encode($o->adminusers, JSON_NUMERIC_CHECK);
-            $o->datasize = self::get_size($o->path_data, false);
+            $o->datasize = $this->datasize;
+            $o->backupsize = $this->backupsize;
             $DB->update_record('local_lpfmigrator_instances', $o);
         }
     }
@@ -131,22 +138,25 @@ class instance {
         if (substr($this->path_backup, 0, 13) == '/data/moodle4') $backupnr = 4;
         if (substr($this->path_backup, 0, 13) == '/data/moodle5') $backupnr = 5;
         return (object) array(
+            'adminusers' => $this->adminusers,
+            'backupnr' => $backupnr,
+            'backupsize' => $this->backupsize,
+            'backupsize_hr' => self::get_size_humanreadable($this->backupsize, 0),
+            'comments' => $this->comments,
+            'datasize' => $this->datasize,
+            'datasize_hr' => self::get_size_humanreadable($this->datasize, 0),
+            'dbname' => $this->dbname,
+            'host' => $this->host,
             'id' => $this->id,
             'instancename' => $this->instancename,
-            'host' => $this->host,
-            'dbname' => $this->dbname,
-            'stage' => $this->stage,
-            'orgid' => $this->orgid,
             'lpfgroup' => $this->lpfgroup,
+            'orgid' => $this->orgid,
             'path_data' => $this->path_data,
             'path_web' => $this->path_web,
             'path_backup' => $this->path_backup,
             'path_backup_pwd' => $this->path_backup_pwd,
             'servernr' => ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4,
-            'backupnr' => $backupnr,
-            'comments' => $this->comments,
-            'adminusers' => $this->adminusers,
-            'datasize' => self::get_size($this->path_data, true),
+            'stage' => $this->stage,
         );
     }
 
@@ -297,26 +307,32 @@ class instance {
     }
     /**
      * Get the filesize on disc of a path_data.
+     * @param o the instance-object, at least path_data and path_backup.
      */
-    public static function get_size($path_data, $humanreadable=1) {
+    public static function get_sizes(&$o) {
+        global $DB;
         $usefolder = self::get_first_datadir();
+        //$o = (object) array('backupsize' => $o->backupsize, 'datasize' => $o->datasize);
         if (!empty($usefolder)) {
             $f = $usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.csv';
             $c =  file_get_contents($f);
             $lines = array_filter(explode("\n",$c));
             foreach ($lines AS $line) {
-                if (strpos($line, $path_data) > 0) {
-                    $datasize = trim(str_replace($path_data, "", $line));
-                    global $DB;
-                    $DB->set_field('local_lpfmigrator_instances', 'datasize', $datasize, array('path_data' => $path_data));
-                    if ($humanreadable) return self::get_size_humanreadable($datasize, 0);
-                    else return $datasize;
+                $l = explode("\t", $line);
+                if (count($l) > 1 && trim($l[1]) == $o->path_data) {
+                    $o->datasize = trim($l[0]);
+                    $DB->set_field('local_lpfmigrator_instances', 'datasize', $o->datasize, array('path_data' => $o->path_data));
+                }
+                if (count($l) > 1 && trim($l[1]) == $o->path_backup) {
+                    $o->backupsize = trim($l[0]);
+                    $DB->set_field('local_lpfmigrator_instances', 'backupsize', $o->backupsize, array('path_backup' => $o->path_backup));
                 }
             }
         }
-        return "-";
+        return $o;
     }
     public static function get_size_humanreadable($size, $precision = 2) {
+        if (empty($size)) return '-';
         for($i = 0; ($size / 1024) > 0.9; $i++, $size /= 1024) {}
         return round($size, $precision).['B','kB','MB','GB','TB','PB','EB','ZB','YB'][$i];
     }
