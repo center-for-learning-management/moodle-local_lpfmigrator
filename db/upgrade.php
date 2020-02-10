@@ -53,7 +53,15 @@ function xmldb_local_lpfmigrator_upgrade($oldversion) {
     }
     if ($oldversion < 2020020100) {
         $table = new xmldb_table('local_lpfmigrator_instances');
-        $field = new xmldb_field('datasize', XMLDB_TYPE_INT, '10', null, null, null, null, 'adminusers');
+        $field = new xmldb_field('datasize', XMLDB_TYPE_INT, '20', null, null, null, null, 'adminusers');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+    }
+    if ($oldversion < 2020021000) {
+        $table = new xmldb_table('local_lpfmigrator_instances');
+        $field = new xmldb_field('backupsize', XMLDB_TYPE_INT, '20', null, null, null, null, 'datasize');
 
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
