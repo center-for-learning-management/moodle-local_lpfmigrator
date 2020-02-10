@@ -97,6 +97,9 @@ class instance {
             $serverno = ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4;
             $this->path_web = 'https://www' . $serverno . '.lernplattform.schule.at/' . $this->instancename;
         }
+        if (empty($this->backupsize)) {
+            $this->get_size_backup();
+        }
         if (empty($this->id)) {
             $this->id = $DB->insert_record('local_lpfmigrator_instances', $this->as_object());
         } else {
@@ -302,6 +305,26 @@ class instance {
         if (!empty($usefolder)) {
             $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledbackups.txt'));
             return array_filter($lines);
+        }
+    }
+    /**
+     * Determine size of a backup directly from filesystem.
+     * This is a fallback-function and is only used if we have a backup path
+     * but no backupsize.
+     */
+    public function get_size_backup() {
+        if (empty($this->path_backup) || !is_dir($this->path_backup)) return;
+        $iterator = new \RecursiveIteratorIterator(
+                            new \RecursiveDirectoryIterator($this->path_backup)
+                        );
+        $totalSize = 0;
+        foreach ($iterator AS $file) {
+            $totalSize += $file->getSize();
+        }
+        if ($totalSize > 0) {
+            global $DB;
+            $this->backupsize = $totalSize;
+            $DB->set_field('local_lpfmigrator_instances', 'backupsize', $totalSize, array('id' => $this->id));
         }
     }
     /**
