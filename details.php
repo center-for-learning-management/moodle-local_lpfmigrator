@@ -56,6 +56,8 @@ if (!$instance->can_manage_instance()) {
 }
 
 if (is_siteadmin()) {
+    // Update path sizes.
+    instance::get_sizes();
     // Check for modified data.
     $orgid = optional_param('orgid', -1, PARAM_INT);
     $lpfgroup = optional_param('lpfgroup', '-', PARAM_ALPHANUM);

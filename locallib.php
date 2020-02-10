@@ -97,7 +97,6 @@ class instance {
             $serverno = ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4;
             $this->path_web = 'https://www' . $serverno . '.lernplattform.schule.at/' . $this->instancename;
         }
-        self::get_sizes($this, false);
         if (empty($this->id)) {
             $this->id = $DB->insert_record('local_lpfmigrator_instances', $this->as_object());
         } else {
@@ -306,30 +305,23 @@ class instance {
         }
     }
     /**
-     * Get the filesize on disc of a path_data.
-     * @param o the instance-object, at least path_data and path_backup.
+     * Get the filesize on disc of paths and store to db.
      */
-    public static function get_sizes(&$o) {
+    public static function get_sizes() {
         global $DB;
         $usefolder = self::get_first_datadir();
-        //$o = (object) array('backupsize' => $o->backupsize, 'datasize' => $o->datasize);
         if (!empty($usefolder)) {
             $f = $usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.csv';
-            $c =  file_get_contents($f);
+            $c = file_get_contents($f);
             $lines = array_filter(explode("\n",$c));
             foreach ($lines AS $line) {
                 $l = explode("\t", $line);
-                if (count($l) > 1 && trim($l[1]) == $o->path_data) {
-                    $o->datasize = trim($l[0]);
-                    $DB->set_field('local_lpfmigrator_instances', 'datasize', $o->datasize, array('path_data' => $o->path_data));
-                }
-                if (count($l) > 1 && trim($l[1]) == $o->path_backup) {
-                    $o->backupsize = trim($l[0]);
-                    $DB->set_field('local_lpfmigrator_instances', 'backupsize', $o->backupsize, array('path_backup' => $o->path_backup));
-                }
+                $path = trim($l[1]);
+                $size = trim($l[0]);
+                $DB->set_field('local_lpfmigrator_instances', 'datasize', $size, array('path_data' => $data));
+                $DB->set_field('local_lpfmigrator_instances', 'backupsize', $size, array('path_backup' => $path));
             }
         }
-        return $o;
     }
     public static function get_size_humanreadable($size, $precision = 2) {
         if (empty($size)) return '-';

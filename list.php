@@ -48,6 +48,9 @@ if (!is_siteadmin()) {
     die();
 }
 
+// Update path sizes.
+instance::get_sizes();
+
 $presets = array(
     array('id' => 0, 'label' => 'stage|instancename|lpfgroup', 'sql' => 'ORDER BY stage ASC, instancename ASC, lpfgroup ASC'),
     array('id' => 1, 'label' => 'instancename|lpfgroup|stage', 'sql' => 'ORDER BY instancename ASC, lpfgroup ASC, stage ASC'),
@@ -57,7 +60,7 @@ $presets = array(
 );
 $preset = optional_param('preset', 0, PARAM_INT);
 $presets[$preset]['active'] = true;
-$sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,lli.path_data,beo.lpfgroup,beo.categoryid
+$sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,lli.path_data,beo.lpfgroup,beo.categoryid,lli.datasize,lli.backupsize
             FROM {local_lpfmigrator_instances} lli
             LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
             " . $presets[$preset]['sql'];
@@ -65,9 +68,8 @@ $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,lli.path_data,beo.lpf
 $instances = array_values($DB->get_records_sql($sql, array()));
 foreach($instances AS &$instance) {
     $instance->stagelabel = get_string('stage_' . $instance->stage, 'local_lpfmigrator');
-    $sizes = instance::get_sizes($instance);
-    $instance->datasize_hr = instance::get_size_humanreadable($sizes->datasize, 0);
-    $instance->backupsize_hr = instance::get_size_humanreadable($sizes->backupsize, 0);
+    $instance->datasize_hr = instance::get_size_humanreadable($instance->datasize, 0);
+    $instance->backupsize_hr = instance::get_size_humanreadable($instance->backupsize, 0);
 }
 echo $OUTPUT->render_from_template('local_lpfmigrator/list', array('instances' => $instances, 'presets' => $presets, 'wwwroot' => $CFG->wwwroot));
 echo $OUTPUT->footer();
