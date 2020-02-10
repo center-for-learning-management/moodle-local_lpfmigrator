@@ -58,6 +58,8 @@ if (!$instance->can_manage_instance()) {
 if (is_siteadmin()) {
     // Update path sizes.
     instance::get_sizes();
+    // Get Backup-size directly from filesystem.
+    $instance->get_size_backup();
     // Check for modified data.
     $orgid = optional_param('orgid', -1, PARAM_INT);
     $lpfgroup = optional_param('lpfgroup', '-', PARAM_ALPHANUM);
