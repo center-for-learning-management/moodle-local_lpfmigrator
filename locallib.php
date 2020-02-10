@@ -537,13 +537,13 @@ class instance {
         global $CFG, $OUTPUT;
         $instanceo = $this->as_object();
         $tousers = $this->adminusers;
-        $tousers[] = array('firstname' => 'Julia', 'lastname' => 'Laßnig', 'email' => 'julia.lassnig@lernmangement.at');
-        $tousers[] = array('firstname' => 'Robert', 'lastname' => 'Schrenk', 'email' => 'robert.schrenk@lernmanagement.at');
+        $tousers[] = (object) array('firstname' => 'Julia', 'lastname' => 'Laßnig', 'email' => 'julia.lassnig@lernmangement.at');
+        $tousers[] = (object) array('firstname' => 'Robert', 'lastname' => 'Schrenk', 'email' => 'robert.schrenk@lernmanagement.at');
         foreach($tousers AS $u) {
             $touser = new \stdClass();
-            $touser->email = $u['email'];
-            $touser->firstname = $u['firstname'];
-            $touser->lastname = $u['lastname'];
+            $touser->email = $u->email;
+            $touser->firstname = $u->firstname;
+            $touser->lastname = $u->lastname;
             $touser->maildisplay = true;
             $touser->mailformat = 1; // 0 (zero) text-only emails, 1 (one) for HTML/Text emails.
             $touser->id = -99; // invalid userid, as the user has no userid in our moodle.
