@@ -185,6 +185,25 @@ class instance {
         }
     }
     /**
+     * Remove all files in a directory.
+     */
+    private function clean_dir($path) {
+        if (is_dir($path)) $dir_handle = opendir($path);
+        else return false;
+        while($file = readdir($dir_handle)) {
+            if ($file != "." && $file != "..") {
+                if (!is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+                    unlink($path . DIRECTORY_SEPARATOR . $file);
+                } else {
+                    $this->clean_dir($path . DIRECTORY_SEPARATOR . $file);
+                }
+            }
+        }
+        closedir($dir_handle);
+        rmdir($path);
+        return true;
+    }
+    /**
      * Gets or sets comments.
      */
     public function comments($comments = "") {
@@ -600,6 +619,7 @@ class instance {
         $DB->set_field('local_lpfmigrator_instances', 'path_backup', $this->path_backup, array('instancename' => $this->instancename));
         $con = instance::external_db_open($this->instancename);
         if (!empty($to)) {
+            $this->clean_dir($this->path_backup);
             $fields = array(
                 'backup_auto_active' => 1,
                 'backup_auto_weekdays' => 1111111,
