@@ -187,7 +187,7 @@ class instance {
     /**
      * Remove all files in a directory.
      */
-    private function clean_dir($path) {
+    private function clean_dir($path, $isparent = true) {
         if (is_dir($path)) $dir_handle = opendir($path);
         else return false;
         while($file = readdir($dir_handle)) {
@@ -195,12 +195,12 @@ class instance {
                 if (!is_dir($path . DIRECTORY_SEPARATOR . $file)) {
                     unlink($path . DIRECTORY_SEPARATOR . $file);
                 } else {
-                    $this->clean_dir($path . DIRECTORY_SEPARATOR . $file);
+                    $this->clean_dir($path . DIRECTORY_SEPARATOR . $file, false);
                 }
             }
         }
         closedir($dir_handle);
-        rmdir($path);
+        if (!$isparent) rmdir($path);
         return true;
     }
     /**
