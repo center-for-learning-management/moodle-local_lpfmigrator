@@ -187,7 +187,7 @@ class instance {
     /**
      * Remove all files in a directory.
      */
-    private function clean_dir($path, $isparent = true) {
+    public function clean_dir($path, $isparent = true) {
         if (is_dir($path)) $dir_handle = opendir($path);
         else return false;
         while($file = readdir($dir_handle)) {
@@ -315,6 +315,12 @@ class instance {
         if (!empty($usefolder)) {
             return $usefolder;
         }
+    }
+    /**
+     * Return the current path_backup.
+     */
+    public function get_path_backup() {
+        return $this->path_backup;
     }
     /**
      * Get scheduled backups.
