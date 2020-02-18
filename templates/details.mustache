@@ -37,88 +37,56 @@
                 </ul></td>
             </tr>
             {{#editable}}
-                {{^sealed}}
-                    <form action="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="id" value="{{id}}" />
-                        <tr>
-                            <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
-                            <td><input type="text" value="{{orgid}}" name="orgid" /></td>
-                        </tr>
-                        <tr>
-                            <th>{{#str}} lpfgroup, local_lpfmigrator {{/str}}</th>
-                            <td><input type="text" value="{{lpfgroup}}" name="lpfgroup" /></td>
-                        </tr>
-                        <tr>
-                            <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
-                            <td>
-                                <input type="text" value="{{path_data}}" name="path_data" /><br />
-                                {{#str}} datasize, local_lpfmigrator {{/str}} {{datasize_hr}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{#str}} path_web, local_lpfmigrator {{/str}}</th>
-                            <td><input type="text" value="{{path_web}}" name="path_web" /></td>
-                        </tr>
-                        <tr>
-                            <th>{{#str}} path_backup, local_lpfmigrator {{/str}}</th>
-                            <td>
-                                <input type="text" value="{{path_backup}}" name="path_backup" /><br />
-                                {{#str}} backupsize, local_lpfmigrator {{/str}} {{backupsize_hr}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{#str}} stage, local_lpfmigrator {{/str}}</th>
-                            <td>
-                                <select name="stage">
-                                    {{#stages}}
-                                    <option value="{{value}}" {{#selected}} selected="selected" {{/selected}}>{{label}}</option>
-                                    {{/stages}}
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{{#str}} auth, local_lpfmigrator {{/str}}</th>
-                            <td>{{instancename}}:{{path_backup_pwd}}</td>
-                        </tr>
-                        <tr>
-                            <th>{{#str}} comments, local_lpfmigrator {{/str}}</th>
-                            <td><textarea name="comments" style="width: 100%; height: 4em;">{{comments}}</textarea></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><input type="submit" value="{{#str}} save {{/str}}" class="btn btn-primary btn-block" /></td>
-                        </tr>
-                    </form>
-                {{/sealed}}
-                {{#sealed}}
+                <form action="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="{{id}}" />
                     <tr>
                         <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
-                        <td>{{orgid}}</td>
+                        <td><input type="text" value="{{orgid}}" name="orgid" /></td>
+                    </tr>
+                    <tr>
+                        <th>{{#str}} lpfgroup, local_lpfmigrator {{/str}}</th>
+                        <td><input type="text" value="{{lpfgroup}}" name="lpfgroup" /></td>
                     </tr>
                     <tr>
                         <th>{{#str}} path_data, local_lpfmigrator {{/str}}</th>
-                        <td>{{path_data}} ({{datasize_hr}})</td>
+                        <td>
+                            <input type="text" value="{{path_data}}" name="path_data" /><br />
+                            {{#str}} datasize, local_lpfmigrator {{/str}} {{datasize_hr}}
+                        </td>
                     </tr>
                     <tr>
                         <th>{{#str}} path_web, local_lpfmigrator {{/str}}</th>
-                        <td>{{path_web}}</td>
+                        <td><input type="text" value="{{path_web}}" name="path_web" /></td>
                     </tr>
                     <tr>
                         <th>{{#str}} path_backup, local_lpfmigrator {{/str}}</th>
-                        <td>{{path_backup}} ({{backupsize_hr}})</td>
+                        <td>
+                            <input type="text" value="{{path_backup}}" name="path_backup" /><br />
+                            {{#str}} backupsize, local_lpfmigrator {{/str}} {{backupsize_hr}}
+                        </td>
                     </tr>
                     <tr>
                         <th>{{#str}} stage, local_lpfmigrator {{/str}}</th>
                         <td>
-                            {{#stages}}{{#selected}}
-                            {{value}} {{label}}
-                            {{/selected}}{{/stages}}
+                            <select name="stage">
+                                {{#stages}}
+                                <option value="{{value}}" {{#selected}} selected="selected" {{/selected}}>{{label}}</option>
+                                {{/stages}}
+                            </select>
                         </td>
                     </tr>
                     <tr>
                         <th>{{#str}} auth, local_lpfmigrator {{/str}}</th>
                         <td>{{instancename}}:{{path_backup_pwd}}</td>
                     </tr>
-                {{/sealed}}
+                    <tr>
+                        <th>{{#str}} comments, local_lpfmigrator {{/str}}</th>
+                        <td><textarea name="comments" style="width: 100%; height: 4em;">{{comments}}</textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="{{#str}} save {{/str}}" class="btn btn-primary btn-block" /></td>
+                    </tr>
+                </form>
             {{/editable}}
             {{^editable}}
             <tr>
