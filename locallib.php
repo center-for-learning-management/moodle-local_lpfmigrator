@@ -486,6 +486,7 @@ class instance {
     public function notify_admins() {
         global $CFG, $OUTPUT;
         $tousers = $this->adminusers;
+        $tousers[] = array('firstname' => 'Center for', 'lastname' => 'Learningmanagement', 'email' => 'support@lernmangement.at');
         $tousers[] = array('firstname' => 'Julia', 'lastname' => 'Laßnig', 'email' => 'julia.lassnig@lernmangement.at');
         $tousers[] = array('firstname' => 'Robert', 'lastname' => 'Schrenk', 'email' => 'robert.schrenk@lernmanagement.at');
         foreach($tousers AS $u) {
