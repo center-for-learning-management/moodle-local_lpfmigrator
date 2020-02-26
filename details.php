@@ -121,6 +121,7 @@ if (is_siteadmin()) {
     if (!empty($maintenance) && $instance->stage() == instance::STAGE_MAINTENANCE) {
         $to = ($maintenance == 'on');
         $instance->set_maintenance_mode($to);
+        $instance->refresh_cache();
         if ($to) $instance->stage(instance::STAGE_BACKUPS);
         $changed[] = get_string('stage_' . instance::STAGE_MAINTENANCE, 'local_lpfmigrator');
     }
@@ -128,6 +129,7 @@ if (is_siteadmin()) {
     if (!empty($backups) && $instance->stage() == instance::STAGE_BACKUPS) {
         $to = ($backups == 'on');
         $instance->set_backup_config($to);
+        $instance->refresh_cache();
         if ($to) $instance->stage(instance::STAGE_REVIEWED);
         $changed[] = get_string('stage_' . instance::STAGE_BACKUPS, 'local_lpfmigrator');
     }

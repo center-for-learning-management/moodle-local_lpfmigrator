@@ -562,6 +562,25 @@ class instance {
         return $this->path_web;
     }
     /**
+     * Refresh cache of an instance.
+     **/
+    public function refresh_cache() {
+        $url = $this->wwwroot . '/index.php?secretpurge=1029384756';
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt ($curl, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'api');
+        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_FORBID_REUSE, true);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 1);
+        curl_setopt($curl, CURLOPT_DNS_CACHE_TIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_FRESH_CONNECT, true);
+        curl_exec($curl);
+        curl_close($curl);
+    }
+    /**
      * Remove the database.
      */
     public function remove_database() {
