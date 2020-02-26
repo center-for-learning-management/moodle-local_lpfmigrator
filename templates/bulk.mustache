@@ -21,20 +21,20 @@
         <label>
             <input type="checkbox" name="reallydo" />
             Check this to really do it. If not checked we will only simulate.
-        </label>
+        </label><br />
         <label for="{{uniqid}}-lpfgroup">LPF-Group</label>
         <select name="lpfgroup" id="{{uniqid}}-lpfgroup">
             <option>C</option>
             <option>B</option>
             <option>A</option>
-        </select>
+        </select><br />
         <label for="{{uniqid}}-stage">Stage</label>
         <select name="stage" id="{{uniqid}}-stage">
             <option value="1">{{#str}} stage_1, local_lpfmigrator {{/str}}</option>
             <option value="2">{{#str}} stage_2, local_lpfmigrator {{/str}}</option>
             <option value="3">{{#str}} stage_3, local_lpfmigrator {{/str}}</option>
             <option value="4">{{#str}} stage_4, local_lpfmigrator {{/str}}</option>
-        </select>
+        </select><br />
         <input type="submit" value="{{#str}} submit {{/str}}" />
     </form>
 </div>

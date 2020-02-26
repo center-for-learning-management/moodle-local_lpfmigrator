@@ -90,14 +90,14 @@ class instance {
 
         if (empty($this->path_data)) {
             // Determine the moodle-datadir.
-            $this->path_data = self::get_datadir($instancename);
+            //$this->path_data = self::get_datadir($instancename);
         }
         if (empty($this->path_web)) {
             // We make an educated guess. Sometimes this does not work.
             $serverno = ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4;
             $this->path_web = 'https://www' . $serverno . '.lernplattform.schule.at/' . $this->instancename;
         }
-        if (empty($this->backupsize)) {
+        if (empty($this->backupsize) && !empty($this->path_backup)) {
             $this->get_size_backup();
         }
         if (empty($this->id)) {

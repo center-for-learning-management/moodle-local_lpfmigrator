@@ -55,6 +55,12 @@ $movetostage = optional_param('stage', '', PARAM_INT);
 $reallydo = optional_param('reallydo', '', PARAM_BOOL);
 
 if (!empty($movegroup) && !empty($movetostage)) {
+    if (empty($reallydo)) {
+        echo "<p class=\"alert alert-warning\">This is a dry-run</p>";
+    } else {
+        echo "<p class=\"alert alert-danger\">WE REALLY DO THIS!</p>";
+    }
+
     $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,lli.path_data,beo.lpfgroup,beo.categoryid,lli.datasize,lli.backupsize
                 FROM {local_lpfmigrator_instances} lli
                 LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
@@ -84,7 +90,7 @@ if (!empty($movegroup) && !empty($movetostage)) {
         <?php
         $instance = $instance = new instance($inst->instancename);
         $reloadcache = false;
-        for ($a = 1; $a < $movetostage && $a < 10; $a++) {
+        for ($a = 1; $a < $movetostage; $a++) {
             ?>
             <td>
             <?php
