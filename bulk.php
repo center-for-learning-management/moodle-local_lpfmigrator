@@ -91,7 +91,7 @@ if (!empty($movegroup) && !empty($movetostage)) {
         <tr>
             <td><?php echo $inst->instancename; ?></td>
         <?php
-        $instance = $instance = new instance($inst->instancename);
+        $instance = new instance($inst->instancename);
         $reloadcache = false;
         for ($a = 1; $a <= $movetostage; $a++) {
             ?>
