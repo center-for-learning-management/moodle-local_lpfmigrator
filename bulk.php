@@ -48,11 +48,14 @@ if (!is_siteadmin()) {
     die();
 }
 
-echo $OUTPUT->render_from_template('local_lpfmigrator/bulk', array());
-
 $movegroup = optional_param('lpfgroup', '', PARAM_ALPHANUM);
 $movetostage = optional_param('stage', '', PARAM_INT);
 $reallydo = optional_param('reallydo', '', PARAM_BOOL);
+
+echo $OUTPUT->render_from_template('local_lpfmigrator/bulk', array(
+    'movetogroup' . $movetogroup => true,
+    'movetostage' . $movetostage => true,
+));
 
 if (!empty($movegroup) && !empty($movetostage)) {
     if (empty($reallydo)) {
@@ -73,7 +76,7 @@ if (!empty($movegroup) && !empty($movetostage)) {
             <tr>
                 <th>Instance</th>
                 <?php
-                for ($a = 1; $a < $movetostage; $a++) {
+                for ($a = 1; $a <= $movetostage; $a++) {
                     ?><th><?php echo get_string('stage_' . $a, 'local_lpfmigrator'); ?></th><?php
                 }
                 ?>
@@ -90,11 +93,11 @@ if (!empty($movegroup) && !empty($movetostage)) {
         <?php
         $instance = $instance = new instance($inst->instancename);
         $reloadcache = false;
-        for ($a = 1; $a < $movetostage; $a++) {
+        for ($a = 1; $a <= $movetostage; $a++) {
             ?>
             <td>
             <?php
-            if ($instance->stage() < $a) {
+            if ($instance->stage() <= $a) {
                 switch ($a) {
                     case instance::STAGE_NOTIFY_ADMINS:
                         if ($reallydo) {

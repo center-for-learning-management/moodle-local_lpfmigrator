@@ -24,16 +24,16 @@
         </label><br />
         <label for="{{uniqid}}-lpfgroup">LPF-Group</label>
         <select name="lpfgroup" id="{{uniqid}}-lpfgroup">
-            <option>C</option>
-            <option>B</option>
-            <option>A</option>
+            <option{{#movetogroupC}} selected="selected" {{/movetogroupC}}>C</option>
+            <option{{#movetogroupB}} selected="selected" {{/movetogroupB}}>B</option>
+            <option{{#movetogroupA}} selected="selected" {{/movetogroupA}}>A</option>
         </select><br />
         <label for="{{uniqid}}-stage">Stage</label>
         <select name="stage" id="{{uniqid}}-stage">
-            <option value="1">{{#str}} stage_1, local_lpfmigrator {{/str}}</option>
-            <option value="2">{{#str}} stage_2, local_lpfmigrator {{/str}}</option>
-            <option value="3">{{#str}} stage_3, local_lpfmigrator {{/str}}</option>
-            <option value="4">{{#str}} stage_4, local_lpfmigrator {{/str}}</option>
+            <option value="1"{{#movetostage1}} selected="selected" {{/movetostage1}}>{{#str}} stage_1, local_lpfmigrator {{/str}}</option>
+            <option value="2"{{#movetostage2}} selected="selected" {{/movetostage2}}>{{#str}} stage_2, local_lpfmigrator {{/str}}</option>
+            <option value="3"{{#movetostage3}} selected="selected" {{/movetostage3}}>{{#str}} stage_3, local_lpfmigrator {{/str}}</option>
+            <option value="4"{{#movetostage4}} selected="selected" {{/movetostage4}}>{{#str}} stage_4, local_lpfmigrator {{/str}}</option>
         </select><br />
         <input type="submit" value="{{#str}} submit {{/str}}" />
     </form>
