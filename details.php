@@ -56,10 +56,6 @@ if (!$instance->can_manage_instance()) {
 }
 
 if (is_siteadmin()) {
-    // Update path sizes.
-    instance::get_sizes();
-    // Get Backup-size directly from filesystem.
-    $instance->get_size_backup();
     // Check for modified data.
     $orgid = optional_param('orgid', -1, PARAM_INT);
     $lpfgroup = optional_param('lpfgroup', '-', PARAM_ALPHANUM);
@@ -176,9 +172,15 @@ $instanceo = $instance->as_object();
 $instanceo->adminusers = $instance->adminusers();
 $instanceo->editable = is_siteadmin();
 $instanceo->stages = instance::get_stages($instance);
-$instanceo->courses_remote = $instance->get_amount_courses_remote();
-$instanceo->courses_backup = $instance->get_amount_courses_backup();
-$instanceo->courses_equals = ($instanceo->courses_remote == $instanceo->courses_backup);
+if ($instance->stage > local_lpfmigrator\instance::STAGE_BACKUPS) {
+    // Update path sizes.
+    instance::get_sizes();
+    // Get Backup-size directly from filesystem.
+    $instance->get_size_backup();
+    $instanceo->courses_remote = $instance->get_amount_courses_remote();
+    $instanceo->courses_backup = $instance->get_amount_courses_backup();
+    $instanceo->courses_equals = ($instanceo->courses_remote == $instanceo->courses_backup);
+}
 $instanceo->has_backup_log = !empty($instance->get_backup_log());
 $instanceo->has_backups_enabled = $instance->has_backups_enabled();
 $instanceo->has_maintenance_enabled = $instance->has_maintenance_enabled();
