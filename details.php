@@ -172,7 +172,7 @@ $instanceo = $instance->as_object();
 $instanceo->adminusers = $instance->adminusers();
 $instanceo->editable = is_siteadmin();
 $instanceo->stages = instance::get_stages($instance);
-if ($instance->stage > local_lpfmigrator\instance::STAGE_BACKUPS) {
+if ($instance->stage() > local_lpfmigrator\instance::STAGE_BACKUPS) {
     // Update path sizes.
     instance::get_sizes();
     // Get Backup-size directly from filesystem.

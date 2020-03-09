@@ -49,7 +49,7 @@ if (!is_siteadmin()) {
 }
 
 // Update path sizes.
-instance::get_sizes();
+//instance::get_sizes();
 
 $presets = array(
     array('id' => 0, 'label' => 'stage|instancename|lpfgroup', 'sql' => 'ORDER BY stage ASC, instancename ASC, lpfgroup ASC'),
