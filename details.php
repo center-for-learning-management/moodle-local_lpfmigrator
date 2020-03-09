@@ -172,7 +172,7 @@ $instanceo = $instance->as_object();
 $instanceo->adminusers = $instance->adminusers();
 $instanceo->editable = is_siteadmin();
 $instanceo->stages = instance::get_stages($instance);
-if ($instance->stage() > local_lpfmigrator\instance::STAGE_BACKUPS) {
+if ($instance->stage() > instance::STAGE_BACKUPS) {
     // Update path sizes.
     instance::get_sizes();
     // Get Backup-size directly from filesystem.
@@ -180,8 +180,9 @@ if ($instance->stage() > local_lpfmigrator\instance::STAGE_BACKUPS) {
     $instanceo->courses_remote = $instance->get_amount_courses_remote();
     $instanceo->courses_backup = $instance->get_amount_courses_backup();
     $instanceo->courses_equals = ($instanceo->courses_remote == $instanceo->courses_backup);
+    $instanceo->has_backup_log = !empty($instance->get_backup_log());
 }
-$instanceo->has_backup_log = !empty($instance->get_backup_log());
+
 $instanceo->has_backups_enabled = $instance->has_backups_enabled();
 $instanceo->has_maintenance_enabled = $instance->has_maintenance_enabled();
 $instanceo->has_notifyusers_enabled = $instance->has_notifyusers_enabled();
