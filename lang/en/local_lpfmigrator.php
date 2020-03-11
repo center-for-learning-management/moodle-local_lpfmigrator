@@ -45,6 +45,7 @@ $string['dashboard'] = 'Dashboard';
 $string['decrease_stage_first'] = 'Decrease stage first';
 $string['details'] = 'Details';
 $string['has_courses'] = 'There are {$a->remote} courses in the moodle-database and {$a->backup} ZIP-files in the backup.';
+$string['infofilefolder'] = 'Infofile-Folder';
 $string['instance_removedata_now'] = 'Remove data from this instance';
 $string['instance_removeweb_now'] = 'Remove the webroot now!';
 $string['instance_remove_soon'] = 'This instance will be removed soon';

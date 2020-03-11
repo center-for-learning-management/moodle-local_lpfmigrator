@@ -32,6 +32,7 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configtext('local_lpfmigrator/sqlservers_users', get_string('sqlservers:users', 'local_lpfmigrator'), '', '', PARAM_TEXT));
     $settings->add(new admin_setting_configtext('local_lpfmigrator/sqlservers_passwords', get_string('sqlservers:passwords', 'local_lpfmigrator'), '', '', PARAM_TEXT));
     $settings->add(new admin_setting_configtext('local_lpfmigrator/datafolders', get_string('datafolders', 'local_lpfmigrator'), '', '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('local_lpfmigrator/infofilefolder', get_string('infofilefolder', 'local_lpfmigrator'), '', '', PARAM_TEXT));
     $ADMIN->add(
         'local_lpfmigrator',
         new admin_externalpage(

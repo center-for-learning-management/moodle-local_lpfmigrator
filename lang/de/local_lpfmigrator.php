@@ -46,6 +46,7 @@ $string['decrease_stage_first'] = 'Zuerst die Stufe verringern';
 $string['details'] = 'Details';
 $string['has_courses'] = 'Es sind {$a->remote} Kurse in der Moodle-Datenbank, und {$a->backup} ZIP-Dateien im Backupverzeichnis.';
 $string['instance_removedata_now'] = 'Daten der Moodle-Instanz jetzt löschen';
+$string['infofilefolder'] = 'Infofile-Verzeichnis';
 $string['instance_removeweb_now'] = 'Webverzeichnis soll entfernt werden!';
 $string['instance_remove_soon'] = 'Diese Moodle-Instanz wird bald gelöscht.';
 $string['instance_removed'] = 'Diese Moodle-Instanz wurde gelöscht.';

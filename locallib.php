@@ -357,7 +357,8 @@ class instance {
      */
     public static function get_sizes() {
         global $DB;
-        $usefolder = self::get_first_datadir();
+        $usefolder = get_config('local_lpfmigrator', 'infofilefolder');
+        if (empty($userfolder)) $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
             $f = $usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.csv';
             $c = file_get_contents($f);
