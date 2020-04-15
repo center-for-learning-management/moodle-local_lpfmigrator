@@ -136,6 +136,11 @@ if (is_siteadmin()) {
         $instance->stage(instance::STAGE_BACKUPS);
         $changed[] = get_string('stage_' . instance::STAGE_BACKUPS, 'local_lpfmigrator');
     }
+    $renamebackups = optional_param('renamebackups', 0, PARAM_INT);
+    if (!empty($renamebackups)) {
+        $renamced = $instance->rename_backups();
+        $changed[] = get_string('backups_renamed', 'local_lpfmigrator', array('renamed' => $renamed));
+    }
     $review = optional_param('review', '', PARAM_ALPHANUM);
     if (!empty($review) && $review == "on" && $instance->stage() == instance::STAGE_REVIEWED) {
         $instance->stage(instance::STAGE_REMOVALWEB);

@@ -600,6 +600,39 @@ class instance {
         }
     }
     /**
+     * Go through backup path, read courseid from file name and rename course accordingly.
+     */
+    public function rename_backups() {
+        $renamed = 0;
+        $backuppath = $this->path_backup();
+        if (!empty($backuppath)) {
+            $con = instance::external_db_open($this->instancename);
+            $d = opendir($backuppath);
+            while (false !== ($f = readdir($d))) {
+                if (!empty(str_replace(".", "", $f))) {
+                    $p = explode("-", $f);
+                    if (count($p) > 4 && is_numeric($p[3])) {
+                        // We assume this is the courseid.
+                        $courseid = $p[3];
+                        //echo $f;
+
+                        $sql = "SELECT id,fullname,shortname FROM " . $this->instancename . "___course WHERE id='$courseid'";
+                        $btr = mysqli_query($con, $sql);
+                        $row = mysqli_fetch_row($btr);
+
+                        $fileto = $backuppath . DIRECTORY_SEPARATOR . "Kurs_" . $courseid . "_" . preg_replace('/[^a-zA-Z0-9\-\._]/','_', (!empty($row[1]) ? $row[1] : $row[2])) . ".mbz";
+                        $filefrom = $backuppath . DIRECTORY_SEPARATOR . $f;
+                        rename($filefrom, $fileto);
+                        $renamed++;
+                        //echo "$filefrom to $fileto<br />";
+                    }
+
+                }
+            }
+        }
+        return $renamed;
+    }
+    /**
      * Sends a information to the admins containing auth data to access backups.
      */
     public function send_authinfo() {

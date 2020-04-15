@@ -268,6 +268,9 @@
                                 {{^courses_equals}}
                                     <p class="alert alert-danger"> {{#str}} proceed_anyway, local_lpfmigrator {{/str}}</p>
                                 {{/courses_equals}}
+                                <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&renamebackups=1" class="btn btn-primary btn-block">
+                                    {{#str}} rename_backup_files, local_lpfmigrator {{/str}}
+                                </a>
                                 <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&review=on" class="btn btn-primary btn-block">
                                     {{#str}} confirm {{/str}}
                                 </a>
