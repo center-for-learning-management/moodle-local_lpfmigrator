@@ -786,7 +786,7 @@ class instance {
                 foreach ($numbers AS $number) {
                     $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals' . $number . '.txt'));
                     if (!in_array($webrootname, $lines)) $lines[] = $webrootname;
-                    file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals" . $number . ".txt', implode("\n", array_filter($lines)));
+                    file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals' . $number . '.txt', implode("\n", array_filter($lines)));
                 }
             }
         }
