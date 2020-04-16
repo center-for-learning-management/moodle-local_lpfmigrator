@@ -782,12 +782,12 @@ class instance {
             $x = explode('/', substr($this->path_web, 10));
             $webrootname = $x[1];
             if (!empty($webrootname)) {
-                $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals01.txt'));
-                if (!in_array($webrootname, $lines)) $lines[] = $webrootname;
-                file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals01.txt', implode("\n", array_filter($lines)));
-                $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals02.txt'));
-                if (!in_array($webrootname, $lines)) $lines[] = $webrootname;
-                file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals02.txt', implode("\n", array_filter($lines)));
+                $numbers = array("01", "02", "04", "05", "06", "07");
+                foreach ($numbers AS $number) {
+                    $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals' . $number . '.txt'));
+                    if (!in_array($webrootname, $lines)) $lines[] = $webrootname;
+                    file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledwebrootremovals" . $number . ".txt', implode("\n", array_filter($lines)));
+                }
             }
         }
         return true;
