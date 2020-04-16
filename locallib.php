@@ -594,9 +594,9 @@ class instance {
     public function remove_datadir() {
         $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
-            $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledremovals.txt'));
+            $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduleddataremovals.txt'));
             $lines[] = $this->path_data;
-            file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledremovals.txt', implode("\n", $lines));
+            file_put_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduleddataremovals.txt', implode("\n", array_filter($lines)));
         }
     }
     /**
