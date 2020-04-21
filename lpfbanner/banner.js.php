@@ -26,7 +26,7 @@
  * that they have to migrate.
  */
 
-header("Content-type: application/javascript");
+header("Content-type: text/javascript");
 require('../../../config.php');
 
 ?>
@@ -61,9 +61,8 @@ function local_lpf_getCookieValue(a) {
 
 function local_lpf_showbanner() {
     var wasshown = local_lpf_getCookieValue("local_lpf_bannershown");
-    console.error('wasshown', wasshown);
-    if (typeof wasshown !== 'undefined') {
-        document.cookie = "local_lpf_bannershown=1; expires=Thu, 1 Dec 2000 12:00:00 UTC";
+    if (typeof wasshown !== 'undefined' && wasshown != 1) {
+        document.cookie = "local_lpf_bannershown=1";
         var body = document.querySelector('body');
         var iframe = document.createElement('iframe');
         iframe.setAttribute('id', 'local_lpf_banner');
