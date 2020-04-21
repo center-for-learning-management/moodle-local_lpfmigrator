@@ -38,6 +38,7 @@ require('../../../config.php');
 
 $instance = optional_param('instance', '', PARAM_TEXT);
 $inst = $DB->get_record('local_lpfmigrator_instances', array('instancename' => $instance));
+$inst = (object) array('id' => 1, 'stage' => 3);
 if (empty($inst->id) || $inst->stage < 2) {
     ?>
 /**
@@ -51,17 +52,26 @@ if (empty($inst->id) || $inst->stage < 2) {
 **/
 
 window.onload = function() { local_lpf_showbanner() };
-
 var local_lpf_opacity = 1;
 
+function local_lpf_getCookieValue(a) {
+   const b = document.cookie.match('(^|;)\\s*' + a + '\\s*=\\s*([^;]+)');
+   return b ? b.pop() : '';
+}
+
 function local_lpf_showbanner() {
-    var body = document.querySelector('body');
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('id', 'local_lpf_banner');
-    iframe.setAttribute('src', '<?php echo $CFG->wwwroot; ?>/local/lpfmigrator/lpfbanner/banner.php');
-    iframe.setAttribute('style', 'display: none; position: fixed; bottom: 10px; right: 10px; width: 300px; height: 200px; border: 0px;');
-    body.appendChild(iframe);
-    setTimeout(local_lpf_fadebanner, 200);
+    var wasshown = local_lpf_getCookieValue("local_lpf_bannershown");
+    console.error('wasshown', wasshown);
+    if (typeof wasshown !== 'undefined') {
+        document.cookie = "local_lpf_bannershown=1; expires=Thu, 1 Dec 2000 12:00:00 UTC";
+        var body = document.querySelector('body');
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute('id', 'local_lpf_banner');
+        iframe.setAttribute('src', '<?php echo $CFG->wwwroot; ?>/local/lpfmigrator/lpfbanner/banner.php');
+        iframe.setAttribute('style', 'display: none; position: fixed; bottom: 10px; right: 10px; width: 300px; height: 200px; border: 0px;');
+        body.appendChild(iframe);
+        setTimeout(local_lpf_fadebanner, 200);
+    }
 }
 
 function local_lpf_fadebanner() {
