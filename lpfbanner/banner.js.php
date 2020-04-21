@@ -36,9 +36,9 @@ require('../../../config.php');
 **/
 <?php
 
-$instance = "praxisnms";
+$instance = optional_param('instance', '', PARAM_TEXT);
 $org = $DB->get_record('block_eduvidual_org', array('lpf' => $instance));
-if (false && empty($org->orgid)) {
+if (empty($org->orgid)) {
     ?>
 /**
  * Keine Migration geplant.
