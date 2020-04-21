@@ -38,7 +38,7 @@ require('../../../config.php');
 
 $instance = optional_param('instance', '', PARAM_TEXT);
 $org = $DB->get_record('block_eduvidual_org', array('lpf' => $instance));
-if (empty($org->orgid)) {
+if (empty($org->orgid) || $org->lpfgroup != 'C') {
     ?>
 /**
  * Keine Migration geplant.
