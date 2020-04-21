@@ -37,8 +37,8 @@ require('../../../config.php');
 <?php
 
 $instance = optional_param('instance', '', PARAM_TEXT);
-$org = $DB->get_record('block_eduvidual_org', array('lpf' => $instance));
-if (empty($org->orgid) || $org->lpfgroup != 'C') {
+$inst = $DB->get_record('local_lpfmigrator_instances', array('instancename' => $instance));
+if (empty($inst->id) || $inst->stage < 2) {
     ?>
 /**
  * Keine Migration geplant.
