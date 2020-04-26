@@ -326,7 +326,8 @@ class instance {
      * Get scheduled backups.
      */
     public static function get_schedule() {
-        $usefolder = self::get_first_datadir();
+        $usefolder = get_config('local_lpfmigrator', 'infofilefolder');
+        if (empty($usefolder)) $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
             $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduledbackups.txt'));
             return array_filter($lines);
@@ -358,7 +359,7 @@ class instance {
     public static function get_sizes() {
         global $DB;
         $usefolder = get_config('local_lpfmigrator', 'infofilefolder');
-        if (empty($userfolder)) $usefolder = self::get_first_datadir();
+        if (empty($usefolder)) $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
             $f = $usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.csv';
             $c = file_get_contents($f);
@@ -592,7 +593,9 @@ class instance {
      * Remove the database.
      */
     public function remove_datadir() {
-        $usefolder = self::get_first_datadir();
+        $usefolder = get_config('local_lpfmigrator', 'infofilefolder');
+        if (empty($usefolder)) $usefolder = self::get_first_datadir();
+
         if (!empty($usefolder)) {
             $lines = explode("\n", file_get_contents($usefolder . DIRECTORY_SEPARATOR . 'scheduleddataremovals.txt'));
             $lines[] = $this->path_data;
@@ -731,7 +734,8 @@ class instance {
             mysqli_query($con, $sql);
             $sqls[] = $sql;
             // ACHIEVE BY ANOTHER POSSBILITY. WE SCHEDULE USING A TEXTFILE AT FIRST DATADIR.
-            $usefolder = self::get_first_datadir();
+            $usefolder = get_config('local_lpfmigrator', 'infofilefolder');
+            if (empty($usefolder)) $usefolder = self::get_first_datadir();
             if (!empty($usefolder)) {
                 $x = explode('/', substr($this->path_web, 10));
                 $webrootname = $x[1];
@@ -777,7 +781,8 @@ class instance {
      * @param to 1 means enable, 0 means disable.
      */
     public function set_replacewebroot() {
-        $usefolder = self::get_first_datadir();
+        $usefolder = get_config('local_lpfmigrator', 'infofilefolder');
+        if (empty($usefolder)) $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
             $x = explode('/', substr($this->path_web, 10));
             $webrootname = $x[1];
