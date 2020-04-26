@@ -676,7 +676,9 @@ class instance {
     public function set_backup_config($to) {
         global $DB;
         $path = explode('/', $this->path_data);
-        $this->path_backup = $path[0] . '/' . $path[1] . '/' . $path[2] . '/backup/' . $this->instancename;
+        $backupfolder = get_config('local_lpfmigrator', 'backupfolder');
+        if (empty($backupfolder)) $backupfolder = $path[0] . '/' . $path[1] . '/' . $path[2];
+        $this->path_backup = $backupfolder . '/backup/' . $this->instancename;
         mkdir($path[0] . '/' . $path[1] . '/' . $path[2] . '/backup');
         mkdir($path[0] . '/' . $path[1] . '/' . $path[2] . '/backup/' . $this->instancename);
         $DB->set_field('local_lpfmigrator_instances', 'path_backup', $this->path_backup, array('instancename' => $this->instancename));
