@@ -679,8 +679,8 @@ class instance {
         $backupfolder = get_config('local_lpfmigrator', 'backupfolder');
         if (empty($backupfolder)) $backupfolder = $path[0] . '/' . $path[1] . '/' . $path[2] . '/backup';
         $this->path_backup = $backupfolder . DIRECTORY_SEPARATOR . $this->instancename;
-        mkdir($path[0] . '/' . $path[1] . '/' . $path[2] . '/backup');
-        mkdir($path[0] . '/' . $path[1] . '/' . $path[2] . '/backup/' . $this->instancename);
+        mkdir($this->path_backup);
+        
         $DB->set_field('local_lpfmigrator_instances', 'path_backup', $this->path_backup, array('instancename' => $this->instancename));
         $con = instance::external_db_open($this->instancename);
         if (!empty($to)) {
