@@ -281,8 +281,8 @@ class instance {
      * Gets the log of performed backups.
      */
     public function get_backup_log() {
-        $potentialfolders = explode(',', get_config('local_lpfmigrator', 'datafolders'));
-        $usefolder = $potentialfolders[0];
+        $usefolder = get_config('local_lpfmigrator', 'infofilefolder');
+        if (empty($usefolder)) $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
             $x = explode('/', substr($this->path_web, 10));
             $webrootname = $x[1];
@@ -680,7 +680,7 @@ class instance {
         if (empty($backupfolder)) $backupfolder = $path[0] . '/' . $path[1] . '/' . $path[2] . '/backup';
         $this->path_backup = $backupfolder . DIRECTORY_SEPARATOR . $this->instancename;
         mkdir($this->path_backup);
-        
+
         $DB->set_field('local_lpfmigrator_instances', 'path_backup', $this->path_backup, array('instancename' => $this->instancename));
         $con = instance::external_db_open($this->instancename);
         if (!empty($to)) {

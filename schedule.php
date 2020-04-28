@@ -51,9 +51,10 @@ if (!is_siteadmin()) {
 echo $OUTPUT->render_from_template('local_lpfmigrator/schedule', array('schedule' => instance::get_schedule(), 'wwwroot' => $CFG->wwwroot));
 $log = optional_param('log', '', PARAM_TEXT);
 if (!empty($log)) {
+    $instance = new instance($log);
     echo "<h3>" . get_string('log', 'local_lpfmigrator') . ": " . $log . "</h3>";
     echo "<div style=\"white-space: \">";
-    echo str_replace("\n", "<br >\n", file_get_contents(instance::get_first_datadir() . DIRECTORY_SEPARATOR . 'log_' . $log . '.log'));
+    echo str_replace("\n", "<br >\n", $instance->get_backup_log()));
     echo "</div>";
 }
 echo $OUTPUT->footer();
