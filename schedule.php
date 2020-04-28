@@ -54,7 +54,7 @@ if (!empty($log)) {
     $instance = new instance($log);
     echo "<h3>" . get_string('log', 'local_lpfmigrator') . ": " . $log . "</h3>";
     echo "<div style=\"white-space: \">";
-    echo str_replace("\n", "<br >\n", $instance->get_backup_log()));
+    echo str_replace("\n", "<br >\n", $instance->get_backup_log());
     echo "</div>";
 }
 echo $OUTPUT->footer();
