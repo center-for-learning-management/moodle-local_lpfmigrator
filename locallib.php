@@ -642,8 +642,7 @@ class instance {
         global $CFG, $OUTPUT;
         $instanceo = $this->as_object();
         $tousers = $this->adminusers;
-        $tousers[] = (object) array('firstname' => 'Julia', 'lastname' => 'Laßnig', 'email' => 'julia.lassnig@lernmangement.at');
-        $tousers[] = (object) array('firstname' => 'Robert', 'lastname' => 'Schrenk', 'email' => 'robert.schrenk@lernmanagement.at');
+        $tousers[] = (object) array('firstname' => 'ZLM', 'lastname' => 'Support', 'email' => 'support@lernmanagement.at');
         foreach($tousers AS $u) {
             $touser = new \stdClass();
             $touser->email = $u->email;
