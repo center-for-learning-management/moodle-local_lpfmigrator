@@ -67,6 +67,14 @@ function xmldb_local_lpfmigrator_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
     }
+    if ($oldversion < 2020052700) {
+        $table = new xmldb_table('local_lpfmigrator_instances');
+        $field = new xmldb_field('removaloptout', XMLDB_TYPE_INT, '1', null, null, null, null, 'backupsize');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+    }
 
     return true;
 }

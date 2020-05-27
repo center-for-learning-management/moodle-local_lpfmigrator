@@ -63,6 +63,7 @@ $string['lpfgroup'] = 'LPF-Gruppe';
 $string['mail_recipients'] = 'Empfänger/innen dieser Nachricht:';
 $string['maintenance_off'] = 'Wartungsmodus abschalten';
 $string['maintenance_on'] = 'Wartungsmodus einschalten';
+$string['migrationperiod'] = 'Migrationstermin';
 $string['modified_successfully'] = 'Erfolgreich folgende Datenfelder geändert:';
 $string['notify_admins'] = 'Moodle-Administrator/innen benachrichtigen';
 $string['notify_admins_done'] = 'Moodle-Administrator/innen wurden benachrichtigt!';

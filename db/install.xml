@@ -20,6 +20,7 @@
         <FIELD NAME="adminusers" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="datasize" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Size of moodle-datadir on disc"/>
         <FIELD NAME="backupsize" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Size of moodle-backupdir on disc"/>
+        <FIELD NAME="removaloptout" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" COMMENT="1 if admin opts out from removal"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

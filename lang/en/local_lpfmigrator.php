@@ -63,6 +63,7 @@ $string['lpfgroup'] = 'LPF-group';
 $string['mail_recipients'] = 'Recipients of this message:';
 $string['maintenance_off'] = 'Turn off maintenance mode';
 $string['maintenance_on'] = 'Turn on maintenance mode';
+$string['migrationperiod'] = 'Migrationdate';
 $string['modified_successfully'] = 'Successfully modified the following fields:';
 $string['notify_admins'] = 'Notify admins';
 $string['notify_admins_done'] = 'Admins have been notified!';
