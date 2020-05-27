@@ -24,24 +24,12 @@
                 <th>{{instancename}}</th>
             </tr>
             <tr>
-                <th width="50%">{{#str}} admins, local_lpfmigrator {{/str}}</th>
-                <td><ul>
-                    {{#adminusers}}
-                    <li>
-                        <a href="mailto:{{email}}">
-                            {{firstname}} {{lastname}}
-                        </a>
-                    </li>
-                    {{/adminusers}}
-                </ul></td>
-            </tr>
-            <tr>
                 <th>{{#str}} orgid, local_lpfmigrator {{/str}}</th>
                 <td>{{orgid}}</td>
             </tr>
             <tr>
                 <th>{{#str}} migrationperiod, local_lpfmigrator {{/str}}</th>
-                <td>{{migrationdate}}</td>
+                <td>{{lpfmigrationdate}}</td>
             </tr>
             {{#ismanager}}
             <tr>

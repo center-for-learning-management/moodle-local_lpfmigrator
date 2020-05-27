@@ -48,10 +48,10 @@ if (!empty($orgid) || !empty($instance)) {
     $sql = "SELECT *
                 FROM {local_lpfmigrator_instances}
                 WHERE orgid=?
-                    OR instance LIKE ?";
+                    OR instancename LIKE ?";
     // Attention, orgid 0 would potentially reveal all instances that are not assigned to a particular org!
     $instances = $DB->get_records_sql($sql, array(($orgid > 0) ? $orgid : -1, $instance));
-    foreach ($instances AS &$inst) {
+    foreach ($instances AS $inst) {
         $inst->ismanager = false;
         if (!empty($inst->orgid)) {
             $role = $DB->get_record('block_eduvidual_orgid_userid', array('orgid' => $inst->orgid, 'userid' => $USER->id));
@@ -81,9 +81,7 @@ if (!empty($orgid) || !empty($instance)) {
                 'type' => 'danger'
             ));
         }
-        echo $OUTPUT->render_from_template('local_lpfmigrator/info_instance', array(
-            'instance' => $inst,
-        ));
+        echo $OUTPUT->render_from_template('local_lpfmigrator/info_instance', $inst);
 
     }
 
