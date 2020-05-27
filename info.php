@@ -81,14 +81,16 @@ if (!empty($sorgid) || !empty($sinstance)) {
         $optout = optional_param('optout_' . $inst->instancename, 0, PARAM_INT);
         if (!empty($optout) && $inst->ismanager) {
             if ($optout == 1) {
-                $DB->set_field('local_lpfmigrator_instances', 'removaloptout', 1, array('instancename' => $inst->instancename));
+                $inst->removaloptout = 1;
+                $DB->set_field('local_lpfmigrator_instances', 'removaloptout', $inst->removaloptout, array('instancename' => $inst->instancename));
                 echo $OUTPUT->render_from_template('local_lpfmigrator/alert', array(
                     'content' => 'Der Opt-Out wurde erfolgreich gespeichert. Das bedeutet, dass wir Ihre Instanz nach der erfolgten Archivierung <strong>nicht</strong> löschen werden!',
                     'type' => 'success'
                 ));
             }
             if ($optout == -1) {
-                $DB->set_field('local_lpfmigrator_instances', 'removaloptout', 0, array('instancename' => $inst->instancename));
+                $inst->removaloptout = 0;
+                $DB->set_field('local_lpfmigrator_instances', 'removaloptout', $inst->removaloptout, array('instancename' => $inst->instancename));
                 echo $OUTPUT->render_from_template('local_lpfmigrator/alert', array(
                     'content' => 'Der Opt-Out wurde erfolgreich zurückgezogen. Das bedeutet, dass wir Ihre Instanz nach der erfolgten Archivierung <strong>löschen werden</strong>!',
                     'type' => 'warning'
