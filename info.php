@@ -52,6 +52,8 @@ if (!empty($sorgid) || !empty($sinstance)) {
     // Attention, orgid 0 would potentially reveal all instances that are not assigned to a particular org!
     $instances = $DB->get_records_sql($sql, array(($sorgid > 0) ? $sorgid : -1, $sinstance));
     foreach ($instances AS $inst) {
+        $inst->sorgid = $sorgid;
+        $inst->sinstance = $sinstance;
         $org = $DB->get_record('block_eduvidual_org', array('lpf' => $inst->instancename));
         if (!empty($org->id)) {
             $inst->lpfgroup = $org->lpfgroup;
