@@ -31,11 +31,11 @@ namespace local_lpfmigrator;
 require('../../config.php');
 require_once(__DIR__ . '/locallib.php');
 
-$orgid = optional_param('orgid', 0, PARAM_INT);
-$instance = optional_param('instance', '', PARAM_ALPHANUM);
+$sorgid = optional_param('sorgid', 0, PARAM_INT);
+$sinstance = optional_param('sinstance', '', PARAM_ALPHANUM);
 
 require_login();
-$PAGE->set_url(new \moodle_url('/local/lpfmigrator/info.php', array('orgid' => $orgid, 'instance' => $instance)));
+$PAGE->set_url(new \moodle_url('/local/lpfmigrator/info.php', array('sorgid' => $sorgid, 'sinstance' => $sinstance)));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'local_lpfmigrator'));
 $PAGE->set_title(get_string('pluginname', 'local_lpfmigrator'));
@@ -43,14 +43,14 @@ $PAGE->requires->css('/local/lpfmigrator/main.css');
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render_from_template('local_lpfmigrator/info_form', array('orgid' => $orgid, 'instance' => $instance));
-if (!empty($orgid) || !empty($instance)) {
+echo $OUTPUT->render_from_template('local_lpfmigrator/info_form', array('sorgid' => $sorgid, 'sinstance' => $sinstance));
+if (!empty($sorgid) || !empty($sinstance)) {
     $sql = "SELECT *
                 FROM {local_lpfmigrator_instances}
                 WHERE orgid=?
                     OR instancename LIKE ?";
     // Attention, orgid 0 would potentially reveal all instances that are not assigned to a particular org!
-    $instances = $DB->get_records_sql($sql, array(($orgid > 0) ? $orgid : -1, $instance));
+    $instances = $DB->get_records_sql($sql, array(($sorgid > 0) ? $sorgid : -1, $sinstance));
     foreach ($instances AS $inst) {
         $org = $DB->get_record('block_eduvidual_org', array('lpf' => $inst->instancename));
         if (!empty($org->id)) {

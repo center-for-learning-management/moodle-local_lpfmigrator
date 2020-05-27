@@ -33,8 +33,21 @@
             </tr>
             {{#ismanager}}
             <tr>
-                <th>{{#str}} auth, local_lpfmigrator {{/str}}</th>
+                <th>Zugriffsdaten für Backup</th>
                 <td>{{instancename}}:{{path_backup_pwd}}</td>
+            </tr>
+            <tr>
+                <th>Löschungs-Opt-out</th>
+                <td>
+                    {{#removaloptout}}
+                        Sie haben den Opt-Out eingestellt. Ihre Instanz wird <strong>nicht</strong> gelöscht.<br />
+                        <input href="{{wwwroot}}/local/lpfmigrator/info.php?sorgid={{sorgid}}&sinstance={{sinstance}}&optout_{{orgid}}=-1">Opt-Out zurücknehmen</a>
+                    {{/removaloptout}}
+                    {{^removaloptout}}
+                        Sie haben den Opt-Out <strong>nicht</string> eingestellt. Ihre Instanz wird nach der Archivierung gelöscht.<br />
+                        <input href="{{wwwroot}}/local/lpfmigrator/info.php?sorgid={{sorgid}}&sinstance={{sinstance}}&optout_{{orgid}}=1">Opt-Out aktivieren/a>
+                    {{/removaloptout}}
+                </td>
             </tr>
             {{/ismanager}}
 
@@ -48,6 +61,7 @@
                     {{#path_backup}}<a href="/lpf{{backupnr}}/{{instancename}}" target="_blank" class="btn btn-block btn-secondary">
                         {{#str}} open_backup, local_lpfmigrator {{/str}}
                     </a>{{/path_backup}}
+                    {{^path_backup}}Hier wird später der Link zum Backup ersichtlich sein!{{/path_backup}}
                 </td>
             </tr>
         </tbody>

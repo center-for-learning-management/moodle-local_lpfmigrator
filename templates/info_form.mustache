@@ -17,6 +17,45 @@
 }}
 
 <div class="local_lpfmigrator infoform">
+    <h3>Umstellung von lernplattform.schule.at auf eduvidual.at</h3>
+    <p>Bitte beachten Sie folgende Informationen:</p>
+    <ul>
+        <li>
+            Auf der Grundlage von Forderungen der Moodle Community Austria über viele Jahre hinweg wurde eine schulübergreifende
+            Moodle-Instanz geschaffen, die größere Synergieeffekte und eine leichtere Möglichkeit zur Weiterentwicklung verspricht.
+        </li>
+        <li>
+            Künftig stellt das Bildungsministerium als Moodle-System nur noch die neue Plattform
+            <a href="https://www.eduvidual.at" target="_blank">eduvidual.at</a> zur Verfügung!
+        </li>
+        <li>
+            Schulen, die das Moodle-Angebot des BMBWF weiterhin nutzen möchten, müssen sich
+            <a href="https://www.eduvidual.at/blocks/eduvidual/pages/register.php?orgid={{sorgid}}" target="_blank">hier</a> registrieren.
+        </li>
+        <li>
+            Der Umstieg von lernplattform.schule.at kann jederzeit auf freiwilliger Basis
+            erfolgen, und es dürfen auch beide Systeme parallel verwendet werden. Die Schulen wurden jedoch in zwei Gruppen eingeteilt,
+            und müssen je nach Gruppe spätestens im Juli 2020 oder Juli 2021 umsteigen.
+        </li>
+        <li>
+            Betroffene Schulen wurden/werden ein Jahr im Vorhinein informiert und können sich entsprechend auf den Umstieg vorbereiten.
+        </li>
+        <li>
+            Zur Unterstützung des Umstiegs wird jeweils im Juli eine Sicherung aller Kurse inkl. Nutzerdaten vorgenommen,
+            und die Schulen erhalten Zugriff auf diese Sicherungen. Mit diesen Sicherungen können jene Kurse im
+            eduvidual-System wiederhergestellt werden, mit denen man weiterarbeiten möchte.
+        </li>
+        <li>
+            Aus Kapazitätsgründen werden die Moodle-Instanzen nach erfolgter Sicherung gelöscht.
+        </li>
+        <li>
+            Schul-Manager/innen, die ihre Schule in eduvidual registriert haben, können für die Moodle-Instanz ein "Opt-Out" von
+            der Löschung einstellen. In diesem Fall werden wir die Moodle-Instanz nicht vollständig löschen, um bspw. einen raschen Zugriff
+            auf Nutzerdaten der letzten beiden Jahre zuzugreifen. Daten, die älter als 2 Jahre sind, müssen gelöscht werden!
+        </li>
+    </ul>
+
+
     <form action="" method="POST" enctype="multipart/form-data">
         <table class="generaltable">
             <tr>
@@ -29,11 +68,11 @@
             </tr>
             <tr>
                 <th width="50%">Schulkennzahl:</th>
-                <td><input type="number" name="orgid" value="{{orgid}}" /></td>
+                <td><input type="number" name="sorgid" value="{{sorgid}}" /></td>
             </tr>
             <tr>
                 <th>Instanz-Name:</th>
-                <td><input type="text" name="instance" value="{{instance}}" /></td>
+                <td><input type="text" name="sinstance" value="{{sinstance}}" /></td>
             </tr>
             <tr>
                 <td colspan="2">
