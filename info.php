@@ -52,6 +52,10 @@ if (!empty($orgid) || !empty($instance)) {
     // Attention, orgid 0 would potentially reveal all instances that are not assigned to a particular org!
     $instances = $DB->get_records_sql($sql, array(($orgid > 0) ? $orgid : -1, $instance));
     foreach ($instances AS $inst) {
+        $org = $DB->get_record('block_eduvidual_org', array('lpf' => $inst->instancename));
+        if (!empty($org->id)) {
+            $inst->lpfgroup = $org->lpfgroup;
+        }
         $inst->ismanager = false;
         if (!empty($inst->orgid)) {
             $role = $DB->get_record('block_eduvidual_orgid_userid', array('orgid' => $inst->orgid, 'userid' => $USER->id));
