@@ -57,6 +57,7 @@ if (!empty($sorgid) || !empty($sinstance)) {
             $inst->lpfgroup = $org->lpfgroup;
         }
         $inst->ismanager = false;
+        $inst->stagetxt = get_string('stage_' . $inst->stage, 'local_lpfmigrator');
         switch($inst->stage) {
             case 0: $inst->stagetxt = 'Migration nicht gestartet'; break;
             case 1: $inst->stagetxt = 'Schulleitung / Moodle-Admins wurden informiert'; break;

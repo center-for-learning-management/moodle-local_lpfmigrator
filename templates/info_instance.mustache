@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <th>{{#str}} stage, local_lpfmigrator {{/str}}</th>
-                <td>{{stagetext}}</td>
+                <td>{{stagetxt}}</td>
             </tr>
             {{#ismanager}}
             <tr>
@@ -45,11 +45,11 @@
                 <td>
                     {{#removaloptout}}
                         Sie haben den Opt-Out eingestellt. Ihre Instanz wird <strong>nicht</strong> gelöscht.<br />
-                        <input href="{{wwwroot}}/local/lpfmigrator/info.php?sorgid={{sorgid}}&sinstance={{sinstance}}&optout_{{orgid}}=-1">Opt-Out zurücknehmen</a>
+                        <a class="btn btn-primary" href="{{wwwroot}}/local/lpfmigrator/info.php?sorgid={{sorgid}}&sinstance={{sinstance}}&optout_{{orgid}}=-1">Opt-Out zurücknehmen</a>
                     {{/removaloptout}}
                     {{^removaloptout}}
                         Sie haben den Opt-Out <strong>nicht</string> eingestellt. Ihre Instanz wird nach der Archivierung gelöscht.<br />
-                        <input href="{{wwwroot}}/local/lpfmigrator/info.php?sorgid={{sorgid}}&sinstance={{sinstance}}&optout_{{orgid}}=1">Opt-Out aktivieren/a>
+                        <a class="btn btn-primary" href="{{wwwroot}}/local/lpfmigrator/info.php?sorgid={{sorgid}}&sinstance={{sinstance}}&optout_{{orgid}}=1">Opt-Out aktivieren</a>
                     {{/removaloptout}}
                 </td>
             </tr>
