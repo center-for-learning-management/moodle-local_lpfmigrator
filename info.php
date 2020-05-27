@@ -57,6 +57,19 @@ if (!empty($sorgid) || !empty($sinstance)) {
             $inst->lpfgroup = $org->lpfgroup;
         }
         $inst->ismanager = false;
+        switch($inst->stage) {
+            case 0: $inst->stagetxt = 'Migration nicht gestartet'; break;
+            case 1: $inst->stagetxt = 'Schulleitung / Moodle-Admins wurden informiert'; break;
+            case 2: $inst->stagetxt = 'Nutzer/innen wurden informiert (Banner)'; break;
+            case 3: $inst->stagetxt = 'Wartungsmodus wurde aktiviert'; break;
+            case 4: $inst->stagetxt = 'Backup wird vorbereitet/durchgeführt'; break;
+            case 5: $inst->stagetxt = 'Backup wurde geprüft'; break;
+            case 6: $inst->stagetxt = 'Webverzeichnis wurde auf statische Seite umgestellt'; break;
+            case 7: $inst->stagetxt = 'Datenbank und Datenverzeichnis wurden gelöscht'; break;
+            case 8: $inst->stagetxt = 'Logindaten für Sicherung wurden zugestellt'; break;
+            case 9: $inst->stagetxt = 'Migration abgeschlossen'; break;
+        }
+
         if (!empty($inst->orgid)) {
             $role = $DB->get_record('block_eduvidual_orgid_userid', array('orgid' => $inst->orgid, 'userid' => $USER->id));
             $inst->ismanager = is_siteadmin() || !empty($role->role) && $role->role == 'Manager';
