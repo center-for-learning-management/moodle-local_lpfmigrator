@@ -21,20 +21,20 @@
     <table border="0" width="100%" style="margin: 5px 0px;" class="{{uniqid}}-controls">
         <tr>
             <td width="33%" align="center">
-                <a href="#"  class="btn btn-secondary{{^showtab_when}} btn-primary{{/showtab_when}}" style="width: 100%;"
-                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-why').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary'); $(this).addClass('btn-primary');">
+                <a href="#"  class="btn {{#showtab_when}} btn-secondary{{/showtab_when}}{{^showtab_when}} btn-primary{{/showtab_when}}" style="width: 100%;"
+                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-why').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary').addClass('btn-secondary'); $(this).removeClass('btn-secondary').addClass('btn-primary');">
                     Warum?
                 </a>
             </td>
             <td width="33%" align="center" >
                 <a href="#" class="btn btn-secondary" style="width: 100%;"
-                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-how').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary'); $(this).addClass('btn-primary');">
+                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-how').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary').addClass('btn-secondary'); $(this).removeClass('btn-secondary').addClass('btn-primary');">
                     Wie?
                 </a>
             </td>
             <td width="33%" align="center">
-                <a href="#" class="btn btn-secondary" style="width: 100%;"
-                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-when').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary'); $(this).addClass('btn-primary');">
+                <a href="#" class="btn {{^showtab_when}} btn-secondary{{/showtab_when}}{{#showtab_when}} btn-primary{{/showtab_when}}" style="width: 100%;"
+                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-when').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary').addClass('btn-secondary'); $(this).removeClass('btn-secondary').addClass('btn-primary');">
                     Wann?
                 </a>
             </td>
