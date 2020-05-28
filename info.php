@@ -34,11 +34,12 @@ require_once(__DIR__ . '/locallib.php');
 $sorgid = optional_param('sorgid', 0, PARAM_INT);
 $sinstance = optional_param('sinstance', '', PARAM_ALPHANUM);
 // Remove parts from instance-name, that we do not want.
-$sinstance = str_replace("https://www3.lernplattform.schule.at/", "", $sinstance);
-$sinstance = str_replace("https://www4.lernplattform.schule.at/", "", $sinstance);
-$sinstance = str_replace("http://www3.lernplattform.schule.at/", "", $sinstance);
-$sinstance = str_replace("http://www4.lernplattform.schule.at/", "", $sinstance);
-$sinstance = str_replace("/", "", $sinstance);
+// Because of type "PARAM_ALPHANUM" the value can not contain slashes or other symbols
+$sinstance = str_replace("httpswww3lernplattformschuleat", "", $sinstance);
+$sinstance = str_replace("httpswww4lernplattformschuleat", "", $sinstance);
+$sinstance = str_replace("httpwww3lernplattformschuleat", "", $sinstance);
+$sinstance = str_replace("httpwww4lernplattformschuleat", "", $sinstance);
+
 
 require_login();
 $PAGE->set_url(new \moodle_url('/local/lpfmigrator/info.php', array('sorgid' => $sorgid, 'sinstance' => $sinstance)));
