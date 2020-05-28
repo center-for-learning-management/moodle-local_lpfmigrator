@@ -383,18 +383,21 @@ class instance {
      */
     public static function get_stages($instance = '') {
         if (empty($instance)) $instance = (object) array('stage' => -1);
-        return array(
+        $stages = array(
             array('is0' => true, 'value' => self::STAGE_NOT_STAGED, 'label' => get_string('stage_' . self::STAGE_NOT_STAGED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOT_STAGED), 'completed' => ($instance->stage > self::STAGE_NOT_STAGED)),
             array('is1' => true, 'value' => self::STAGE_NOTIFY_ADMINS, 'label' => get_string('stage_' . self::STAGE_NOTIFY_ADMINS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOTIFY_ADMINS), 'completed' => ($instance->stage > self::STAGE_NOTIFY_ADMINS)),
             array('is2' => true, 'value' => self::STAGE_NOTIFY_USERS, 'label' => get_string('stage_' . self::STAGE_NOTIFY_USERS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_NOTIFY_USERS), 'completed' => ($instance->stage > self::STAGE_NOTIFY_USERS)),
             array('is3' => true, 'value' => self::STAGE_MAINTENANCE, 'label' => get_string('stage_' . self::STAGE_MAINTENANCE, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_MAINTENANCE), 'completed' => ($instance->stage > self::STAGE_MAINTENANCE)),
             array('is4' => true, 'value' => self::STAGE_BACKUPS, 'label' => get_string('stage_' . self::STAGE_BACKUPS, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_BACKUPS), 'completed' => ($instance->stage > self::STAGE_BACKUPS)),
             array('is5' => true, 'value' => self::STAGE_REVIEWED, 'label' => get_string('stage_' . self::STAGE_REVIEWED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REVIEWED), 'completed' => ($instance->stage > self::STAGE_REVIEWED)),
-            array('is6' => true, 'value' => self::STAGE_REMOVALWEB, 'label' => get_string('stage_' . self::STAGE_REMOVALWEB, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALWEB), 'completed' => ($instance->stage > self::STAGE_REMOVALWEB)),
-            array('is7' => true, 'value' => self::STAGE_REMOVALDATA, 'label' => get_string('stage_' . self::STAGE_REMOVALDATA, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALDATA), 'completed' => ($instance->stage > self::STAGE_REMOVALDATA)),
-            array('is8' => true, 'value' => self::STAGE_SEND_AUTHINFO, 'label' => get_string('stage_' . self::STAGE_SEND_AUTHINFO, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_SEND_AUTHINFO), 'completed' => ($instance->stage > self::STAGE_SEND_AUTHINFO)),
-            array('is9' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_COMPLETED), 'completed' => ($instance->stage == self::STAGE_COMPLETED)),
+            array('is6' => true, 'value' => self::STAGE_SEND_AUTHINFO, 'label' => get_string('stage_' . self::STAGE_SEND_AUTHINFO, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_SEND_AUTHINFO), 'completed' => ($instance->stage > self::STAGE_SEND_AUTHINFO)),
         );
+        if (empty($instance->removaloptout)) {
+            $stages[] = array('is7' => true, 'value' => self::STAGE_REMOVALWEB, 'label' => get_string('stage_' . self::STAGE_REMOVALWEB, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALWEB), 'completed' => ($instance->stage > self::STAGE_REMOVALWEB));
+            $stages[] = array('is8' => true, 'value' => self::STAGE_REMOVALDATA, 'label' => get_string('stage_' . self::STAGE_REMOVALDATA, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALDATA), 'completed' => ($instance->stage > self::STAGE_REMOVALDATA));
+            $stages[] = array('is9' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_COMPLETED), 'completed' => ($instance->stage == self::STAGE_COMPLETED));
+        }
+        return $stages;
     }
     /**
      * Determines if backups are on.
