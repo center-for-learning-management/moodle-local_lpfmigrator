@@ -82,9 +82,9 @@ if (!empty($sorgid) || !empty($sinstance)) {
             case 3: $inst->stagetxt = 'Wartungsmodus wird vorbereitet'; break;
             case 4: $inst->stagetxt = 'Backup wird vorbereitet'; break;
             case 5: $inst->stagetxt = 'Backup wurde abgeschlossen und geprüft'; break;
-            case 6: $inst->stagetxt = 'Webverzeichnis werden bald auf statische Seite umgestellt'; break;
-            case 7: $inst->stagetxt = 'Datenbank und Datenverzeichnis werden bald gelöscht'; break;
-            case 8: $inst->stagetxt = 'Logindaten für Sicherung wurden zugestellt'; break;
+            case 6: $inst->stagetxt = 'Logindaten für Sicherung wurden zugestellt'; break;
+            case 7: $inst->stagetxt = 'Webverzeichnis werden bald auf statische Seite umgestellt'; break;
+            case 8: $inst->stagetxt = 'Datenbank und Datenverzeichnis werden bald gelöscht'; break;
             case 9: $inst->stagetxt = 'Migration abgeschlossen'; break;
         }
 
@@ -99,7 +99,7 @@ if (!empty($sorgid) || !empty($sinstance)) {
                 $inst->removaloptout = 1;
                 $DB->set_field('local_lpfmigrator_instances', 'removaloptout', $inst->removaloptout, array('instancename' => $inst->instancename));
                 echo $OUTPUT->render_from_template('local_lpfmigrator/alert', array(
-                    'content' => 'Der Opt-Out wurde erfolgreich gespeichert. Das bedeutet, dass wir Ihre Instanz nach der erfolgten Archivierung <strong>nicht</strong> löschen werden!',
+                    'content' => 'Der Opt-Out wurde erfolgreich gespeichert. Das bedeutet, dass wir Ihre Instanz nach der erfolgten Archivierung <strong>nicht</strong> löschen werden! Bitte löschen alle Kurse, die älter als 2 Jahre sind, sobald Sie von uns die Zugriffsdaten für Ihr Backup erhalten haben (planmäßig im Juli).',
                     'type' => 'success'
                 ));
             }

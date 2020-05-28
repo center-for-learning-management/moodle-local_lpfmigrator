@@ -143,8 +143,14 @@ if (is_siteadmin()) {
     }
     $review = optional_param('review', '', PARAM_ALPHANUM);
     if (!empty($review) && $review == "on" && $instance->stage() == instance::STAGE_REVIEWED) {
-        $instance->stage(instance::STAGE_REMOVALWEB);
+        $instance->stage(instance::STAGE_SEND_AUTHINFO);
         $changed[] = get_string('stage_' . instance::STAGE_REVIEWED, 'local_lpfmigrator');
+    }
+    $sendauthinfo = optional_param('sendauthinfo', '', PARAM_ALPHANUM);
+    if (!empty($sendauthinfo) && $sendauthinfo == "on" && $instance->stage() == instance::STAGE_SEND_AUTHINFO) {
+        $instance->send_authinfo();
+        $instance->stage(instance::STAGE_REMOVALWEB);
+        $changed[] = get_string('stage_' . instance::STAGE_REMOVALDATA, 'local_lpfmigrator');
     }
     $removeweb = optional_param('removeweb', '', PARAM_ALPHANUM);
     if (!empty($removeweb) && $removeweb == "on" && $instance->stage() == instance::STAGE_REMOVALWEB) {
@@ -156,15 +162,10 @@ if (is_siteadmin()) {
     if (!empty($removedata) && $removedata == "on" && $instance->stage() == instance::STAGE_REMOVALDATA) {
         $instance->remove_datadir();
         $instance->remove_database();
-        $instance->stage(instance::STAGE_SEND_AUTHINFO);
-        $changed[] = get_string('stage_' . instance::STAGE_REMOVALDATA, 'local_lpfmigrator');
-    }
-    $sendauthinfo = optional_param('sendauthinfo', '', PARAM_ALPHANUM);
-    if (!empty($sendauthinfo) && $sendauthinfo == "on" && $instance->stage() == instance::STAGE_SEND_AUTHINFO) {
-        $instance->send_authinfo();
         $instance->stage(instance::STAGE_COMPLETED);
         $changed[] = get_string('stage_' . instance::STAGE_REMOVALDATA, 'local_lpfmigrator');
     }
+
 
     if (count($changed) > 0) {
         echo $OUTPUT->render_from_template('local_lpfmigrator/modified_successfully', array('changed' => $changed));

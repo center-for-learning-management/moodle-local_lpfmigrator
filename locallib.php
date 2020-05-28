@@ -35,9 +35,9 @@ class instance {
     const STAGE_MAINTENANCE = 3;
     const STAGE_BACKUPS = 4;
     const STAGE_REVIEWED = 5;
-    const STAGE_REMOVALWEB = 6;
-    const STAGE_REMOVALDATA = 7;
-    const STAGE_SEND_AUTHINFO = 8;
+    const STAGE_SEND_AUTHINFO = 7;
+    const STAGE_REMOVALWEB = 7;
+    const STAGE_REMOVALDATA = 8;
     const STAGE_COMPLETED = 9;
 
     private $backupsize = '';
@@ -393,7 +393,7 @@ class instance {
             array('is6' => true, 'value' => self::STAGE_REMOVALWEB, 'label' => get_string('stage_' . self::STAGE_REMOVALWEB, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALWEB), 'completed' => ($instance->stage > self::STAGE_REMOVALWEB)),
             array('is7' => true, 'value' => self::STAGE_REMOVALDATA, 'label' => get_string('stage_' . self::STAGE_REMOVALDATA, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_REMOVALDATA), 'completed' => ($instance->stage > self::STAGE_REMOVALDATA)),
             array('is8' => true, 'value' => self::STAGE_SEND_AUTHINFO, 'label' => get_string('stage_' . self::STAGE_SEND_AUTHINFO, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_SEND_AUTHINFO), 'completed' => ($instance->stage > self::STAGE_SEND_AUTHINFO)),
-            array('is9' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'completed' => ($instance->stage == self::STAGE_COMPLETED)),
+            array('is9' => true, 'value' => self::STAGE_COMPLETED, 'label' => get_string('stage_' . self::STAGE_COMPLETED, 'local_lpfmigrator'), 'selected' => ($instance->stage == self::STAGE_COMPLETED), 'completed' => ($instance->stage == self::STAGE_COMPLETED)),
         );
     }
     /**

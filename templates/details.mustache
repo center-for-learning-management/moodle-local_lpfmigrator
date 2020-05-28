@@ -277,7 +277,21 @@
                             {{/selected}}
                         {{/editable}}
                     {{/is5}}
-                    {{#is6}} {{! removal web }}
+                    {{#is6}} {{! send auth_info }}
+                        {{#editable}}
+                            {{#selected}}
+                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&sendauthinfo=on" class="btn btn-primary btn-block">
+                                {{#str}} send_authinfo, local_lpfmigrator {{/str}}
+                            </a>
+                            {{/selected}}
+                        {{/editable}}
+                        {{#completed}}
+                            {{#str}} send_authinfo_done, local_lpfmigrator {{/str}}
+                        {{/completed}}
+                    {{/is6}}
+
+
+                    {{#is7}} {{! removal web }}
                         {{#editable}}
                             {{#selected}}
                             <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removeweb=on" class="btn btn-primary btn-block alert alert-danger">
@@ -296,8 +310,8 @@
                         {{#completed}}{{^has_replaced_webroot}}
                             <strong>{{#str}} webroot_not_yet_replaced, local_lpfmigrator {{/str}}</strong>
                         {{/has_replaced_webroot}}{{/completed}}
-                    {{/is6}}
-                    {{#is7}} {{! removal data }}
+                    {{/is7}}
+                    {{#is8}} {{! removal data }}
                         {{#editable}}
                             {{#selected}}
                             <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removedata=on" class="btn btn-primary btn-block alert alert-danger">
@@ -318,18 +332,6 @@
                                 <p>{{#str}} instance_removed_datadir_missing, local_lpfmigrator {{/str}}</p>
                             {{/has_removed_datadir}}
                             <p>{{#str}} instance_removed_database, local_lpfmigrator {{/str}}</p>
-                        {{/completed}}
-                    {{/is7}}
-                    {{#is8}} {{! send auth_info }}
-                        {{#editable}}
-                            {{#selected}}
-                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&sendauthinfo=on" class="btn btn-primary btn-block">
-                                {{#str}} send_authinfo, local_lpfmigrator {{/str}}
-                            </a>
-                            {{/selected}}
-                        {{/editable}}
-                        {{#completed}}
-                            {{#str}} send_authinfo_done, local_lpfmigrator {{/str}}
                         {{/completed}}
                     {{/is8}}
                     {{#is9}} {{! removed }}
