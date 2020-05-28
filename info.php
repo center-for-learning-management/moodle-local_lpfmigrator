@@ -51,7 +51,7 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->render_from_template('local_lpfmigrator/info_form', array(
     'showtab_when' => (!empty($sorgid) || !empty($sinstance)),
-    'sinstance' => $sinstance
+    'sinstance' => $sinstance,
     'sorgid' => $sorgid,
 ));
 if (!empty($sorgid) || !empty($sinstance)) {
