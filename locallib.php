@@ -74,6 +74,7 @@ class instance {
             $this->path_backup = $rec->path_backup;
             $this->path_backup_pwd = $rec->path_backup_pwd;
             $this->stage = $rec->stage;
+            $this->removaloptout = $rec->removaloptout;
             $this->adminusers = (array)json_decode($rec->adminusers);
         } else {
             $this->instancename = $instancename;
@@ -157,6 +158,7 @@ class instance {
             'path_web' => $this->path_web,
             'path_backup' => $this->path_backup,
             'path_backup_pwd' => $this->path_backup_pwd,
+            'removaloptout' => $this->removaloptout,
             'servernr' => ($this->host == 'mdsql01.bmb.gv.at') ? 3 : 4,
             'stage' => $this->stage,
         );

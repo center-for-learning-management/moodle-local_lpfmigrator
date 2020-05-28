@@ -165,13 +165,10 @@ if (is_siteadmin()) {
         $instance->stage(instance::STAGE_COMPLETED);
         $changed[] = get_string('stage_' . instance::STAGE_REMOVALDATA, 'local_lpfmigrator');
     }
-
-
     if (count($changed) > 0) {
         echo $OUTPUT->render_from_template('local_lpfmigrator/modified_successfully', array('changed' => $changed));
     }
 }
-
 
 $instanceo = $instance->as_object();
 // Next line would not be necessary, but we force an update of this data by calling it.
