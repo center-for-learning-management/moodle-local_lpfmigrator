@@ -66,6 +66,7 @@ if (!empty($sorgid) || !empty($sinstance)) {
         $inst->sorgid = $sorgid;
         $inst->sinstance = $sinstance;
         $org = $DB->get_record('block_eduvidual_org', array('lpf' => $inst->instancename));
+        $inst->lpfgroup = '';
         if (!empty($org->id)) {
             $inst->lpfgroup = $org->lpfgroup;
         }
