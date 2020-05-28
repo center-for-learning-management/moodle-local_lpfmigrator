@@ -73,6 +73,9 @@
                                 <option value="{{value}}" {{#selected}} selected="selected" {{/selected}}>{{label}}</option>
                                 {{/stages}}
                             </select>
+                            {{#removaloptout}}
+                                <p>{{#str}} removaloptout, local_lpfmigrator {{/str}}</p>
+                            {{/removaloptout}}
                         </td>
                     </tr>
                     <tr>
