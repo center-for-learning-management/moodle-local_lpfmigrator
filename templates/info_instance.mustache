@@ -56,17 +56,19 @@
             {{/ismanager}}
 
             <tr>
-                <td>
+                <td {{^ismanager}} colspan="2"{{/ismanager}}>
                     {{#path_web}}<a href="{{path_web}}" target="_blank" class="btn btn-block btn-secondary">
                         {{#str}} open_lpf, local_lpfmigrator {{/str}}
                     </a>{{/path_web}}
                 </td>
+                {{#ismanager}}
                 <td>
                     {{#path_backup}}<a href="/lpf{{backupnr}}/{{instancename}}" target="_blank" class="btn btn-block btn-secondary">
                         {{#str}} open_backup, local_lpfmigrator {{/str}}
                     </a>{{/path_backup}}
                     {{^path_backup}}Hier wird später der Link zum Backup ersichtlich sein!{{/path_backup}}
                 </td>
+                {{/ismanager}}
             </tr>
         </tbody>
     </table>
