@@ -31,7 +31,7 @@ namespace local_lpfmigrator;
 require('../../config.php');
 require_once(__DIR__ . '/locallib.php');
 
-$sorgid = trim(optional_param('sorgid', 0, PARAM_INT));
+$sorgid = trim(optional_param('sorgid', '', PARAM_ALPHANUM));
 $sinstance = optional_param('sinstance', '', PARAM_ALPHANUM);
 // Remove parts from instance-name, that we do not want.
 // Because of type "PARAM_ALPHANUM" the value can not contain slashes or other symbols
