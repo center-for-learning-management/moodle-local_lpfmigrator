@@ -18,75 +18,99 @@
 
 <div class="local_lpfmigrator infoform">
     <h3>Umstellung von lernplattform.schule.at auf eduvidual.at</h3>
-    <p>Bitte beachten Sie folgende Informationen:</p>
-    <ul>
-        <li>
-            Auf der Grundlage von Forderungen der Moodle Community Austria über viele Jahre hinweg wurde eine schulübergreifende
-            Moodle-Instanz geschaffen, die größere Synergieeffekte und eine leichtere Möglichkeit zur Weiterentwicklung verspricht.
-        </li>
-        <li>
-            Künftig stellt das Bildungsministerium als Moodle-System nur noch die neue Plattform
-            <a href="https://www.eduvidual.at" target="_blank">eduvidual.at</a> zur Verfügung!
-        </li>
-        <li>
-            Schulen, die das Moodle-Angebot des BMBWF weiterhin nutzen möchten, müssen sich
-            <a href="https://www.eduvidual.at/blocks/eduvidual/pages/register.php?orgid={{sorgid}}" target="_blank">hier</a> registrieren.
-        </li>
-        <li>
-            Sie finden detaillierte Informationen zu eduvidual und zur Registrierung im Bereich
-            "<a href="https://www.eduvidual.at/course/view.php?id=606&section=3" target="_blank">Hilfe & Anleitungen"</a>. Wir möchten
-            insbesondere auf das "Handbuch für eduvidual-Manager/innen" sowie die <a href="https://www.eduvidual.at/course/view.php?id=606&section=4" target="_blank">
-            Aufzeichnungen diverser Webinare</a> zu diesem Thema hinweisen, bspw.
-            <a href="https://youtu.be/xYdAOS9FzhQ" target="_blank">digital unterrichten mit eduvidual</a> oder
-            <a href="https://youtu.be/rUfRHhSTKNM" target="_blank">eduvidual für Manager*innen</a>
-        </li>
-        <li>
-            Der Umstieg von lernplattform.schule.at kann jederzeit auf freiwilliger Basis
-            erfolgen, und es dürfen auch beide Systeme parallel verwendet werden. Die Schulen wurden jedoch in zwei Gruppen eingeteilt,
-            und müssen je nach Gruppe spätestens im Juli 2020 oder Juli 2021 umsteigen.
-        </li>
-        <li>
-            Betroffene Schulen wurden/werden ein Jahr im Vorhinein informiert und können sich entsprechend auf den Umstieg vorbereiten.
-        </li>
-        <li>
-            Zur Unterstützung des Umstiegs wird jeweils im Juli eine Sicherung aller Kurse inkl. Nutzerdaten vorgenommen,
-            und die Schulen erhalten Zugriff auf diese Sicherungen. Mit diesen Sicherungen können jene Kurse im
-            eduvidual-System wiederhergestellt werden, mit denen man weiterarbeiten möchte.
-        </li>
-        <li>
-            Aus Kapazitätsgründen werden die Moodle-Instanzen nach erfolgter Sicherung gelöscht.
-        </li>
-        <li>
-            Schul-Manager/innen, die ihre Schule in eduvidual registriert haben, können für die Moodle-Instanz ein "Opt-Out" von
-            der Löschung einstellen. In diesem Fall werden wir die Moodle-Instanz nicht vollständig löschen, um bspw. einen raschen Zugriff
-            auf Nutzerdaten der letzten beiden Jahre zu ermöglichen. Daten, die älter als 2 Jahre sind, müssen gelöscht werden!
-        </li>
-    </ul>
-
-    <h4>Status abfragen</h4>
-    <form action="" method="POST" enctype="multipart/form-data">
-        <table class="generaltable">
-            <tr>
-                <td colspan="2">
-                    Bitte geben Sie entweder Ihre Schulkennzahl, oder den Namen Ihrer Moodle-Instanz an.
-                    Der Name Ihrer Moodle-Instanz ist jener Teil der URL, der hinter dem Schrägstrich
-                    von lernplattform.schule.at/schulname steht, also bspw. für www3.lernplattform.schule.at/firnberg
-                    lautet der Instanz-Name "firnberg".
-                </td>
-            </tr>
-            <tr>
-                <th width="50%">Schulkennzahl:</th>
-                <td><input type="number" name="sorgid" value="{{sorgid}}" /></td>
-            </tr>
-            <tr>
-                <th>Instanz-Name:</th>
-                <td><input type="text" name="sinstance" value="{{sinstance}}" /></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input class="btn btn-primary" type="submit" value="Anzeigen" />
-                </td>
-            </tr>
-        </table>
-    </form>
+    <table border="0" width="100%">
+        <tr>
+            <td width="33%" align="center">
+                <a href="#" onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-why').css('display','block');" class="btn btn-secondary">Warum?</a>
+            </td>
+            <td width="33%" align="center">
+                <a href="#" onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-how').css('display','block');" class="btn btn-secondary">Wie?</a>
+            </td>
+            <td width="33%" align="center">
+                <a href="#" onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-when').css('display','block');" class="btn btn-secondary">Wann?</a>
+            </td>
+        </tr>
+    </table>
+    <div id="{{uniqid}}-why" class="{{uniqid}}-container"{{#showtab_when}} style="display: none;"{{/showtab_when}}>
+        <h4>Warum erfolgt die Umstellung?</h4>
+        <ul>
+            <li>
+                Auf der Grundlage von Visionen und Forderungen der <a href="https://community.eeducation.at/course/index.php?categoryid=13" target="_blank">Moodle Community Austria</a>
+                wurde eine schulübergreifende Moodle-Instanz geschaffen, die größere Synergieeffekte und eine leichtere Möglichkeit zur Weiterentwicklung verspricht.
+            </li>
+            <li>
+                Künftig stellt das Bildungsministerium als Moodle-System nur noch die neue Plattform
+                <a href="https://www.eduvidual.at" target="_blank">eduvidual.at</a> zur Verfügung!
+            </li>
+            <li>
+                Schulen, die das Moodle-Angebot des BMBWF weiterhin nutzen möchten, müssen sich
+                <a href="https://www.eduvidual.at/blocks/eduvidual/pages/register.php?orgid={{sorgid}}" target="_blank">hier</a> registrieren.
+            </li>
+            <li>
+                Sie finden detaillierte Informationen zu eduvidual und zur Registrierung im Bereich
+                "<a href="https://www.eduvidual.at/course/view.php?id=606&section=3" target="_blank">Hilfe & Anleitungen"</a>. Wir möchten
+                insbesondere auf das "Handbuch für eduvidual-Manager/innen" sowie die <a href="https://www.eduvidual.at/course/view.php?id=606&section=4" target="_blank">
+                Aufzeichnungen diverser Webinare</a> zu diesem Thema hinweisen, bspw.<br />
+                <iframe width="49%" src="https://www.youtube-nocookie.com/embed/xYdAOS9FzhQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="49%" src="https://www.youtube-nocookie.com/embed/rUfRHhSTKNM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </li>
+        </ul>
+    </div>
+    <div id="{{uniqid}}-how" class="{{uniqid}}-container" style="display: none;">
+        <h4>Wie erfolgt die Umstellung?</h4>
+        <ul>
+            <li>
+                Der Umstieg von lernplattform.schule.at kann jederzeit auf freiwilliger Basis
+                erfolgen, es dürfen auch beide Systeme parallel verwendet werden. Die Schulen wurden jedoch in zwei Gruppen eingeteilt,
+                und müssen je nach Gruppe spätestens im Juli 2020 oder Juli 2021 umsteigen.
+            </li>
+            <li>
+                Betroffene Schulen wurden/werden ein Jahr im Vorhinein informiert und können sich entsprechend auf den Umstieg vorbereiten.
+            </li>
+            <li>
+                Zur Unterstützung des Umstiegs wird jeweils <strong>im Juli</strong> eine Sicherung aller Kurse inkl. Nutzerdaten vorgenommen,
+                und die Schulen erhalten Zugriff auf diese Sicherungen. Mit diesen Sicherungen können jene Kurse im
+                eduvidual-System wiederhergestellt werden, mit denen man weiterarbeiten möchte.
+            </li>
+            <li>
+                Aus Kapazitätsgründen werden die Moodle-Instanzen nach erfolgter Sicherung gelöscht.
+            </li>
+            <li>
+                Schul-Manager/innen, die ihre Schule in eduvidual registriert haben, können für die Moodle-Instanz ein "Opt-Out" von
+                der Löschung einstellen. In diesem Fall werden wir die Moodle-Instanz erst im Dezember 2021 vollständig löschen, um bspw. einen raschen Zugriff
+                auf Nutzerdaten der letzten beiden Jahre zu ermöglichen.
+            </li>
+            <li>
+                Daten, die älter als 2 Jahre sind, müssen aber gelöscht werden! Diese stehen ohnehin in Form der Sicherungsdateien zur Verfügung.
+            </li>
+        </ul>
+    </div>
+    <div id="{{uniqid}}-when" class="{{uniqid}}-container"{{^showtab_when}} style="display: none;"{{/showtab_when}}>
+        <h4>Wann erfolgt die Umstellung?</h4>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <table class="generaltable">
+                <tr>
+                    <td colspan="2">
+                        Bitte geben Sie entweder Ihre Schulkennzahl, oder den Namen Ihrer Moodle-Instanz an.
+                        Der Name Ihrer Moodle-Instanz ist jener Teil der URL, der hinter dem Schrägstrich
+                        von lernplattform.schule.at/<i>schulname</i> steht, also bspw. für www3.lernplattform.schule.at/<i>firnberg</i>
+                        lautet der Instanz-Name "<i>firnberg</i>".
+                    </td>
+                </tr>
+                <tr>
+                    <th width="50%">Schulkennzahl:</th>
+                    <td><input type="number" name="sorgid" value="{{sorgid}}" /></td>
+                </tr>
+                <tr>
+                    <th>Instanz-Name:</th>
+                    <td><input type="text" name="sinstance" value="{{sinstance}}" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input class="btn btn-primary" type="submit" value="Anzeigen" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>

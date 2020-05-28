@@ -33,6 +33,12 @@ require_once(__DIR__ . '/locallib.php');
 
 $sorgid = optional_param('sorgid', 0, PARAM_INT);
 $sinstance = optional_param('sinstance', '', PARAM_ALPHANUM);
+// Remove parts from instance-name, that we do not want.
+$sinstance = str_replace("https://www3.lernplattform.schule.at/", "", $sinstance);
+$sinstance = str_replace("https://www4.lernplattform.schule.at/", "", $sinstance);
+$sinstance = str_replace("http://www3.lernplattform.schule.at/", "", $sinstance);
+$sinstance = str_replace("http://www4.lernplattform.schule.at/", "", $sinstance);
+$sinstance = str_replace("/", "", $sinstance);
 
 require_login();
 $PAGE->set_url(new \moodle_url('/local/lpfmigrator/info.php', array('sorgid' => $sorgid, 'sinstance' => $sinstance)));
@@ -43,7 +49,11 @@ $PAGE->requires->css('/local/lpfmigrator/main.css');
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render_from_template('local_lpfmigrator/info_form', array('sorgid' => $sorgid, 'sinstance' => $sinstance));
+echo $OUTPUT->render_from_template('local_lpfmigrator/info_form', array(
+    'showtab_when' => (!empty($sorgid) || !empty($sinstance)),
+    'sinstance' => $sinstance
+    'sorgid' => $sorgid,
+));
 if (!empty($sorgid) || !empty($sinstance)) {
     $sql = "SELECT *
                 FROM {local_lpfmigrator_instances}
