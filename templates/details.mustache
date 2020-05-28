@@ -290,55 +290,60 @@
                         {{/completed}}
                     {{/is6}}
 
+                    {{#removaloptout}}
+                        <p>{{#str}} removaloptout, local_lpfmigrator {{/str}}</p>
+                    {{/removaloptout}}
+                    {{^removaloptout}}
+                        {{#is7}} {{! removal web }}
+                            {{#editable}}
+                                {{#selected}}
+                                <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removeweb=on" class="btn btn-primary btn-block alert alert-danger">
+                                    {{#str}} instance_removeweb_now, local_lpfmigrator {{/str}}
+                                </a>
+                                {{/selected}}
+                            {{/editable}}
+                            {{^editable}}
+                                {{#selected}}
+                                    {{#str}} instance_remove_soon, local_lpfmigrator {{/str}}
+                                {{/selected}}
+                            {{/editable}}
+                            {{#has_replaced_webroot}}
+                                {{#str}} webroot_replaced, local_lpfmigrator {{/str}}
+                            {{/has_replaced_webroot}}
+                            {{#completed}}{{^has_replaced_webroot}}
+                                <strong>{{#str}} webroot_not_yet_replaced, local_lpfmigrator {{/str}}</strong>
+                            {{/has_replaced_webroot}}{{/completed}}
+                        {{/is7}}
+                        {{#is8}} {{! removal data }}
+                            {{#editable}}
+                                {{#selected}}
+                                <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removedata=on" class="btn btn-primary btn-block alert alert-danger">
+                                    {{#str}} instance_removedata_now, local_lpfmigrator {{/str}}
+                                </a>
+                                {{/selected}}
+                            {{/editable}}
+                            {{^editable}}
+                                {{#selected}}
+                                    {{#str}} instance_remove_soon, local_lpfmigrator {{/str}}
+                                {{/selected}}
+                            {{/editable}}
+                            {{#completed}}
+                                {{#has_removed_datadir}}
+                                    <p>{{#str}} instance_removed_datadir, local_lpfmigrator {{/str}}</p>
+                                {{/has_removed_datadir}}
+                                {{^has_removed_datadir}}
+                                    <p>{{#str}} instance_removed_datadir_missing, local_lpfmigrator {{/str}}</p>
+                                {{/has_removed_datadir}}
+                                <p>{{#str}} instance_removed_database, local_lpfmigrator {{/str}}</p>
+                            {{/completed}}
+                        {{/is8}}
+                        {{#is9}} {{! removed }}
+                            {{#selected}}
+                                {{#str}} instance_removed, local_lpfmigrator {{/str}}
+                            {{/selected}}
+                        {{/is9}}
+                    {{/removaloptout}}
 
-                    {{#is7}} {{! removal web }}
-                        {{#editable}}
-                            {{#selected}}
-                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removeweb=on" class="btn btn-primary btn-block alert alert-danger">
-                                {{#str}} instance_removeweb_now, local_lpfmigrator {{/str}}
-                            </a>
-                            {{/selected}}
-                        {{/editable}}
-                        {{^editable}}
-                            {{#selected}}
-                                {{#str}} instance_remove_soon, local_lpfmigrator {{/str}}
-                            {{/selected}}
-                        {{/editable}}
-                        {{#has_replaced_webroot}}
-                            {{#str}} webroot_replaced, local_lpfmigrator {{/str}}
-                        {{/has_replaced_webroot}}
-                        {{#completed}}{{^has_replaced_webroot}}
-                            <strong>{{#str}} webroot_not_yet_replaced, local_lpfmigrator {{/str}}</strong>
-                        {{/has_replaced_webroot}}{{/completed}}
-                    {{/is7}}
-                    {{#is8}} {{! removal data }}
-                        {{#editable}}
-                            {{#selected}}
-                            <a href="{{wwwroot}}/local/lpfmigrator/details.php?id={{id}}&removedata=on" class="btn btn-primary btn-block alert alert-danger">
-                                {{#str}} instance_removedata_now, local_lpfmigrator {{/str}}
-                            </a>
-                            {{/selected}}
-                        {{/editable}}
-                        {{^editable}}
-                            {{#selected}}
-                                {{#str}} instance_remove_soon, local_lpfmigrator {{/str}}
-                            {{/selected}}
-                        {{/editable}}
-                        {{#completed}}
-                            {{#has_removed_datadir}}
-                                <p>{{#str}} instance_removed_datadir, local_lpfmigrator {{/str}}</p>
-                            {{/has_removed_datadir}}
-                            {{^has_removed_datadir}}
-                                <p>{{#str}} instance_removed_datadir_missing, local_lpfmigrator {{/str}}</p>
-                            {{/has_removed_datadir}}
-                            <p>{{#str}} instance_removed_database, local_lpfmigrator {{/str}}</p>
-                        {{/completed}}
-                    {{/is8}}
-                    {{#is9}} {{! removed }}
-                        {{#selected}}
-                            {{#str}} instance_removed, local_lpfmigrator {{/str}}
-                        {{/selected}}
-                    {{/is9}}
                 </td>
             </tr>
         {{/stages}}

@@ -83,6 +83,7 @@ $string['purge_caches'] = 'Alle Zwischenspeicher der Moodle-Instanz zurücksetze
 $string['read_databases'] = 'Alle Datenbanken einlesen';
 $string['read_databases:success'] = 'Erfolgreich {$a->read} Datenbanken eingelesen';
 $string['rename_backup_files'] = 'Backup-Dateien umbenennen';
+$string['removaloptout'] = 'Diese Schule hat das Opt-Out von der Instanz-Löschung in Anspruch genommen!';
 $string['schedule'] = 'Backup-Liste';
 $string['scheduled_instances'] = 'Eingereihte Instanzen';
 $string['site_deactivated'] = 'Seite deaktiviert';

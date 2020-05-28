@@ -82,6 +82,7 @@ $string['proceed_anyway'] = 'Attention, you can proceed anyway, but know what yo
 $string['purge_caches'] = 'Purge caches of remote moodle (recommended)';
 $string['read_databases'] = 'Read all databases';
 $string['read_databases:success'] = 'Successfully read {$a->read} databases';
+$string['removaloptout'] = 'This org opted out from removal';
 $string['rename_backup_files'] = 'Rename backup files';
 $string['schedule'] = 'Backup-List';
 $string['scheduled_instances'] = 'Scheduled instances';
