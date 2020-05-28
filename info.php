@@ -44,8 +44,8 @@ $sinstance = trim($sinstance);
 require_login();
 $PAGE->set_url(new \moodle_url('/local/lpfmigrator/info.php', array('sorgid' => $sorgid, 'sinstance' => $sinstance)));
 $PAGE->set_context(\context_system::instance());
-$PAGE->set_heading(get_string('pluginname', 'local_lpfmigrator'));
-$PAGE->set_title(get_string('pluginname', 'local_lpfmigrator'));
+$PAGE->set_heading("Umstieg des Bundes-Moodle");
+$PAGE->set_title("Umstieg des Bundes-Moodle");
 $PAGE->requires->css('/local/lpfmigrator/main.css');
 
 echo $OUTPUT->header();
@@ -68,7 +68,7 @@ if (!empty($sorgid) || !empty($sinstance)) {
         $sql = "SELECT * FROM {block_eduvidual_org}
                     WHERE lpf LIKE ? OR orgid=?";
         $org = $DB->get_record_sql($sql, array($inst->instancename, $inst->orgid));
-        
+
         $inst->lpfgroup = '';
         if (!empty($org->id)) {
             $inst->lpfgroup = $org->lpfgroup;
