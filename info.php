@@ -65,7 +65,9 @@ if (!empty($sorgid) || !empty($sinstance)) {
     foreach ($instances AS $inst) {
         $inst->sorgid = $sorgid;
         $inst->sinstance = $sinstance;
-        $org = $DB->get_record('block_eduvidual_org', array('lpf' => $inst->instancename));
+        $sql = "SELECT * FROM {block_eduvidual_org}
+                    WHERE lpf LIKE ? OR orgid=?";
+        $org = $DB->get_record('block_eduvidual_org', array($inst->instancename, $inst->orgid));
         $inst->lpfgroup = '';
         if (!empty($org->id)) {
             $inst->lpfgroup = $org->lpfgroup;
