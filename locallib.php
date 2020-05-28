@@ -35,7 +35,7 @@ class instance {
     const STAGE_MAINTENANCE = 3;
     const STAGE_BACKUPS = 4;
     const STAGE_REVIEWED = 5;
-    const STAGE_SEND_AUTHINFO = 7;
+    const STAGE_SEND_AUTHINFO = 6;
     const STAGE_REMOVALWEB = 7;
     const STAGE_REMOVALDATA = 8;
     const STAGE_COMPLETED = 9;
