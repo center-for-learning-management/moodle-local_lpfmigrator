@@ -18,23 +18,23 @@
 
 <div class="local_lpfmigrator infoform">
     <h3>Umstellung von lernplattform.schule.at auf eduvidual.at</h3>
-    <table border="0" width="100%" style="margin: 5px 0px;">
+    <table border="0" width="100%" style="margin: 5px 0px;" class="{{uniqid}}-controls">
         <tr>
             <td width="33%" align="center">
                 <a href="#"  class="btn btn-secondary{{^showtab_when}} btn-primary{{/showtab_when}}" style="width: 100%;"
-                    onclick="$('.{{uniqid}}-container').css('display','none').removeClass('btn-primary');$('#{{uniqid}}-why').css('display','block').addClass('btn-primary');">
+                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-why').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary'); $(this).addClass('btn-primary');">
                     Warum?
                 </a>
             </td>
             <td width="33%" align="center" >
                 <a href="#" class="btn btn-secondary" style="width: 100%;"
-                    onclick="$('.{{uniqid}}-container').css('display','none').removeClass('btn-primary');$('#{{uniqid}}-how').css('display','block').addClass('btn-primary');">
+                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-how').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary'); $(this).addClass('btn-primary');">
                     Wie?
                 </a>
             </td>
             <td width="33%" align="center">
                 <a href="#" class="btn btn-secondary" style="width: 100%;"
-                    onclick="$('.{{uniqid}}-container').css('display','none').removeClass('btn-primary');$('#{{uniqid}}-when').css('display','block').addClass('btn-primary');">
+                    onclick="$('.{{uniqid}}-container').css('display','none');$('#{{uniqid}}-when').css('display','block'); $('.{{uniqid}}-controls a').removeClass('btn-primary'); $(this).addClass('btn-primary');">
                     Wann?
                 </a>
             </td>
