@@ -38,7 +38,7 @@ require('../../../config.php');
 
 $instance = optional_param('instance', '', PARAM_TEXT);
 $inst = $DB->get_record('local_lpfmigrator_instances', array('instancename' => $instance));
-$inst = (object) array('id' => 1, 'stage' => 3);
+
 if (empty($inst->id) || $inst->stage < 2) {
     ?>
 /**
@@ -67,7 +67,7 @@ function local_lpf_showbanner() {
         var iframe = document.createElement('iframe');
         iframe.setAttribute('id', 'local_lpf_banner');
         iframe.setAttribute('src', '<?php echo $CFG->wwwroot; ?>/local/lpfmigrator/lpfbanner/banner.php');
-        iframe.setAttribute('style', 'display: none; position: fixed; bottom: 10px; right: 10px; width: 300px; height: 200px; border: 0px;');
+        iframe.setAttribute('style', 'position: fixed; bottom: 10px; right: 10px; width: 500px; height: auto; border: 0px;');
         body.appendChild(iframe);
         setTimeout(local_lpf_fadebanner, 200);
     }
