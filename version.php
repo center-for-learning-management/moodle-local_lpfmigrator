@@ -29,5 +29,5 @@ $plugin->component = 'local_lpfmigrator';
 $plugin->release = '1.0 (Build: 2020052700)';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->dependencies = array(
-    'block_eduvidual' => 2020010100, // Requires the database from moodle-block_eduvidual
+    //'local_eduvidual' => 2020010100, // Requires the database from moodle-block_eduvidual
 );
