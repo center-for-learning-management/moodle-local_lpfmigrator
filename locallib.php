@@ -363,6 +363,7 @@ class instance {
         $usefolder = get_config('local_lpfmigrator', 'infofilefolder');
         if (empty($usefolder)) $usefolder = self::get_first_datadir();
         if (!empty($usefolder)) {
+            $DB->execute("UPDATE local_lpfmigrator_instances SET datasize=0,backupsize=0");
             $f = $usefolder . DIRECTORY_SEPARATOR . 'instance_sizes.csv';
             $c = file_get_contents($f);
             $lines = array_filter(explode("\n",$c));
