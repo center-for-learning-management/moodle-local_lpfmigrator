@@ -29,16 +29,18 @@ function local_lpfmigrator_before_standard_html_head() {
     if (strpos($_SERVER["SCRIPT_FILENAME"], '/backup/restorefile.php') > 0) {
         $backupfolder = get_config('local_lpfmigrator', 'backupfolder');
         if (!empty($backupfolder)) {
+            $instanceprefix = 'instance_';
             $context_user = \context_user::instance($USER->id);
             $repo_filesystem = $DB->get_record('repository', array('type' => 'filesystem'));
             $memberships = $DB->get_records('block_eduvidual_orgid_userid', array('userid' => $USER->id, 'role' => 'Manager'));
+            $my_confirmed_instances = array();
             foreach ($memberships AS $membership) {
                 // Check if there is a backup folder for that org.
                 $instances = $DB->get_records('local_lpfmigrator_instances', array('orgid' => $membership->orgid));
                 foreach ($instances AS $instance) {
                     // For security reasons - we must have an instancename!
                     if (empty($instance->instancename)) continue;
-                    $p_instreponame = 'instance_' . $instance->instancename;
+                    $p_instreponame = $instanceprefix . $instance->instancename;
                     $p_backup = $backupfolder . DIRECTORY_SEPARATOR . $instance->instancename;
                     $p_repo = $CFG->dataroot . '/repository/' . $p_instreponame;
                     if (is_dir($p_backup)) {
@@ -64,6 +66,7 @@ function local_lpfmigrator_before_standard_html_head() {
                                 $chkinstance->id = $DB->insert_record('repository_instances', $chkinstance);
                             }
                             if (!empty($chkinstance->id)) {
+                                $my_confirmed_instances[] = $chkinstance->id;
                                 // Ok, we have that instance - insert configuration.
                                 $chkconfiguration = $DB->get_record('repository_instance_config', array('instanceid' => $chkinstance->id, 'name' => 'fs_path'));
                                 if (empty($chkconfiguration->id) || $chkconfiguration->value != $p_instreponame) {
@@ -80,6 +83,18 @@ function local_lpfmigrator_before_standard_html_head() {
                                 }
                             }
                         }
+                    }
+                }
+            }
+            // Now check if there are any instances we should not have access to.
+            $allinstances = $DB->get_records('repository_instances', array('typeid' => $repo_filesystem->id, 'contextid' => $context_user->id));
+            foreach ($allinstances AS $allinstance) {
+                $chkconfig = $DB->get_record('repository_instance_config', array('instanceid' => $allinstance->id, 'name' => 'fs_path'));
+                if (!empty($chkconfig->id) && substr($chkconfig->value, 0, strlen($instanceprefix)) == $instanceprefix) {
+                    if (!in_array($chkconfig->id, $my_confirmed_instances)) {
+                        // Remove this instance.
+                        $DB->delete_records('repository_instance_config', array('instanceid' => $allinstance->id));
+                        $DB->delete_records('repository_instances', array('id' => $allinstance->id));
                     }
                 }
             }
