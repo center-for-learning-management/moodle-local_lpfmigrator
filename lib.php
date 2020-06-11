@@ -63,8 +63,8 @@ function local_lpfmigrator_before_standard_html_head() {
                             }
                             if (!empty($chkinstance->id)) {
                                 // Ok, we have that instance - insert configuration.
-                                $chkconfiguration = $DB->get_record('repository_config', array('instanceid' = >$chkinstance->id, 'name' => 'fs_path'));
-                                if (empty($chkconfiguration->id) || $chkconfiguration != $p_instreponame) {
+                                $chkconfiguration = $DB->get_record('repository_config', array('instanceid' => $chkinstance->id, 'name' => 'fs_path'));
+                                if (empty($chkconfiguration->id) || $chkconfiguration->value != $p_instreponame) {
                                     if (empty($chkconfiguration->id)) {
                                         $chkconfiguration = (object) array(
                                             'instanceid' => $chkinstance->id,
