@@ -91,7 +91,7 @@ function local_lpfmigrator_before_standard_html_head() {
             foreach ($allinstances AS $allinstance) {
                 $chkconfig = $DB->get_record('repository_instance_config', array('instanceid' => $allinstance->id, 'name' => 'fs_path'));
                 if (!empty($chkconfig->id) && substr($chkconfig->value, 0, strlen($instanceprefix)) == $instanceprefix) {
-                    if (!in_array($chkconfig->id, $my_confirmed_instances)) {
+                    if (!in_array($allinstance->id, $my_confirmed_instances)) {
                         // Remove this instance.
                         $DB->delete_records('repository_instance_config', array('instanceid' => $allinstance->id));
                         $DB->delete_records('repository_instances', array('id' => $allinstance->id));
