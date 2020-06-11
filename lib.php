@@ -34,8 +34,10 @@ function local_lpfmigrator_before_standard_html_head() {
             $memberships = $DB->get_records('block_eduvidual_orgid_userid', array('userid' => $USER->id, 'role' => 'Manager'));
             foreach ($memberships AS $membership) {
                 // Check if there is a backup folder for that org.
-                $instances = $DB->get_record('local_lpfmigrator_instances', array('orgid' => $membership->orgid));
+                $instances = $DB->get_records('local_lpfmigrator_instances', array('orgid' => $membership->orgid));
                 foreach ($instances AS $instance) {
+                    // For security reasons - we must have an instancename!
+                    if (empty($instance->instancename)) continue;
                     $p_instreponame = 'instance_' . $instance->instancename;
                     $p_backup = $backupfolder . DIRECTORY_SEPARATOR . $instance->instancename;
                     $p_repo = $CFG->dataroot . '/repository/' . $p_instreponame;
@@ -63,7 +65,7 @@ function local_lpfmigrator_before_standard_html_head() {
                             }
                             if (!empty($chkinstance->id)) {
                                 // Ok, we have that instance - insert configuration.
-                                $chkconfiguration = $DB->get_record('repository_config', array('instanceid' => $chkinstance->id, 'name' => 'fs_path'));
+                                $chkconfiguration = $DB->get_record('repository_instance_config', array('instanceid' => $chkinstance->id, 'name' => 'fs_path'));
                                 if (empty($chkconfiguration->id) || $chkconfiguration->value != $p_instreponame) {
                                     if (empty($chkconfiguration->id)) {
                                         $chkconfiguration = (object) array(
@@ -71,7 +73,7 @@ function local_lpfmigrator_before_standard_html_head() {
                                             'name' => 'fs_path',
                                             'value' => $p_instreponame,
                                         );
-                                        $chkconfiguration->id = $DB->insert_record('repository_config', $chkconfiguration);
+                                        $chkconfiguration->id = $DB->insert_record('repository_instance_config', $chkconfiguration);
                                     } else {
                                         $DB->set_field('repository_config', 'value', $p_instreponame, array('id' => $chkconfiguration->id));
                                     }
