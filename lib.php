@@ -39,12 +39,12 @@ function local_lpfmigrator_before_standard_html_head() {
                     $p_instreponame = 'instance_' . $instance->instancename;
                     $p_backup = $backupfolder . DIRECTORY_SEPARATOR . $instance->instancename;
                     $p_repo = $CFG->dataroot . '/repository/' . $p_instreponame;
-                    if (dir_exists($p_backup)) {
-                        if (!dir_exists($p_repo)) {
+                    if (is_dir($p_backup)) {
+                        if (!is_dir($p_repo)) {
                             symlink($p_backup, $p_repo);
                         }
                         // Now there should be this repository!
-                        if (dir_exists($p_repo)) {
+                        if (is_dir($p_repo)) {
                             // Add this repo to the current users repositories.
                             $chkinstance = $DB->get_record('repository_instances', array('typeid' => $repo_filesystem->id, 'contextid' => $context_user->id, 'name' => $instance->instancename));
                             if (empty($chkinstance->id)) {
