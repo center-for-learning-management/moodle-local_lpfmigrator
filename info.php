@@ -99,7 +99,7 @@ if (!empty($sorgid) || !empty($sinstance)) {
                 $inst->removaloptout = 1;
                 $DB->set_field('local_lpfmigrator_instances', 'removaloptout', $inst->removaloptout, array('instancename' => $inst->instancename));
                 echo $OUTPUT->render_from_template('local_lpfmigrator/alert', array(
-                    'content' => 'Der Opt-Out wurde erfolgreich gespeichert. Das bedeutet, dass wir Ihre Instanz nach der erfolgten Archivierung <strong>nicht</strong> löschen werden! Bitte löschen alle Kurse, die älter als 2 Jahre sind, sobald Sie von uns die Zugriffsdaten für Ihr Backup erhalten haben (planmäßig im Juli).',
+                    'content' => 'Der Opt-Out wurde erfolgreich gespeichert. Das bedeutet, dass wir Ihre Instanz nach der erfolgten Archivierung <strong>nicht</strong> löschen werden! Bitte löschen Sie alle Kurse, die älter als 2 Jahre sind, sobald Sie von uns die Zugriffsdaten für Ihr Backup erhalten haben (planmäßig im Juli).',
                     'type' => 'success'
                 ));
             }
