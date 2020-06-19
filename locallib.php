@@ -371,7 +371,7 @@ class instance {
                 $l = explode("\t", $line);
                 $path = trim($l[1]);
                 $size = trim($l[0]);
-                $DB->set_field('local_lpfmigrator_instances', 'datasize', $size, array('path_data' => $data));
+                $DB->set_field('local_lpfmigrator_instances', 'datasize', $size, array('path_data' => $path));
                 $DB->set_field('local_lpfmigrator_instances', 'backupsize', $size, array('path_backup' => $path));
             }
         }

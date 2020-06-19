@@ -175,9 +175,9 @@ $instanceo = $instance->as_object();
 $instanceo->adminusers = $instance->adminusers();
 $instanceo->editable = is_siteadmin();
 $instanceo->stages = instance::get_stages($instance);
+// Update path sizes.
+instance::get_sizes();
 if ($instance->stage() > instance::STAGE_BACKUPS) {
-    // Update path sizes.
-    instance::get_sizes();
     // Get Backup-size directly from filesystem.
     $instance->get_size_backup();
     $instanceo->courses_remote = $instance->get_amount_courses_remote();
