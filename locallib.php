@@ -81,7 +81,7 @@ class instance {
             $this->path_backup_pwd = substr(str_shuffle(strtolower(sha1(rand() . time() . "www.eduvidual.at"))), 0, 10);
             $this->adminusers();
         }
-        $org = $DB->get_record('block_eduvidual_org', array('lpf' => $instancename));
+        $org = $DB->get_record('local_eduvidual_org', array('lpf' => $instancename));
         if (!empty($org->id)) {
             $this->lpfgroup = $org->lpfgroup;
             if (empty($this->orgid)) {
@@ -171,11 +171,11 @@ class instance {
         global $DB, $USER;
         if (is_siteadmin()) return true;
         if (!empty($this->orgid)) {
-            $org = $DB->get_record('block_eduvidual_org', array('orgid' => $this->orgid));
+            $org = $DB->get_record('local_eduvidual_org', array('orgid' => $this->orgid));
             if (!empty($org->categoryid)) {
                 $catcontext = \context_coursecat::instance($org->categoryid);
                 if (!empty($catcontext->id)) {
-                    $managerrole = get_config('block_eduvidual', 'defaultorgrolemanager');
+                    $managerrole = get_config('local_eduvidual', 'defaultorgrolemanager');
                     if (!empty($managerrole)) {
                         $roles = get_user_roles($catcontext, $USER->id);
                         foreach ($roles AS $role) {
@@ -484,7 +484,7 @@ class instance {
         global $DB;
         if ($lpfgroup != "-" && !empty($this->orgid)) {
             $this->lpfgroup = $lpfgroup;
-            $DB->set_field('block_eduvidual_org', 'lpfgroup', $this->lpfgroup, array('orgid' => $this->orgid));
+            $DB->set_field('local_eduvidual_org', 'lpfgroup', $this->lpfgroup, array('orgid' => $this->orgid));
         }
         return $this->lpfgroup;
     }

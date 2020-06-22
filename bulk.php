@@ -66,7 +66,7 @@ if (!empty($movegroup) && !empty($movetostage)) {
 
     $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,lli.path_data,beo.lpfgroup,beo.categoryid,lli.datasize,lli.backupsize
                 FROM {local_lpfmigrator_instances} lli
-                LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
+                LEFT JOIN {local_eduvidual_org} beo ON lli.orgid=beo.orgid
                 WHERE beo.lpfgroup=?";
 
     $instances = array_values($DB->get_records_sql($sql, array($movegroup)));

@@ -65,7 +65,7 @@ if (!empty($sorgid) || !empty($sinstance)) {
     foreach ($instances AS $inst) {
         $inst->sorgid = $sorgid;
         $inst->sinstance = $sinstance;
-        $sql = "SELECT * FROM {block_eduvidual_org}
+        $sql = "SELECT * FROM {local_eduvidual_org}
                     WHERE lpf LIKE ? OR orgid=?";
         $org = $DB->get_record_sql($sql, array($inst->instancename, $inst->orgid));
 
@@ -89,7 +89,7 @@ if (!empty($sorgid) || !empty($sinstance)) {
         }
 
         if (!empty($inst->orgid)) {
-            $role = $DB->get_record('block_eduvidual_orgid_userid', array('orgid' => $inst->orgid, 'userid' => $USER->id));
+            $role = $DB->get_record('local_eduvidual_orgid_userid', array('orgid' => $inst->orgid, 'userid' => $USER->id));
             $inst->ismanager = is_siteadmin() || !empty($role->role) && $role->role == 'Manager';
         }
         $inst->lpfmigrationdate = ($inst->lpfgroup == 'C') ? 'Sommer 2020' : 'Sommer 2021';

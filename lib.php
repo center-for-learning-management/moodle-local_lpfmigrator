@@ -32,7 +32,7 @@ function local_lpfmigrator_before_standard_html_head() {
             $instanceprefix = 'instance_';
             $context_user = \context_user::instance($USER->id);
             $repo_filesystem = $DB->get_record('repository', array('type' => 'filesystem'));
-            $memberships = $DB->get_records_sql("SELECT * FROM {block_eduvidual_orgid_userid} WHERE userid=? AND (role=? OR role=?)", array($USER->id, 'Manager', 'Teacher'));
+            $memberships = $DB->get_records_sql("SELECT * FROM {local_eduvidual_orgid_userid} WHERE userid=? AND (role=? OR role=?)", array($USER->id, 'Manager', 'Teacher'));
             $my_confirmed_instances = array();
             foreach ($memberships AS $membership) {
                 // Check if there is a backup folder for that org.

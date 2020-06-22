@@ -53,7 +53,7 @@ $stages = instance::get_stages();
 for ($a = 1; $a < count($stages) -1; $a++) {
     $sql = "SELECT lli.id,lli.instancename,lli.stage,lli.orgid,beo.lpfgroup,beo.categoryid
                 FROM {local_lpfmigrator_instances} lli
-                LEFT JOIN {block_eduvidual_org} beo ON lli.orgid=beo.orgid
+                LEFT JOIN {local_eduvidual_org} beo ON lli.orgid=beo.orgid
                 WHERE stage=?
                 ORDER BY instancename ASC";
 

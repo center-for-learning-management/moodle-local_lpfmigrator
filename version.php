@@ -23,11 +23,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version  = 2020061100;
+$plugin->version  = 2020062200;
 $plugin->requires = 2014051200;
 $plugin->component = 'local_lpfmigrator';
-$plugin->release = '1.0 (Build: 2020061100)';
+$plugin->release = '1.1 (Build: 2020062200)';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->dependencies = array(
-    //'local_eduvidual' => 2020010100, // Requires the database from moodle-block_eduvidual
-);
