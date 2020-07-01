@@ -56,8 +56,10 @@
                     {{id}}
                 </td>
                 <td>
-                    {{#fullname}}{{fullname}}{{/fullname}}
-                    {{^fullname}}{{shortname}}{{/fullname}}
+                    <a href="{{path_web}}/course/view.php?id={{id}}" target="_blank">
+                        {{#fullname}}{{fullname}}{{/fullname}}
+                        {{^fullname}}{{shortname}}{{/fullname}}
+                    </a>
                 </td>
                 <td>
                     {{#backups}}
