@@ -319,6 +319,51 @@ class instance {
         }
     }
     /**
+     * Determine the amount of courses in our backup dir.
+     */
+    public function get_list_courses_backup() {
+        $cnt = 0;
+        $d = opendir($this->path_backup);
+        $courses = array();
+        while(($f = readdir($d))) {
+            if (substr($f, 0, 1) == '.') continue;
+            $n = explode('-', $f);
+            if (count($n > 4)) {
+                if (!isset($courses[$n[1]])) {
+                    $courses[$n[3]] = array();
+                }
+                $courses[$n[3]][] = $n[4];
+            } else {
+                $n = explode('_', $f);
+                if (count($n) > 3) {
+                    // Format after renaming.
+                    if (!isset($courses[$n[1]])) {
+                        $courses[$n[1]] = array();
+                    }
+                    $courses[$n[1]][] = $n[2];
+                }
+            }
+        }
+        return $courses;
+    }
+    /**
+     * Determine the amount of courses on the remote instance.
+     */
+    public function get_list_courses_remote() {
+        $con = instance::external_db_open($this->instancename);
+        $sql = "SELECT id,fullname,shortname FROM " . $this->instancename . "___course";
+        $btr = mysqli_query($con, $sql);
+        $courses = array();
+        while ($row = mysqli_fetch_row($btr)) {
+            $courses[$row[0]] = (object) array(
+                'id' => $row[0],
+                'fullname' => $row[1],
+                'shortname' => $row[2],
+            );
+        }
+        return $courses;
+    }
+    /**
      * Return the current path_backup.
      */
     public function get_path_backup() {
