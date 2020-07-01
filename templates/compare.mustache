@@ -56,11 +56,12 @@
                     {{id}}
                 </td>
                 <td>
-                    {{fullname}} / {{shortname}}
+                    {{#fullname}}{{fullname}}{{/fullname}}
+                    {{^fullname}}{{shortname}}{{/fullname}}
                 </td>
                 <td>
                     {{#backups}}
-                        <div>{{.}}</div>
+                        <div>{{{.}}}</div>
                     {{/backups}}
                 </td>
             </tr>

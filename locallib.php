@@ -328,19 +328,19 @@ class instance {
         while(($f = readdir($d))) {
             if (substr($f, 0, 1) == '.') continue;
             $n = explode('-', $f);
-            if (count($n > 4)) {
+            if (count($n) > 4) {
                 if (!isset($courses[$n[1]])) {
                     $courses[$n[3]] = array();
                 }
-                $courses[$n[3]][] = $n[4];
+                $courses[$n[3]][] = $f;
             } else {
                 $n = explode('_', $f);
-                if (count($n) > 3) {
+                if (count($n) > 2) {
                     // Format after renaming.
                     if (!isset($courses[$n[1]])) {
                         $courses[$n[1]] = array();
                     }
-                    $courses[$n[1]][] = $n[2];
+                    $courses[$n[1]][] = $f;
                 }
             }
         }

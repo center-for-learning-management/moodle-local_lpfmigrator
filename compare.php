@@ -60,7 +60,7 @@ $instanceo = $instance->as_object();
 $instanceo->adminusers = $instance->adminusers();
 $instanceo->wwwroot = $CFG->wwwroot;
 
-$instanceo->courses_remote = $instance->get_list_courses_remote();
+$instanceo->courses_remote = array_values($instance->get_list_courses_remote());
 $instanceo->courses_backup = $instance->get_list_courses_backup();
 
 foreach ($instanceo->courses_remote as &$cremote) {

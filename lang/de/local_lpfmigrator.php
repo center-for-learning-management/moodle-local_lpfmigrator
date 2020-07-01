@@ -39,6 +39,7 @@ $string['backups_on'] = 'Backups einschalten';
 $string['backups_renamed'] = '{$a->renamed} Backups wurden umbenannt';
 $string['datasize'] = 'Backup-Größe';
 $string['comments'] = 'Kommentare';
+$string['compare'] = 'Vergleich';
 $string['currently_off'] = 'Derzeit <strong>nicht</strong> aktiv';
 $string['currently_on'] = 'Derzeit aktiv';
 $string['dashboard'] = 'Dashboard';

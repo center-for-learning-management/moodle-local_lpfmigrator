@@ -39,6 +39,7 @@ $string['backups_on'] = 'Turn on backups';
 $string['backups_renamed'] = '{$a->renamed} Backups were renamed';
 $string['backupsize'] = 'Backupdir size';
 $string['comments'] = 'Comments';
+$string['compare'] = 'Compare';
 $string['currently_off'] = 'Currently <strong>not</strong> activated';
 $string['currently_on'] = 'Currently activated';
 $string['datafolders'] = 'Paths of moodle-datadirs (delimited by comma)';
