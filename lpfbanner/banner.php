@@ -1,8 +1,15 @@
-<!DOCTYPE html>
+<?php
+header('Expires: Sun, 01 Jan 2014 00:00:00 GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', FALSE);
+header('Pragma: no-cache');
+?><!DOCTYPE html>
 
 <html>
     <head>
         <title>Migration lernplattform.schule.at</title>
+        <meta http-equiv="expires" content="Sun, 01 Jan 2014 00:00:00 GMT"/>
+        <meta http-equiv="pragma" content="no-cache" />
     </head>
     <body style="padding: 0; margin: 0;">
         <div id="usernotifybanner" style="background-color: darkred; color: white;text-align: center; padding: 20px;">
