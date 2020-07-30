@@ -52,7 +52,7 @@ $movefromstage = optional_param('fromstage', '', PARAM_INT);
 $movetostage = optional_param('tostage', '', PARAM_INT);
 $reallydo = optional_param('reallydo', '', PARAM_BOOL);
 
-echo $OUTPUT->render_from_template('local_lpfmigrator/bulk', array(
+echo $OUTPUT->render_from_template('local_lpfmigrator/bulkstep', array(
     'movefromstage' . $movefromstage => true,
     'movetostage' . $movetostage => true,
 ));
