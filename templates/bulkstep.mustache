@@ -1,0 +1,40 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+}}
+
+<div class="local_lpfmigrator bulk">
+    <form method="POST" action="" enctype="multipart/form-data">
+        <label>
+            <input type="checkbox" name="reallydo" />
+            Check this to really do it. If not checked we will only simulate.
+        </label><br />
+        <label for="{{uniqid}}-lpfgroup">LPF-Group</label>
+        <select name="fromstage" id="{{uniqid}}-fromstage">
+            <option value="5"{{#movefromstage5}} selected="selected" {{/movefromstage5}}>{{#str}} stage_5, local_lpfmigrator {{/str}}</option>
+            <option value="6"{{#movefromstage6}} selected="selected" {{/movefromstage6}}>{{#str}} stage_6, local_lpfmigrator {{/str}}</option>
+            <option value="7"{{#movefromstage7}} selected="selected" {{/movefromstage7}}>{{#str}} stage_7, local_lpfmigrator {{/str}}</option>
+            <option value="8"{{#movefromstage8}} selected="selected" {{/movefromstage8}}>{{#str}} stage_8, local_lpfmigrator {{/str}}</option>
+        </select><br />
+        <label for="{{uniqid}}-stage">Stage</label>
+        <select name="tostage" id="{{uniqid}}-tostage">
+            <option value="6"{{#movetostage1}} selected="selected" {{/movetostage6}}>{{#str}} stage_6, local_lpfmigrator {{/str}}</option>
+            <option value="7"{{#movetostage2}} selected="selected" {{/movetostage7}}>{{#str}} stage_7, local_lpfmigrator {{/str}}</option>
+            <option value="8"{{#movetostage3}} selected="selected" {{/movetostage8}}>{{#str}} stage_8, local_lpfmigrator {{/str}}</option>
+        </select><br />
+        <input type="submit" value="{{#str}} submit {{/str}}" />
+    </form>
+</div>
