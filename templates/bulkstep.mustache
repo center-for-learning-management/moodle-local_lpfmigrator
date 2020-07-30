@@ -22,14 +22,14 @@
             <input type="checkbox" name="reallydo" />
             Check this to really do it. If not checked we will only simulate.
         </label><br />
-        <label for="{{uniqid}}-lpfgroup">LPF-Group</label>
+        <label for="{{uniqid}}-fromstage">From Stage</label>
         <select name="fromstage" id="{{uniqid}}-fromstage">
             <option value="5"{{#movefromstage5}} selected="selected" {{/movefromstage5}}>{{#str}} stage_5, local_lpfmigrator {{/str}}</option>
             <option value="6"{{#movefromstage6}} selected="selected" {{/movefromstage6}}>{{#str}} stage_6, local_lpfmigrator {{/str}}</option>
             <option value="7"{{#movefromstage7}} selected="selected" {{/movefromstage7}}>{{#str}} stage_7, local_lpfmigrator {{/str}}</option>
             <option value="8"{{#movefromstage8}} selected="selected" {{/movefromstage8}}>{{#str}} stage_8, local_lpfmigrator {{/str}}</option>
         </select><br />
-        <label for="{{uniqid}}-stage">Stage</label>
+        <label for="{{uniqid}}-tostage">Let them finish Stage:</label>
         <select name="tostage" id="{{uniqid}}-tostage">
             <option value="6"{{#movetostage6}} selected="selected" {{/movetostage6}}>{{#str}} stage_6, local_lpfmigrator {{/str}}</option>
             <option value="7"{{#movetostage7}} selected="selected" {{/movetostage7}}>{{#str}} stage_7, local_lpfmigrator {{/str}}</option>

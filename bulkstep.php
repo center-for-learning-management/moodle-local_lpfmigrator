@@ -103,14 +103,14 @@ if (!empty($movefromstage) && !empty($movetostage)) {
                             $instance->send_authinfo();
                             $instance->stage(instance::STAGE_REMOVALWEB);
                         }
-                        echo "1";
+                        echo "info sent";
                     break;
                     case instance::STAGE_REMOVALWEB:
                         if ($reallydo) {
                             $instance->set_replacewebroot();
                             $instance->stage(instance::STAGE_REMOVALDATA);
                         }
-                        echo "1";
+                        echo "webroot removed";
                     break;
                     case instance::STAGE_REMOVALDATA:
                         if ($reallydo) {
@@ -118,7 +118,7 @@ if (!empty($movefromstage) && !empty($movetostage)) {
                             $instance->remove_database();
                             $instance->stage(instance::STAGE_COMPLETED);
                         }
-                        echo "1";
+                        echo "data removed";
                     break;
                 }
             } else {
