@@ -876,6 +876,8 @@ class instance {
         if ($stage > -1) {
             $this->stage = $stage;
             $DB->set_field('local_lpfmigrator_instances', 'stage', $stage, array('instancename' => $this->instancename));
+            $cache = \cache::make('local_lpfmigrator', 'banners');
+            $cache->set('stage_' . $this->instancename, $stage);
         }
         return $this->stage;
     }

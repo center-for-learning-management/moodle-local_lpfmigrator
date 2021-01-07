@@ -16,15 +16,15 @@
 
 /**
  * @package    local_lpfmigrator
- * @copyright  2020 Zentrum für Lernmanagement (www.lernmanagement.at)
+ * @copyright  2021 Zentrum für Lernmanagement (www.lernmanagement.at)
  * @author    Robert Schrenk
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version  = 2021010700;
-$plugin->requires = 2014051200;
-$plugin->component = 'local_lpfmigrator';
-$plugin->release = '1.1 (Build: 2021010700)';
-$plugin->maturity = MATURITY_STABLE;
+$definitions = array(
+    'banners' => array(
+        'mode' => cache_store::MODE_APPLICATION,
+    )
+);

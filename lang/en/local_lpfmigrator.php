@@ -23,6 +23,7 @@
 
 $string['pluginname'] = 'LPF Migrator';
 $string['privacy:metadata'] = 'This plugin does not store any personal data';
+$string['cachedef_banners'] = 'Cache for storing banner-status';
 
 $string['access_denied'] = 'Access denied';
 $string['admins'] = 'Administrators';

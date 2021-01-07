@@ -34,6 +34,20 @@ header("Cache-Control: public, max-age=$seconds_to_cache");
 header("Content-type: text/javascript");
 require('../../../config.php');
 
+$instance = optional_param('instance', '', PARAM_TEXT);
+$cache = cache::make('local_lpfmigrator', 'banners');
+$stage = $cache->get('stage_' . $instance);
+echo "// Cache: $stage\n";
+if (empty($stage)) {
+    echo "// Load from DB\n";
+    $inst = $DB->get_record('local_lpfmigrator_instances', array('instancename' => $instance));
+    if (empty($inst->id)) die("// No instance found\n");
+
+    $stage = $inst->stage;
+    if ($stage == 0) $stage = -1;
+    $cache->set('stage_' . $instance, $stage);
+}
+
 ?>
 /**
 * Zentrum für Lernmanagement
@@ -41,16 +55,7 @@ require('../../../config.php');
 **/
 <?php
 
-$instance = optional_param('instance', '', PARAM_TEXT);
-$inst = $DB->get_record('local_lpfmigrator_instances', array('instancename' => $instance));
-
-if (empty($inst->id) || $inst->stage < 2) {
-    ?>
-/**
- * Keine Migration geplant.
-**/
-    <?php
-} else {
+if ($stage > 2) {
     ?>
 /**
  * Migration geplant.
