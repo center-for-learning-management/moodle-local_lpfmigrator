@@ -39,6 +39,14 @@ require('../../../config.php');
 $instance = optional_param('instance', '', PARAM_TEXT);
 $cache = cache::make('local_lpfmigrator', 'banners');
 $stage = $cache->get('stage_' . $instance);
+
+?>
+/**
+* Zentrum für Lernmanagement
+* Migrationstool lernplattform.schule.at
+**/
+<?php
+
 echo "// Cache: $stage\n";
 if (empty($stage)) {
     echo "// Load from DB\n";
@@ -49,13 +57,6 @@ if (empty($stage)) {
     if ($stage == 0) $stage = -1;
     $cache->set('stage_' . $instance, $stage);
 }
-
-?>
-/**
-* Zentrum für Lernmanagement
-* Migrationstool lernplattform.schule.at
-**/
-<?php
 
 if ($stage > 2) {
     ?>
