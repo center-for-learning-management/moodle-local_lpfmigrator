@@ -35,7 +35,7 @@ $PAGE->set_url(new \moodle_url('/local/lpfmigrator/bulk.php', array()));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'local_lpfmigrator'));
 $PAGE->set_title(get_string('pluginname', 'local_lpfmigrator'));
-$PAGE->requires->css('/local/lpfmigrator/main.css');
+$PAGE->requires->css('/local/lpfmigrator/style/main.css');
 
 echo $OUTPUT->header();
 if (!is_siteadmin()) {
