@@ -38,7 +38,7 @@ $PAGE->set_url(new \moodle_url('/local/lpfmigrator/details.php', array('id' => $
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_heading(get_string('pluginname', 'local_lpfmigrator'));
 $PAGE->set_title(get_string('pluginname', 'local_lpfmigrator'));
-$PAGE->requires->css('/local/lpfmigrator/main.css');
+$PAGE->requires->css('/local/lpfmigrator/style/main.css');
 
 $rec = $DB->get_record('local_lpfmigrator_instances', array('id' => $id));
 $instance = new instance($rec->instancename);

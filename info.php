@@ -46,7 +46,7 @@ $PAGE->set_url(new \moodle_url('/local/lpfmigrator/info.php', array('sorgid' => 
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_heading("Umstieg des Bundes-Moodle");
 $PAGE->set_title("Umstieg des Bundes-Moodle");
-$PAGE->requires->css('/local/lpfmigrator/main.css');
+$PAGE->requires->css('/local/lpfmigrator/style/main.css');
 
 echo $OUTPUT->header();
 
