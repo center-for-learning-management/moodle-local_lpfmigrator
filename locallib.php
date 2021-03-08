@@ -639,6 +639,7 @@ class instance {
     public function remove_database() {
         $con = instance::external_db_open($this->instancename);
         $sql = "DROP DATABASE `em_" . $this->instancename . "`";
+        mysqli_query($con, $sql);
     }
     /**
      * Remove the database.
