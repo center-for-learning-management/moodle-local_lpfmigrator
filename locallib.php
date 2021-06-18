@@ -74,7 +74,8 @@ class instance {
             $this->path_backup = $rec->path_backup;
             $this->path_backup_pwd = $rec->path_backup_pwd;
             $this->stage = $rec->stage;
-            $this->removaloptout = $rec->removaloptout;
+            // We disabled the optout-option in june 21.
+            $this->removaloptout = 0; // $rec->removaloptout;
             $this->adminusers = (array)json_decode($rec->adminusers);
         } else {
             $this->instancename = $instancename;
