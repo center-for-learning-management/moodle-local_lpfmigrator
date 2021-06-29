@@ -78,6 +78,7 @@ foreach ($hosts AS $i => $host) {
             // Enrich data with host-information.
             $instance->host($host);
             $instance->dbname($database);
+            $instance->adminusers();
             $read++;
         }
     }
