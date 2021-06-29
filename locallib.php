@@ -254,6 +254,8 @@ class instance {
             $user = (count($users) > 1) ? $users[$hostsid] : $users[0];
             $pass = (count($passwords) > 1) ? $passwords[$hostsid] : $passwords[0];
             self::$hosts[$instance->host] = new \mysqli($host, $user, $pass);
+        }
+        if (isset(self::$hosts[$instance->host])) {
             mysqli_select_db(self::$hosts[$instance->host], $instance->dbname);
         }
         return self::$hosts[$instance->host];
